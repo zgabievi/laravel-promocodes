@@ -29,7 +29,7 @@ class Promocodes
 	{
 		$this->model = app()->make(config('promocodes.model'));
 
-		$this->codes  = DB::table('promocodes')->lists('code');
+		$this->codes  = $this->model->lists('code')->toArray();
 		$this->length = substr_count(config('promocodes.mask'), '*');
 	}
 
