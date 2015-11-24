@@ -6,3 +6,11 @@
 Promotional Codes Generator for [Laravel 5.1](http://laravel.com/)
 
 ## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Config](#config)
+- [License](#license)
+
+## License
+
+Promocodes is an open-sourced laravel package licensed under the MIT license
