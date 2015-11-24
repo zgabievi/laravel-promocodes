@@ -1,2 +1,126 @@
-# promocodes
-Promotional Codes Generator for Laravel 5.1
+# Gabievi/Promocodes
+
+[![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version.png)](https://packagist.org/packages/zgabievi/promocodes)
+[![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total.png)](https://packagist.org/packages/zgabievi/promocodes)
+
+Promotional Codes Generator for [Laravel 5.1](http://laravel.com/)
+
+## Table of Contents
+- [Installation](#installation)
+    - [Composer](#composer)
+    - [Laravel](#laravel)
+- [Usage](#usage)
+    - [Recomendations](#recomendations)
+    - [Methods](#methods)
+- [Config](#config)
+- [License](#license)
+
+## Installation
+
+### Composer
+
+Add Promocodes to your `composer.json` file.
+
+    "zgabievi/promocodes": "dev"
+
+Run `composer install` to get the latest version of the package.
+
+### Laravel
+
+Open `config/app.php` and find the `providers` key. Add `PromocodesServiceProvider` to the array.
+
+```php
+Gabievi\Promocodes\PromocodesServiceProvider::class
+```
+
+Find the `aliases` key and add `Facade` to the array. 
+
+```php
+'Promocodes'	=> Gabievi\Promocodes\Facades\Promocodes::class
+```
+
+## Usage
+
+### Recomendations
+
+Run `php artisan make:migration create_promocodes_table --create=promocodes` and update `up` method of created migration:
+
+```php
+Schema::create('promocodes', function (Blueprint $table) {
+    $table->increments('id');
+    
+    $table->string('code', 32)->unique();
+    $table->boolean('is_used')->default(false);
+});
+```
+
+Then, run `php artisan make:model Promocode` and update `app/Promocode.php` as following:
+
+```php
+/**
+ * @var bool
+ */
+protected $timestamp = false;
+
+/**
+ * @var array
+ */
+protected $fillable = [
+	'code',
+	'is_used',
+];
+
+/**
+ * @var array
+ */
+protected $casts = [
+	'is_used' => 'boolean',
+];
+```
+
+### Methods
+
+You can generate Promotional codes using `generate` method.
+
+The only parameter is amount of codes to generate.
+
+
+```php
+Promocodes::generate(5);
+```
+
+This method will return array of codes with 5 element
+
+---
+
+You can generate and save codes instantly in your database using:
+
+```php
+Promocodes::save(5);
+```
+
+This will generate 5 codes and insert in your DB.
+
+---
+
+Lastly you can check code using method `check`.
+
+Method returns boolean.
+
+```php
+$valid = Promocodes::check('TEST-CODE');
+```
+
+## Config
+
+Publish Promocodes config file using command:
+
+```
+php artisan vendor:publish
+```
+
+Created file `config\promocodes.php`. Inside you can change configuration as you wish.
+
+## License
+
+Promocodes is an open-sourced laravel package licensed under the MIT license
