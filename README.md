@@ -101,13 +101,25 @@ This will generate 5 codes and insert in your DB.
 
 ---
 
-Lastly you can check code using method `check`.
+Check code using method `check`.
 
 Method returns boolean.
 
 ```php
 $valid = Promocodes::check('TEST-CODE');
 ```
+
+---
+
+Laslty apply code using method `apply`.
+
+Method returns boolean.
+
+```php
+$applied = Promocodes::apply('TEST-CODE');
+```
+
+If method returns false, code was already used or it wasn't valid
 
 ## Config
 
