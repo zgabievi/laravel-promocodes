@@ -1,0 +1,11 @@
+language: php
+
+php:
+  - 5.4
+
+branches:
+
+before_script:
+  - composer install
+
+script: phpunit
