@@ -111,7 +111,7 @@ $valid = Promocodes::check('TEST-CODE');
 
 ---
 
-Laslty apply code using method `apply`.
+Laslty use code using method `apply`.
 
 Method returns boolean.
 
