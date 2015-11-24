@@ -19,7 +19,7 @@ Promotional Codes Generator for [Laravel 5.1](http://laravel.com/)
 
 ### Composer
 
-Add Promocodes to your `composer.json` file.
+Add Promocodes package to your `composer.json` file dependencies.
 
     "zgabievi/promocodes": "0.1.0"
 
