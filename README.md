@@ -34,7 +34,7 @@ Gabievi\Promocodes\PromocodesServiceProvider::class
 Find the `aliases` key and add `Facade` to the array. 
 
 ```php
-'Promocodes'	=> Gabievi\Promocodes\Facades\Promocodes::class
+'Promocodes' => Gabievi\Promocodes\Facades\Promocodes::class
 ```
 
 ## Usage
