@@ -125,4 +125,14 @@ class Promocodes
 
 		return $this->model->insert($data);
 	}
+
+	/**
+	 * @param $code
+	 *
+	 * @return bool
+	 */
+	public function check($code)
+	{
+		return $this->model->where('code', $code)->count() > 0;
+	}
 }
