@@ -58,7 +58,7 @@ Then, run `php artisan make:model Promocode` and update `app/Promocode.php` as f
 /**
  * @var bool
  */
-protected $timestamps = false;
+public $timestamps = false;
 
 /**
  * @var array
