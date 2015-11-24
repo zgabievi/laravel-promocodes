@@ -23,7 +23,7 @@ Add Promocodes package to your `composer.json` file dependencies.
 
     "zgabievi/promocodes": "0.1.0"
 
-Run `composer install` to get the latest version of the package.
+Run `composer update` to get the latest version of the package.
 
 ### Laravel
 
