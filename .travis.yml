@@ -4,6 +4,7 @@ php:
   - 5.4
 
 branches:
+  - master
 
 before_script:
   - composer update
