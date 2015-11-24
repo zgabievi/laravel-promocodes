@@ -21,7 +21,7 @@ Promotional Codes Generator for [Laravel 5.1](http://laravel.com/)
 
 Run composer command in your terminal.
 
-    composer require zgabievi/promocodes:0.1.0
+    composer require zgabievi/promocodes
 
 ### Laravel
 
