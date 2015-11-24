@@ -133,6 +133,24 @@ class Promocodes
 	 */
 	public function check($code)
 	{
-		return $this->model->where('code', $code)->count() > 0;
+		return $this->model->where('code', $code)->where('is_used', false)->count() > 0;
+	}
+
+	/**
+	 * @param $code
+	 *
+	 * @return bool
+	 */
+	public function apply($code)
+	{
+		$row = $this->model->where('code', $code)->where('is_used', false);
+
+		if ($row->count() > 0) {
+			$record = $row->first();
+			$record->is_used = true;
+			return $record->save();
+		}
+
+		return false;
 	}
 }
