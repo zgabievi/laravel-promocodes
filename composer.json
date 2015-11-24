@@ -22,10 +22,8 @@
 		"laravel/framework": "~5.0"
 	},
 	"autoload": {
-		"classmap": [
-		],
-		"psr-0": {
-			"zgabievi\\Promocodes": "src/Promocodes/"
+		"psr-4": {
+			"zgabievi\\Promocodes": "src"
 		}
 	}
 }
