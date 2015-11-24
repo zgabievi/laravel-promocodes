@@ -1,6 +1,6 @@
 <?php
 
-namespace zgabievi\Promocodes\Facades;
+namespace Gabievi\Promocodes\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

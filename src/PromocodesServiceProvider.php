@@ -1,6 +1,6 @@
 <?php
 
-namespace zgabievi\Promocodes;
+namespace Gabievi\Promocodes;
 
 use Illuminate\Support\ServiceProvider;
 
