@@ -135,3 +135,7 @@ Created file `config\promocodes.php`. Inside you can change configuration as you
 ## License
 
 Promocodes is an open-sourced laravel package licensed under the MIT license
+
+## TODO
+- [ ] Create migration for vendor publish
+- [ ] Create Promocode Model trait
