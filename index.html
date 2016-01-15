@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Promocodes by zgabievi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Promocodes</h1>
+      <h2 class="project-tagline">Promotional Codes Generator for Laravel 5.*</h2>
+      <a href="https://github.com/zgabievi/Promocodes" class="btn">View on GitHub</a>
+      <a href="https://github.com/zgabievi/Promocodes/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/zgabievi/Promocodes/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="promocodes" class="anchor" href="#promocodes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Promocodes</h1>
+
+<p><a href="https://github.com/zgabievi/promocodes"><img src="http://i.imgsafe.org/c1512bb.jpg" alt="PR0M0C0D35"></a></p>
+
+<p><a href="https://packagist.org/packages/zgabievi/promocodes"><img src="https://poser.pugx.org/zgabievi/promocodes/version.png" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/zgabievi/promocodes"><img src="https://poser.pugx.org/zgabievi/promocodes/d/total.png" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/zgabievi/promocodes"><img src="https://poser.pugx.org/zgabievi/promocodes/license" alt="License"></a></p>
+
+<p>Promotional Codes Generator for <a href="http://laravel.com/">Laravel 5.1</a></p>
+
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
+
+<ul>
+<li>
+<a href="#installation">Installation</a>
+
+<ul>
+<li><a href="#composer">Composer</a></li>
+<li><a href="#laravel">Laravel</a></li>
+</ul>
+</li>
+<li>
+<a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#recomendations">Recomendations</a></li>
+<li><a href="#methods">Methods</a></li>
+</ul>
+</li>
+<li><a href="#config">Config</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<h3>
+<a id="composer" class="anchor" href="#composer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Composer</h3>
+
+<p>Run composer command in your terminal.</p>
+
+<pre><code>composer require zgabievi/promocodes
+</code></pre>
+
+<h3>
+<a id="laravel" class="anchor" href="#laravel" aria-hidden="true"><span class="octicon octicon-link"></span></a>Laravel</h3>
+
+<p>Open <code>config/app.php</code> and find the <code>providers</code> key. Add <code>PromocodesServiceProvider</code> to the array.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Gabievi\Promocodes\</span><span class="pl-c1">PromocodesServiceProvider</span><span class="pl-k">::</span><span class="pl-c1">class</span></span></pre></div>
+
+<p>Find the <code>aliases</code> key and add <code>Facade</code> to the array. </p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>Promocodes<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">Gabievi\Promocodes\Facades\</span><span class="pl-c1">Promocodes</span><span class="pl-k">::</span><span class="pl-c1">class</span></span></pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="recomendations" class="anchor" href="#recomendations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Recomendations</h3>
+
+<p>Run <code>php artisan make:migration create_promocodes_table --create=promocodes</code> and update <code>up</code> method of created migration:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Schema</span><span class="pl-k">::</span>create(<span class="pl-s"><span class="pl-pds">'</span>promocodes<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-c1">Blueprint</span> <span class="pl-smi">$table</span>) {</span>
+<span class="pl-s1">    <span class="pl-smi">$table</span><span class="pl-k">-&gt;</span>increments(<span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$table</span><span class="pl-k">-&gt;</span>string(<span class="pl-s"><span class="pl-pds">'</span>code<span class="pl-pds">'</span></span>, <span class="pl-c1">32</span>)<span class="pl-k">-&gt;</span>unique();</span>
+<span class="pl-s1">    <span class="pl-smi">$table</span><span class="pl-k">-&gt;</span>boolean(<span class="pl-s"><span class="pl-pds">'</span>is_used<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>default(<span class="pl-c1">false</span>);</span>
+<span class="pl-s1">});</span></pre></div>
+
+<p>Then, run <code>php artisan make:model Promocode</code> and update <code>app/Promocode.php</code> as following:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c"> * <span class="pl-k">@var</span> bool</span></span>
+<span class="pl-s1"><span class="pl-c"> */</span></span>
+<span class="pl-s1"><span class="pl-k">public</span> <span class="pl-smi">$timestamps</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c"> * <span class="pl-k">@var</span> array</span></span>
+<span class="pl-s1"><span class="pl-c"> */</span></span>
+<span class="pl-s1"><span class="pl-k">protected</span> <span class="pl-smi">$fillable</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>code<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>is_used<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">];</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c"> * <span class="pl-k">@var</span> array</span></span>
+<span class="pl-s1"><span class="pl-c"> */</span></span>
+<span class="pl-s1"><span class="pl-k">protected</span> <span class="pl-smi">$casts</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>is_used<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>boolean<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">];</span></pre></div>
+
+<h3>
+<a id="methods" class="anchor" href="#methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Methods</h3>
+
+<p>You can generate Promotional codes using <code>generate</code> method.</p>
+
+<p>The only parameter is amount of codes to generate.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Promocodes</span><span class="pl-k">::</span>generate(<span class="pl-c1">5</span>);</span></pre></div>
+
+<p>This method will return array of codes with 5 element</p>
+
+<hr>
+
+<p>You can generate and save codes instantly in your database using:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Promocodes</span><span class="pl-k">::</span>save(<span class="pl-c1">5</span>);</span></pre></div>
+
+<p>This will generate 5 codes and insert in your DB.</p>
+
+<hr>
+
+<p>Check code using method <code>check</code>.</p>
+
+<p>Method returns boolean.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-smi">$valid</span> <span class="pl-k">=</span> <span class="pl-c1">Promocodes</span><span class="pl-k">::</span>check(<span class="pl-s"><span class="pl-pds">'</span>TEST-CODE<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<hr>
+
+<p>Laslty use code using method <code>apply</code>.</p>
+
+<p>Method returns boolean.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-smi">$applied</span> <span class="pl-k">=</span> <span class="pl-c1">Promocodes</span><span class="pl-k">::</span>apply(<span class="pl-s"><span class="pl-pds">'</span>TEST-CODE<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<p>If method returns false, code was already used or it wasn't valid</p>
+
+<h2>
+<a id="config" class="anchor" href="#config" aria-hidden="true"><span class="octicon octicon-link"></span></a>Config</h2>
+
+<p>Publish Promocodes config file using command:</p>
+
+<pre><code>php artisan vendor:publish
+</code></pre>
+
+<p>Created file <code>config\promocodes.php</code>. Inside you can change configuration as you wish.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Promocodes is an open-sourced laravel package licensed under the MIT license</p>
+
+<h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h2>
+
+<ul>
+<li>[ ] Create migration for vendor publish</li>
+<li>[ ] Create Promocode Model trait</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/zgabievi/Promocodes">Promocodes</a> is maintained by <a href="https://github.com/zgabievi">zgabievi</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
