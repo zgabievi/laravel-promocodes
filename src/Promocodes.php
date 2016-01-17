@@ -8,17 +8,27 @@ class Promocodes
 {
 
 	/**
+     * Generated codes will be saved here
+     * to be validated later
+     * 
 	 * @var array
 	 */
 	protected $codes = [];
 
 	/**
-	 * @var
+     * Length of code will be calculated
+     * from asterisks you have set as
+     * mas in your config file
+     *
+	 * @var int
 	 */
 	protected $length;
 
 	/**
-	 * @var
+     * Model of promocodes from your config
+     * will be saved in this variable
+     *
+	 * @var Model
 	 */
 	protected $model;
 
@@ -34,6 +44,9 @@ class Promocodes
 	}
 
 	/**
+     * Here will be generated single code
+     * using your parameters from config
+     *
 	 * @return string
 	 */
 	public function randomize()
@@ -72,6 +85,9 @@ class Promocodes
 	}
 
 	/**
+     * Your code will be validted to
+     * be unique for one request
+     *
 	 * @param $collection
 	 * @param $new
 	 *
@@ -87,6 +103,8 @@ class Promocodes
 	}
 
 	/**
+     * Generates promocodes as many as you wish
+     *
 	 * @param int $amount
 	 *
 	 * @return array
@@ -109,9 +127,11 @@ class Promocodes
 	}
 
 	/**
-	 * save into database
+	 * Save promocodes into database
+     * Successfull insert returns generated promocodes
+     * Fail will return NULL
 	 *
-	 * @param int   $amount
+	 * @param int $amount
 	 *
 	 * @return static
 	 */
@@ -123,10 +143,17 @@ class Promocodes
 			$data[]['code'] = $code;
 		}
 
-		return $this->model->insert($data);
+        // if insertion goes well
+        if ($this->model->insert($data)) {
+            return collect($data);
+        } else {
+            return null;
+        }
 	}
 
 	/**
+     * Check promocode in database if it is valid
+     *
 	 * @param $code
 	 *
 	 * @return bool
@@ -137,6 +164,8 @@ class Promocodes
 	}
 
 	/**
+     * Apply pomocode to user that it's used from now
+     *
 	 * @param $code
 	 *
 	 * @return bool
