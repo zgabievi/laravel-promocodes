@@ -115,7 +115,7 @@ $applied = Promocodes::apply('TEST-CODE');
 
 If method returns false, code was already used or it wasn't valid
 
-## Config
+## Config 'n Migration
 
 Publish Promocodes config file using command:
 
