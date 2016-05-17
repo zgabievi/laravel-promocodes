@@ -78,8 +78,10 @@ The only parameter is amount of codes to generate.
 
 
 ```php
-Promocodes::generate(5);
+Promocodes::generate(5); // $amount = 1
 ```
+
+- **$amount** int - number of promotional codes to be generated
 
 This method will return array of codes with 5 element
 
@@ -88,8 +90,11 @@ This method will return array of codes with 5 element
 You can generate and save codes instantly in your database using:
 
 ```php
-Promocodes::save(5);
+Promocodes::save(5, 10.50); // $amount = 1, $reward = null
 ```
+
+- **$amount** int - number of promotional codes to be generated
+- **$reward** double - amount of reward of each promocodes
 
 This will generate 5 codes and insert in your DB.
 
@@ -100,8 +105,10 @@ Check code using method `check`.
 Method returns boolean.
 
 ```php
-$valid = Promocodes::check('TEST-CODE');
+$valid = Promocodes::check('TEST-CODE'); // $promocode
 ```
+
+- **$promocode** string - promotional code wich will be checked if issets
 
 ---
 
@@ -110,8 +117,11 @@ Laslty use code using method `apply`.
 Method returns boolean.
 
 ```php
-$applied = Promocodes::apply('TEST-CODE');
+$applied = Promocodes::apply('TEST-CODE', true); // $promocode, $hard_check = false
 ```
+
+- **$promocode** string - promotional code wich will be checked if issets, and applied to current user
+- **$hard_check** boolean - if false or null, you will get only boolean value of checked promocode. If true you will get amount of reward as double or false.
 
 If method returns false, code was already used or it wasn't valid
 
