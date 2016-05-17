@@ -15,7 +15,7 @@ Promotional Codes Generator for [Laravel 5.1](http://laravel.com/)
 - [Usage](#usage)
     - [Recomendations](#recomendations)
     - [Methods](#methods)
-- [Config](#config)
+- [Config 'n Migration](#config-n-migration)
 - [License](#license)
 
 ## Installation
@@ -27,6 +27,8 @@ Run composer command in your terminal.
     composer require zgabievi/promocodes
 
 ### Laravel
+
+Please read [Config 'n Migration](#config-n-migration) section first. It's requried to create **promocodes** table
 
 Open `config/app.php` and find the `providers` key. Add `PromocodesServiceProvider` to the array.
 
@@ -44,18 +46,7 @@ Find the `aliases` key and add `Facade` to the array.
 
 ### Recomendations
 
-Run `php artisan make:migration create_promocodes_table --create=promocodes` and update `up` method of created migration:
-
-```php
-Schema::create('promocodes', function (Blueprint $table) {
-    $table->increments('id');
-    
-    $table->string('code', 32)->unique();
-    $table->boolean('is_used')->default(false);
-});
-```
-
-Then, run `php artisan make:model Promocode` and update `app/Promocode.php` as following:
+Run `php artisan make:model Promocode` and update `app/Promocode.php` as following:
 
 ```php
 /**
@@ -133,11 +124,11 @@ php artisan vendor:publish
 ```
 
 Created file `config\promocodes.php`. Inside you can change configuration as you wish.
+Created migration file, now you can simply run `php artisan migrate` and that's it, you will have promocodes table.
 
 ## License
 
 Promocodes is an open-sourced laravel package licensed under the MIT license
 
 ## TODO
-- [ ] Create migration for vendor publish
 - [ ] Create Promocode Model trait
