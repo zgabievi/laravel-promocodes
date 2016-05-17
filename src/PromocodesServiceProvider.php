@@ -15,6 +15,10 @@ class PromocodesServiceProvider extends ServiceProvider
 		$this->publishes([
 			__DIR__ . '/config/promocodes.php' => config_path('promocodes.php'),
 		]);
+
+		$this->publishes([
+			__DIR__ . '/migrations' => database_path('migrations'),
+		], 'migrations');
 	}
 
 	/**

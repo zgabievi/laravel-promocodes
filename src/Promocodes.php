@@ -135,12 +135,13 @@ class Promocodes
 	 *
 	 * @return static
 	 */
-	public function save($amount = 1)
+	public function save($amount = 1, $reward = null)
 	{
 		$data = [];
 
 		foreach ($this->generate($amount) as $key => $code) {
 			$data[]['code'] = $code;
+			$data[]['reward'] = $reward;
 		}
 
         // if insertion goes well
@@ -170,14 +171,25 @@ class Promocodes
 	 *
 	 * @return bool
 	 */
-	public function apply($code)
+	public function apply($code, $hard_check = false)
 	{
 		$row = $this->model->where('code', $code)->where('is_used', false);
 
+		//
 		if ($row->count() > 0) {
 			$record = $row->first();
 			$record->is_used = true;
-			return $record->save();
+
+			//
+			if ($record->save()) {
+
+				//
+				if ($hard_check) {
+					return ['reward' => $row->reward];
+				} else {
+					return true;
+				}
+			}
 		}
 
 		return false;
