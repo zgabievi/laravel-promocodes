@@ -117,7 +117,7 @@ If method returns false, code was already used or it wasn't valid
 
 ## Config 'n Migration
 
-Publish Promocodes config file using command:
+Publish Promocodes config & migration file using command:
 
 ```
 php artisan vendor:publish
