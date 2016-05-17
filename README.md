@@ -141,4 +141,5 @@ Created migration file, now you can simply run `php artisan migrate` and that's 
 Promocodes is an open-sourced laravel package licensed under the MIT license
 
 ## TODO
+- [x] Create migration for vendor publish
 - [ ] Create Promocode Model trait
