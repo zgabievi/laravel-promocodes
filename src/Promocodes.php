@@ -185,7 +185,7 @@ class Promocodes
 
 				//
 				if ($hard_check) {
-					return $row->reward];
+					return $row->reward;
 				} else {
 					return true;
 				}
