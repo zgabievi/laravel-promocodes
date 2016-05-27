@@ -141,7 +141,7 @@ class Promocodes
 
 		foreach ($this->generate($amount) as $key => $code) {
 			$data[$key]['code'] = $code;
-			$data[$key['reward'] = $reward;
+			$data[$key]['reward'] = $reward;
 		}
 
         // if insertion goes well
