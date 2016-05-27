@@ -140,8 +140,8 @@ class Promocodes
 		$data = [];
 
 		foreach ($this->generate($amount) as $key => $code) {
-			$data[]['code'] = $code;
-			$data[]['reward'] = $reward;
+			$data[$key]['code'] = $code;
+			$data[$key['reward'] = $reward;
 		}
 
         // if insertion goes well
@@ -185,7 +185,7 @@ class Promocodes
 
 				//
 				if ($hard_check) {
-					return $row->reward;
+					return $record->reward;
 				} else {
 					return true;
 				}
