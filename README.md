@@ -59,6 +59,7 @@ public $timestamps = false;
  */
 protected $fillable = [
 	'code',
+	'reward',
 	'is_used',
 ];
 
