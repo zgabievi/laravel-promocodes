@@ -1,12 +1,6 @@
-# Promocodes
-
-[![PR0M0C0D35](http://i.imgsafe.org/c1512bb.jpg)](https://github.com/zgabievi/promocodes)
-
-[![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version.png)](https://packagist.org/packages/zgabievi/promocodes)
-[![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total.png)](https://packagist.org/packages/zgabievi/promocodes)
-[![License](https://poser.pugx.org/zgabievi/promocodes/license)](https://packagist.org/packages/zgabievi/promocodes)
-
-Promotional Codes Generator for [Laravel 5.*](http://laravel.com/)
+| [![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version.png)](https://packagist.org/packages/zgabievi/promocodes) [![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total.png)](https://packagist.org/packages/zgabievi/promocodes) [![License](https://poser.pugx.org/zgabievi/promocodes/license)](https://packagist.org/packages/zgabievi/promocodes) | Promocodes |
+|------------|:----|
+| [![PR0M0C0D35](https://s15.postimg.org/ddh46kj3f/687474703a2f2f692e696d67736166652e6f72672f633135.png)](https://github.com/zgabievi/promocodes) | Promotional Codes Generator for [Laravel 5.*](http://laravel.com/) |
 
 ## Table of Contents
 - [Installation](#installation)
