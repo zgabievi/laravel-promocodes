@@ -51,6 +51,7 @@ To create table for promocodes in database run:
     php artisan migrate
     
 > Configuration parameters are well documented. There is no need to describe each parameter here.
+
 > Check `config/promocodes.php` and read comments there if you need.
 
 ## Usage
@@ -108,7 +109,9 @@ User::promocodes()
 ```
 
 > There is query scopes for promocodes: `fresh()`, `byCode($code)`
+
 > `User::promocodes()->fresh()` - all not used codes of user
+
 > `User::promocodes()->byCode($code)` - record which matches given code
 
 - Create promocode(s) for current user. Works exactly same like `create` method of `Promocodes`
