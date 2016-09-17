@@ -139,4 +139,4 @@ $user->applyCode('ABCD-DCBA', function ($reward) use ($user) {
 
 ## License
 
-Promocodes is licensed under a  [MIT License](https://github.com/zgabievi/awesome-adonisjs/blob/master/LICENSE).
+Promocodes is licensed under a  [MIT License](https://github.com/zgabievi/promocodes/blob/master/LICENSE).
