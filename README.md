@@ -139,4 +139,4 @@ $user->applyCode('ABCD-DCBA', function ($reward) use ($user) {
 
 ## License
 
-Promocodes is an open-sourced laravel package licensed under the MIT license
+Promocodes is licensed under a  [MIT License](https://github.com/zgabievi/awesome-adonisjs/blob/master/LICENSE).
