@@ -6,7 +6,7 @@
 
 | PR0M0C0D35 |     |
 |:----------:|:----|
-| [![PR0M0C0D35](https://s15.postimg.org/ddh46kj3f/687474703a2f2f692e696d67736166652e6f72672f633135.png)](https://github.com/zgabievi/promocodes) | Promocodes generator for [Laravel 5.*](http://laravel.com/). Trying to be best package in this category. You are welcome to join the party, give me some advices :tada: and make pull requests. |
+| [![PR0M0C0D35](https://i.imgsafe.org/fb98b0efae.png)](https://github.com/zgabievi/promocodes) | Promocodes generator for [Laravel 5.*](http://laravel.com/). Trying to be best package in this category. You are welcome to join the party, give me some advices :tada: and make pull requests. |
 
 ## Table of Contents
 - [Installation](#installation)
