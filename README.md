@@ -1,4 +1,4 @@
-# Promocodes
+# laravel-promocodes
 
 > Updated for Laravel 5.3, works on previous versions too.
 
