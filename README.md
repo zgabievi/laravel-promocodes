@@ -2,7 +2,7 @@
 
 > Updated for Laravel 5.3, works on previous versions too.
 
-[![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version.png)](https://packagist.org/packages/zgabievi/promocodes) [![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total.png)](https://packagist.org/packages/zgabievi/promocodes) [![License](https://poser.pugx.org/zgabievi/promocodes/license)](https://packagist.org/packages/zgabievi/promocodes)
+[![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes) [![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes) [![License](https://poser.pugx.org/zgabievi/promocodes/license?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes)
 
 | PR0M0C0D35 |     |
 |:----------:|:----|
