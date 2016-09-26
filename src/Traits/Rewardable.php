@@ -9,23 +9,13 @@ trait Rewardable
 {
 	
 	/**
-	 * Get the promocodes of current model.
-	 *
-	 * @return mixed
-	 */
-	public function promocodes()
-	{
-		return $this->hasMany(Promocode::class);
-	}
-	
-	/**
 	 * Create promocodes for current model.
 	 *
 	 * @param int $amount
 	 * @param null $reward
 	 * @return mixed
 	 */
-	public function promocode($amount = 1, $reward = null)
+	public function createCode($amount = 1, $reward = null)
 	{
 		$records = [];
 		
@@ -52,32 +42,32 @@ trait Rewardable
 	 * @param $callback
 	 * @return bool|float
 	 */
-	public function applyCode($code, $callback)
+	public function applyCode($code, $callback = null)
 	{
-		$promocode = $this->promocodes()->byCode($code)->fresh();
+		$promocode = Promocode::byCode($code)->fresh()->first();
 		
 		// check if exists not used code
-		if ($promocode->exists()) {
-			$record = $promocode->first();
-			$record->is_used = true;
+		if (!is_null($promocode)) {
+			
+			//
+			if (!is_null($promocode->user) && $promocode->user->id !== $this->attributes['id']) {
+				
+				// callback function with false value
+				if (is_callable($callback)) $callback(false);
+				return false;
+			}
 			
 			// update promocode as it is used
-			if ($record->save()) {
+			if ($promocode->update(['is_used' => true])) {
 				
 				// callback function with reward value
-				if (is_callable($callback)) {
-					$callback($record->reward ?: true);
-				}
-				
-				return $record->reward ?: true;
+				if (is_callable($callback)) $callback($promocode->reward ?: true);
+				return $promocode->reward ?: true;
 			}
 		}
 		
 		// callback function with false value
-		if (is_callable($callback)) {
-			$callback(false);
-		}
-		
+		if (is_callable($callback)) $callback(false);
 		return false;
 	}
 }

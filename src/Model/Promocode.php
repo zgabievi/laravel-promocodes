@@ -23,6 +23,7 @@ class Promocode extends Model
 	protected $fillable = [
 		'code',
 		'reward',
+		'is_used',
 	];
 	
 	/**
