@@ -117,14 +117,14 @@ User::promocodes()
 - Create promocode(s) for current user. Works exactly same like `create` method of `Promocodes`
 
 ```php
-User::promocode($amount = 1, $reward = null)
+User::createCode($amount = 1, $reward = null)
 ```
 
 - Apply, that given code is used by current user. 
-Second argument is callback function, which gives you reward value or true/false
+Second argument is optional, if null, it will return reward or boolean, or you can pass callback function, which gives you reward or boolean value as argument
 
 ```php
-User::applyCode($code, $callback)
+User::applyCode($code, $callback = null)
 ```
 
 Example:
