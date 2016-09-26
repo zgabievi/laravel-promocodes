@@ -6,8 +6,10 @@ use Illuminate\Support\ServiceProvider;
 
 class PromocodesServiceProvider extends ServiceProvider
 {
+	
 	/**
 	 * Bootstrap the application services.
+	 *
 	 * @return void
 	 */
 	public function boot()
@@ -23,6 +25,7 @@ class PromocodesServiceProvider extends ServiceProvider
 	
 	/**
 	 * Register the application services.
+	 *
 	 * @return void
 	 */
 	public function register()

@@ -1,6 +1,7 @@
 <?php
 
 return [
+	
 	/**
 	 * Database table name that will be used in migration
 	 * You can remove this key - value pair and we will

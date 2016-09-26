@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Promocode extends Model
 {
+	
 	/**
 	 * Indicates if the model should be timestamped.
 	 *

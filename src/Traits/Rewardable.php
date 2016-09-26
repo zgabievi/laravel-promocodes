@@ -7,6 +7,7 @@ use Gabievi\Promocodes\Model\Promocode;
 
 trait Rewardable
 {
+	
 	/**
 	 * Get the promocodes of current model.
 	 *
@@ -49,6 +50,7 @@ trait Rewardable
 	 *
 	 * @param $code
 	 * @param $callback
+	 * @return bool|float
 	 */
 	public function applyCode($code, $callback)
 	{

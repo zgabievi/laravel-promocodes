@@ -6,6 +6,7 @@ use Gabievi\Promocodes\Model\Promocode;
 
 class Promocodes
 {
+	
 	/**
 	 * Generated codes will be saved here
 	 * to be validated later
