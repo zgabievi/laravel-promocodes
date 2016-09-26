@@ -1,12 +1,12 @@
-# Promocodes
+# laravel-promocodes
 
 > Updated for Laravel 5.3, works on previous versions too.
 
-[![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version.png)](https://packagist.org/packages/zgabievi/promocodes) [![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total.png)](https://packagist.org/packages/zgabievi/promocodes) [![License](https://poser.pugx.org/zgabievi/promocodes/license)](https://packagist.org/packages/zgabievi/promocodes)
+[![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes) [![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes) [![License](https://poser.pugx.org/zgabievi/promocodes/license?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes)
 
 | PR0M0C0D35 |     |
 |:----------:|:----|
-| [![PR0M0C0D35](https://s15.postimg.org/ddh46kj3f/687474703a2f2f692e696d67736166652e6f72672f633135.png)](https://github.com/zgabievi/promocodes) | Promocodes generator for [Laravel 5.*](http://laravel.com/). Trying to be best package in this category. You are welcome to join the party, give me some advices :tada: and make pull requests. |
+| [![PR0M0C0D35](https://i.imgsafe.org/ff13c6de54.png)](https://github.com/zgabievi/promocodes) | Promocodes generator for [Laravel 5.*](http://laravel.com/). Trying to make the best package in this category. You are welcome to join the party, give me some advices :tada: and make pull requests. |
 
 ## Table of Contents
 - [Installation](#installation)
@@ -139,4 +139,7 @@ $user->applyCode('ABCD-DCBA', function ($reward) use ($user) {
 
 ## License
 
-Promocodes is an open-sourced laravel package licensed under the MIT license
+laravel-promocodes is licensed under a  [MIT License](https://github.com/zgabievi/laravel-promocodes/blob/master/LICENSE).
+
+## TODO
+- [ ] Create tests to check funtionality
