@@ -149,9 +149,11 @@ class Promocodes
         }
 
         // check for insertion of record
-        if ($insert = Promocode::insert($records)) {
+        if (Promocode::insert($records)) {
             return collect($records);
         }
+        
+        return false;
     }
 
     /**
