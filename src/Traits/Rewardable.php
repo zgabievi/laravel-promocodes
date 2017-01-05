@@ -28,9 +28,11 @@ trait Rewardable
         }
 
         // check for insertion of record
-        if ($insert = $this->promocodes()->saveMany($records)) {
+        if ($this->promocodes()->saveMany($records)) {
             return collect($records);
         }
+        
+        return collect([]);
     }
 
     /**
