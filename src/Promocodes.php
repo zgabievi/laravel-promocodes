@@ -153,7 +153,7 @@ class Promocodes
             return collect($records);
         }
         
-        return false;
+        return collect([]);
     }
 
     /**
