@@ -33,10 +33,8 @@ class PromocodesServiceProvider extends ServiceProvider
             __DIR__.'/config/promocodes.php', 'promocodes'
         );
 
-        $this->app['promocodes'] = $this->app->share(
-            function () {
-                return new Promocodes();
-            }
-        );
+        $this->app->singleton('promocodes', function ($app) {
+            return new Promocodes();
+        });
     }
 }
