@@ -1,11 +1,13 @@
 # laravel-promocodes
 
-> Updated for Laravel 5.3, works on previous versions too.
+> Updated for Laravel 5.4, works on previous versions too.
 
 [![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes)
 [![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes)
 [![License](https://poser.pugx.org/zgabievi/promocodes/license?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes)
 [![StyleCI](https://styleci.io/repos/46787184/shield)](https://styleci.io/repos/46787184)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/build-status/master)
 
 | PR0M0C0D35 |     |
 |:----------:|:----|
