@@ -31,7 +31,7 @@ trait Rewardable
         if ($this->promocodes()->saveMany($records)) {
             return collect($records);
         }
-        
+
         return collect([]);
     }
 
