@@ -152,7 +152,7 @@ class Promocodes
         if (Promocode::insert($records)) {
             return collect($records);
         }
-        
+
         return collect([]);
     }
 
