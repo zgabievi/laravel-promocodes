@@ -19,68 +19,70 @@
 
 ## Installation
 
-Run composer command in your terminal.
+Install this package via Composer:
+```bash
+$ composer require zgabievi/promocodes
+```
 
-    composer require zgabievi/promocodes
-    
 ### Open `config/app.php` and follow steps below:
 
-Find the `providers` and add our service provider.
+Find the `providers` array and add our service provider.
 
 ```php
 'providers' => [
-    ...
+    // ...
     Gabievi\Promocodes\PromocodesServiceProvider::class
 ],
 ```
 
-Find the `aliases` and add our facade.
+Find the `aliases` array and add our facade.
 
 ```php
 'aliases' => [
-    ...
+    // ...
     'Promocodes' => Gabievi\Promocodes\Facades\Promocodes::class
 ],
 ```
 
 ## Configuration
 
-Publish config & migration file using artisan command:
+Publish config & migration file using Artisan command:
+```bash
+$ php artisan vendor:publish
+```
 
-    php artisan vendor:publish
-    
 To create table for promocodes in database run:
+```bash
+$ php artisan migrate
+```
 
-    php artisan migrate
-    
 > Configuration parameters are well documented. There is no need to describe each parameter here.
 
 > Check `config/promocodes.php` and read comments there if you need.
 
 ## Usage
 
-- Generate as many codes as you wish and output them without saving. 
-You will get array of codes in return
+Generate as many codes as you wish and output them without saving. 
+You will get array of codes in return:
 
 ```php
 Promocodes::output($amount = 1)
 ```
 
-- Create as many codes as you wish, with same reward for each one.
-They will be saved in database and you will get collection of them in return
+Create as many codes as you wish, with same reward for each one.
+They will be saved in database and you will get collection of them in return:
 
 ```php
 Promocodes::create($amount = 1, $reward = null)
 ```
 
-- Check if given code exists and isn't used at all
+Check if given code exists and isn't used at all:
 
 ```php
 Promocodes::check($code)
 ```
 
-- Apply, that given code is used. Update database record.
-You will get reward value back or true/false
+Apply, that given code is used. Update database record. You will get reward value back or true/false:
 
 ```php
 Promocodes::apply($code)
@@ -101,30 +103,28 @@ class User extends Authenticatable
 {
     use Notifiable, Rewardable;
     
-    ...
+    // ...
 }
 ```
 
-- Get all promocodes of current user
+Get all promocodes of current user:
 
 ```php
 User::promocodes()
 ```
 
-> There is query scopes for promocodes: `fresh()`, `byCode($code)`
+> There is query scopes for promocodes: `fresh()`, `byCode($code)`:
+> - `User::promocodes()->fresh()` - all not used codes of user
+> - `User::promocodes()->byCode($code)` - record which matches given code
 
-> `User::promocodes()->fresh()` - all not used codes of user
-
-> `User::promocodes()->byCode($code)` - record which matches given code
-
-- Create promocode(s) for current user. Works exactly same like `create` method of `Promocodes`
+Create promocode(s) for current user. Works exactly same like `create` method of `Promocodes`:
 
 ```php
 User::createCode($amount = 1, $reward = null)
 ```
 
-- Apply, that given code is used by current user. 
-Second argument is optional, if null, it will return reward or boolean, or you can pass callback function, which gives you reward or boolean value as argument
+Apply, that given code is used by current user. 
+Second argument is optional, if null, it will return reward or boolean, or you can pass callback function, which gives you reward or boolean value as argument:
 
 ```php
 User::applyCode($code, $callback = null)
