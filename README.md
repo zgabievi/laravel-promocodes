@@ -147,4 +147,4 @@ $user->applyCode('ABCD-DCBA', function ($reward) use ($user) {
 laravel-promocodes is licensed under a  [MIT License](https://github.com/zgabievi/laravel-promocodes/blob/master/LICENSE).
 
 ## TODO
-- [ ] Create tests to check funtionality
+- [x] Create tests to check funtionality
