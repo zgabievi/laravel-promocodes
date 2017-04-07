@@ -142,6 +142,36 @@ $user->applyCode('ABCD-DCBA', function ($promocode) use ($user) {
 });
 ```
 
+### How to use additional data?
+
+1. Process of creation:
+
+```php
+Promocodes::create(1, 25, ['foo' => 'bar', 'baz' => 'qux']);
+```
+
+or
+
+```php
+User::createCode(1, 25, ['foo' => 'bar', 'baz' => 'qux']);
+```
+
+2. Getting data back:
+
+```php
+Promocodes::apply('ABC-DEF', function($promocode) {
+    echo $pomocode->data['foo'];
+});
+```
+
+or
+
+```php
+User::applyCode('ABC-DEF', function($promocode) {
+    echo $pomocode->data['foo'];
+});
+```
+
 ## License
 
 laravel-promocodes is licensed under a  [MIT License](https://github.com/zgabievi/laravel-promocodes/blob/master/LICENSE).
