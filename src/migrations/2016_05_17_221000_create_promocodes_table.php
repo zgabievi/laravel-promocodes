@@ -21,7 +21,7 @@ class CreatePromocodesTable extends Migration
             $table->double('reward', 10, 2)->nullable();
 
             $table->json('data')->nullable();
-            
+
             $table->boolean('is_used')->default(false);
 
             $table->foreign('user_id')->references('id')->on('users');

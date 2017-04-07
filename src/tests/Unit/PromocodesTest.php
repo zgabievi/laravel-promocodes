@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use Gabievi\Promocodes\Facades\Promocodes;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class PromocodesTest extends TestCase
 {
@@ -19,26 +19,29 @@ class PromocodesTest extends TestCase
     }
 
     /** @test */
-    public function it_will_output_one_code_by_default() {
+    public function it_will_output_one_code_by_default()
+    {
         $code = Promocodes::output();
 
         $this->assertCount(1, $code);
     }
 
     /** @test */
-    public function it_will_create_number_of_codes_into_database_with_reward_value() {
+    public function it_will_create_number_of_codes_into_database_with_reward_value()
+    {
         $code = Promocodes::create(5, 35.65)->first();
 
         $this->assertDatabaseHas('promocodes', [
-            'code' => $code['code'],
+            'code'   => $code['code'],
             'reward' => $code['reward'],
         ]);
     }
 
     /** @test */
-    public function it_will_be_stored_with_additional_data() {
+    public function it_will_be_stored_with_additional_data()
+    {
         $data = [
-            'baz' => 'qux',            
+            'baz' => 'qux',
             'foo' => 'bar',
         ];
 
@@ -52,7 +55,8 @@ class PromocodesTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_true_if_code_exists_in_database() {
+    public function it_returns_true_if_code_exists_in_database()
+    {
         $code = Promocodes::create(1, 80)->first();
         $status = Promocodes::check($code['code']);
 
@@ -60,7 +64,8 @@ class PromocodesTest extends TestCase
     }
 
     /** @test */
-    public function it_will_apply_given_code() {
+    public function it_will_apply_given_code()
+    {
         $code = Promocodes::create(20, 15)->first();
 
         $status = Promocodes::apply($code['code']);
@@ -69,12 +74,13 @@ class PromocodesTest extends TestCase
     }
 
     /** @test */
-    public function it_will_apply_given_code_with_some_additional_data() {
+    public function it_will_apply_given_code_with_some_additional_data()
+    {
         $data = [
-            'baz' => 'qux',            
+            'baz' => 'qux',
             'foo' => 'bar',
         ];
-        
+
         $code = Promocodes::create(20, 15, $data)->first();
 
         $status = Promocodes::apply($code['code']);
