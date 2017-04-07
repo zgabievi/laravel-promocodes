@@ -25,7 +25,7 @@ trait Rewardable
             $records[] = new Promocode([
                 'code'   => $code,
                 'reward' => $reward,
-                'data' => json_encode($data),
+                'data'   => json_encode($data),
             ]);
         }
 

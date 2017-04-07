@@ -32,7 +32,7 @@ class Promocode extends Model
      */
     protected $casts = [
         'is_used' => 'boolean',
-        'data' => 'array',
+        'data'    => 'array',
     ];
 
     /**
