@@ -131,7 +131,6 @@ class Promocodes
      * Successful insert returns generated promocodes
      * Fail will return NULL.
      *
-<<<<<<< HEAD
      * @param int   $amount
      * @param null  $reward
      * @param array $data
@@ -139,14 +138,6 @@ class Promocodes
      * @return static
      */
     public function create($amount = 1, $reward = null, array $data = [])
-=======
-     * @param int  $amount
-     * @param null $reward
-     *
-     * @return static
-     */
-    public function create($amount = 1, $reward = null)
->>>>>>> 46cd444ffd48ecc5f447fb653487856224e958d6
     {
         $records = [];
 
