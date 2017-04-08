@@ -144,9 +144,9 @@ class Promocodes
         // loop though each promocodes required
         foreach ($this->output($amount) as $code) {
             $records[] = [
-                'code' => $code,
+                'code'   => $code,
                 'reward' => $reward,
-                'data' => json_encode($data),
+                'data'   => json_encode($data),
             ];
         }
 
