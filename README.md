@@ -19,6 +19,9 @@
 - [Usage](#usage)
 - [License](#license)
 
+## What's new?
+- [Additional Data](#how-to-use-additional-data)
+
 ## Installation
 
 Install this package via Composer:
