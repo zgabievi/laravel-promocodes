@@ -19,7 +19,7 @@
 - [Usage](#usage)
 - [License](#license)
 
-## What's new?
+### What's new?
 - [Additional Data](#how-to-use-additional-data)
 
 ## Installation
