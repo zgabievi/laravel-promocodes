@@ -19,6 +19,9 @@
 - [Usage](#usage)
 - [License](#license)
 
+### What's new?
+- [Additional Data](#how-to-use-additional-data)
+
 ## Installation
 
 Install this package via Composer:
@@ -75,7 +78,7 @@ Create as many codes as you wish, with same reward for each one.
 They will be saved in database and you will get collection of them in return:
 
 ```php
-Promocodes::create($amount = 1, $reward = null)
+Promocodes::create($amount = 1, $reward = null, array $data = [])
 ```
 
 Check if given code exists and isn't used at all:
@@ -84,7 +87,7 @@ Check if given code exists and isn't used at all:
 Promocodes::check($code)
 ```
 
-Apply, that given code is used. Update database record. You will get reward value back or true/false:
+Apply, that given code is used. Update database record. You will get promocode record back or true/false:
 
 ```php
 Promocodes::apply($code)
@@ -122,11 +125,11 @@ User::promocodes()
 Create promocode(s) for current user. Works exactly same like `create` method of `Promocodes`:
 
 ```php
-User::createCode($amount = 1, $reward = null)
+User::createCode($amount = 1, $reward = null, array $data = [])
 ```
 
 Apply, that given code is used by current user. 
-Second argument is optional, if null, it will return reward or boolean, or you can pass callback function, which gives you reward or boolean value as argument:
+Second argument is optional, if null, it will return promocode record or boolean, or you can pass callback function, which gives you reward or boolean value as argument:
 
 ```php
 User::applyCode($code, $callback = null)
@@ -137,8 +140,38 @@ Example:
 ```php
 $user = Auth::user();
 
-$user->applyCode('ABCD-DCBA', function ($reward) use ($user) {
-    return 'Congratulations, ' . $user->name . '! We have added ' . $reward . ' points on your account'.
+$user->applyCode('ABCD-DCBA', function ($promocode) use ($user) {
+    return 'Congratulations, ' . $user->name . '! We have added ' . $promocode->reward . ' points on your account'.
+});
+```
+
+### How to use additional data?
+
+1. Process of creation:
+
+```php
+Promocodes::create(1, 25, ['foo' => 'bar', 'baz' => 'qux']);
+```
+
+or
+
+```php
+User::createCode(1, 25, ['foo' => 'bar', 'baz' => 'qux']);
+```
+
+2. Getting data back:
+
+```php
+Promocodes::apply('ABC-DEF', function($promocode) {
+    echo $pomocode->data['foo'];
+});
+```
+
+or
+
+```php
+User::applyCode('ABC-DEF', function($promocode) {
+    echo $pomocode->data['foo'];
 });
 ```
 
@@ -147,4 +180,4 @@ $user->applyCode('ABCD-DCBA', function ($reward) use ($user) {
 laravel-promocodes is licensed under a  [MIT License](https://github.com/zgabievi/laravel-promocodes/blob/master/LICENSE).
 
 ## TODO
-- [ ] Create tests to check funtionality
+- [x] Create tests to check funtionality

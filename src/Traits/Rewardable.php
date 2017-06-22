@@ -10,12 +10,13 @@ trait Rewardable
     /**
      * Create promocodes for current model.
      *
-     * @param int  $amount
-     * @param null $reward
+     * @param int   $amount
+     * @param null  $reward
+     * @param array $data
      *
      * @return mixed
      */
-    public function createCode($amount = 1, $reward = null)
+    public function createCode($amount = 1, $reward = null, array $data = [])
     {
         $records = [];
 
@@ -24,6 +25,7 @@ trait Rewardable
             $records[] = new Promocode([
                 'code'   => $code,
                 'reward' => $reward,
+                'data'   => json_encode($data),
             ]);
         }
 
@@ -64,12 +66,12 @@ trait Rewardable
             // update promocode as it is used
             if ($promocode->update(['is_used' => true])) {
 
-                // callback function with reward value
+                // callback function with promocode model
                 if (is_callable($callback)) {
-                    $callback($promocode->reward ?: true);
+                    $callback($promocode ?: true);
                 }
 
-                return $promocode->reward ?: true;
+                return $promocode ?: true;
             }
         }
 

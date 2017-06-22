@@ -131,12 +131,13 @@ class Promocodes
      * Successful insert returns generated promocodes
      * Fail will return NULL.
      *
-     * @param int  $amount
-     * @param null $reward
+     * @param int   $amount
+     * @param null  $reward
+     * @param array $data
      *
      * @return static
      */
-    public function create($amount = 1, $reward = null)
+    public function create($amount = 1, $reward = null, array $data = [])
     {
         $records = [];
 
@@ -145,6 +146,7 @@ class Promocodes
             $records[] = [
                 'code'   => $code,
                 'reward' => $reward,
+                'data'   => json_encode($data),
             ];
         }
 
@@ -173,7 +175,7 @@ class Promocodes
      *
      * @param $code
      *
-     * @return bool|float
+     * @return mixed
      */
     public function apply($code)
     {
@@ -186,7 +188,7 @@ class Promocodes
 
             // update promocode as it is used
             if ($record->save()) {
-                return $record->reward ?: true;
+                return $record ?: true;
             }
         }
 
