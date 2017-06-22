@@ -27,7 +27,7 @@ class Promocodes
      */
     public function __construct()
     {
-        $this->codes = Promocode::pluck('code')->toArray();
+        $this->codes = Promocode::lists('code')->toArray();
         $this->length = substr_count(config('promocodes.mask'), '*');
     }
 
