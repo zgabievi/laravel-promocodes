@@ -1,6 +1,6 @@
 # laravel-promocodes
 
-> Updated for Laravel 5.4, works on previous versions too.
+> Use version 0.5.1 for Laravel 5.1
 
 [![Latest Stable Version](https://poser.pugx.org/zgabievi/promocodes/version?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes)
 [![Total Downloads](https://poser.pugx.org/zgabievi/promocodes/d/total?format=flat-square)](https://packagist.org/packages/zgabievi/promocodes)
