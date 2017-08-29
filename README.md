@@ -113,7 +113,7 @@ Promocodes::check($code);
 
 Redeem or apply code. Redeem is alias for apply method. 
 
-User should be authenticated to redeem code or this method will thow an exception (`\Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion`). 
+User should be authenticated to redeem code or this method will throw an exception (`\Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion`). 
 
 Also if authenticated user will try to apply code twice, it will throw an exception (`\Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion`)
 
@@ -126,7 +126,7 @@ Promocodes::apply($code);
 
 ---
 
-You can imediately expire code by calling *disable* function. Returning boolean status of update.
+You can immediately expire code by calling *disable* function. Returning boolean status of update.
 
 ```php
 Promocodes::disable($code);
