@@ -2,84 +2,55 @@
 
 namespace Gabievi\Promocodes\Traits;
 
-use Gabievi\Promocodes\Facades\Promocodes;
+use Carbon\Carbon;
 use Gabievi\Promocodes\Model\Promocode;
+use Gabievi\Promocodes\Facades\Promocodes;
 
 trait Rewardable
 {
     /**
-     * Create promocodes for current model.
+     * Get the promocodes that are related to user.
      *
-     * @param int   $amount
-     * @param null  $reward
-     * @param array $data
-     *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function createCode($amount = 1, $reward = null, array $data = [])
+    public function promocodes()
     {
-        $records = [];
-
-        // loop though each promocodes required
-        foreach (Promocodes::output($amount) as $code) {
-            $records[] = new Promocode([
-                'code'   => $code,
-                'reward' => $reward,
-                'data'   => json_encode($data),
-            ]);
-        }
-
-        // check for insertion of record
-        if ($this->promocodes()->saveMany($records)) {
-            return collect($records);
-        }
-
-        return collect([]);
+        return $this->belongsToMany(Promocode::class, config('promocodes.relation_table'));
     }
 
     /**
-     * Apply promocode for user and get callback.
+     * Apply promocode to user and get callback.
      *
-     * @param $code
-     * @param $callback
+     * @param string $code
+     * @param null|\Closure $callback
      *
-     * @return bool|float
+     * @return null|\Gabievi\Promocodes\Model\Promocode
+     * @throws \Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
      */
     public function applyCode($code, $callback = null)
     {
-        $promocode = Promocode::byCode($code)->fresh()->first();
-
-        // check if exists not used code
-        if (!is_null($promocode)) {
-
-            //
-            if (!is_null($promocode->user) && $promocode->user->id !== $this->attributes['id']) {
-
-                // callback function with false value
-                if (is_callable($callback)) {
-                    $callback(false);
-                }
-
-                return false;
+        if ($promocode = Promocodes::check($code)) {
+            if ($promocode->users()->wherePivot('user_id', $this->id)->exists()) {
+                throw new AlreadyUsedExceprion;
             }
 
-            // update promocode as it is used
-            if ($promocode->update(['is_used' => true])) {
+            $promocode->users()->attach($this->id, [
+                'used_at' => Carbon::now(),
+            ]);
 
-                // callback function with promocode model
-                if (is_callable($callback)) {
-                    $callback($promocode ?: true);
-                }
+            $promocode->load('users');
 
-                return $promocode ?: true;
+            if (is_callable($callback)) {
+                $callback($promocode);
             }
+
+            return $promocode;
         }
 
-        // callback function with false value
         if (is_callable($callback)) {
-            $callback(false);
+            $callback(null);
         }
 
-        return false;
+        return null;
     }
 }

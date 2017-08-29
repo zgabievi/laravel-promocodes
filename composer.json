@@ -25,5 +25,15 @@
 		"psr-4": {
 			"Gabievi\\Promocodes\\": "src/"
 		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Gabievi\\Promocodes\\PromocodesServiceProvider"
+			],
+			"aliases": {
+				"Promocodes": "Gabievi\\Promocodes\\Facades\\Promocodes"
+			}
+		}
 	}
 }

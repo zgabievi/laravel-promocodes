@@ -2,7 +2,7 @@
 
 namespace Gabievi\Promocodes\Model;
 
-use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Promocode extends Model
@@ -19,11 +19,7 @@ class Promocode extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'code',
-        'reward',
-        'is_used',
-    ];
+    protected $fillable = ['code', 'reward', 'is_disposable', 'expires_at'];
 
     /**
      * The attributes that should be cast to native types.
@@ -31,9 +27,16 @@ class Promocode extends Model
      * @var array
      */
     protected $casts = [
-        'is_used' => 'boolean',
-        'data'    => 'array',
+        'is_disposable' => 'boolean',
+        'data' => 'array',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['expires_at'];
 
     /**
      * Promocode constructor.
@@ -48,13 +51,14 @@ class Promocode extends Model
     }
 
     /**
-     * Get the user who owns the promocode.
+     * Get the users who is related promocode.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(config('promocodes.user_model'), config('promocodes.relation_table'))
+            ->withPivot('used_at');
     }
 
     /**
@@ -71,14 +75,55 @@ class Promocode extends Model
     }
 
     /**
-     * Query builder to find all not used promocodes.
+     * Query builder to get disposable codes.
      *
      * @param $query
-     *
      * @return mixed
      */
-    public function scopeFresh($query)
+    public function scopeIsDisposable($query)
     {
-        return $query->where('is_used', false);
+        return $query->where('is_disposable', true);
+    }
+
+    /**
+     * Query builder to get non-disposable codes.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeIsNotDisposable($query)
+    {
+        return $query->where('is_disposable', false);
+    }
+
+    /**
+     * Query builder to get expired promotion codes.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeExpired($query)
+    {
+        return $query->whereNotNull('expires_at')->whereDate('expires_at', '<=', Carbon::now());
+    }
+
+    /**
+     * Check if code is disposable (ont-time).
+     *
+     * @return bool
+     */
+    public function isDisposable()
+    {
+        return $this->is_disposable;
+    }
+
+    /**
+     * Check if code is expired.
+     *
+     * @return bool
+     */
+    public function isExpired()
+    {
+        return $this->expires_at ? Carbon::now()->gte($this->expires_at) : false;
     }
 }

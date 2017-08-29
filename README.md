@@ -9,14 +9,15 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/build-status/master)
 
-| PR0M0C0D35 |     |
-|:----------:|:----|
-| [![PR0M0C0D35](https://i.imgsafe.org/ff13c6de54.png)](https://github.com/zgabievi/promocodes) | Promocodes generator for [Laravel 5.*](http://laravel.com/). Trying to make the best package in this category. You are welcome to join the party, give me some advices :tada: and make pull requests. |
+> Promocodes generator for [Laravel 5.*](http://laravel.com/). Trying to make the best package in this category. You are welcome to join the party, give me some advices :tada: and make pull requests.
 
 ## Table of Contents
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
+    - [Basic Methods](#usage)
+    - [User Trait](#promocodes-can-be-related-to-users)
+    - [Additional Data](#how-to-use-additional-data)
 - [License](#license)
 
 ### What's new?
@@ -29,7 +30,9 @@ Install this package via Composer:
 $ composer require zgabievi/promocodes
 ```
 
-### Open `config/app.php` and follow steps below:
+> If you are using Laravel 5.5, than installation is done. Otherwise follow next steps.
+
+#### Open `config/app.php` and follow steps below:
 
 Find the `providers` array and add our service provider.
 
@@ -67,31 +70,72 @@ $ php artisan migrate
 
 ## Usage
 
-Generate as many codes as you wish and output them without saving. 
+Generate as many codes as you wish and output them without saving to database. 
+
 You will get array of codes in return:
 
 ```php
 Promocodes::output($amount = 1)
 ```
 
-Create as many codes as you wish, with same reward for each one.
+---
+
+Create as many codes as you wish. Set reward (amount). 
+
+Attach additional data as array. Specify for how many days should this codes stay alive.
+
 They will be saved in database and you will get collection of them in return:
 
 ```php
-Promocodes::create($amount = 1, $reward = null, array $data = [])
+Promocodes::create($amount = 1, $reward = null, array $data = [], $expires_in = null)
 ```
 
-Check if given code exists and isn't used at all:
+---
+
+Check if given code exists, is usable and not yet expired. 
+
+This code may throw `\Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion` if there is not such promocode in database, with give code.
+
+Returns `Promocode` object if valid, or `false` if not.
 
 ```php
 Promocodes::check($code)
 ```
 
-Apply, that given code is used. Update database record. You will get promocode record back or true/false:
+---
+
+Redeem or apply code. Redeem is alias for apply method. 
+
+User should be authenticated to redeem code or this method will thow an exception (`\Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion`). 
+
+Also if authenticated user will try to apply code twice, it will throw an exception (`\Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion`)
+
+Returns `Promocode` object if applied, or `false` if not.
 
 ```php
+Promocodes::redeem($code)
 Promocodes::apply($code)
 ```
+
+---
+
+You can imediately expire code by calling *disable* function. Returning boolean status of update.
+
+```php
+Promocodes::disable($code)
+```
+
+---
+
+And if you want to delete expired, or non-usable codes you can erase them.
+
+This method will remove redundant codes from database and their relations to users. 
+
+```php
+Promocodes::clearRedundant()
+```
+
+---
 
 ### Promocodes can be related to users
 
@@ -111,38 +155,25 @@ class User extends Authenticatable
     // ...
 }
 ```
+---
 
-Get all promocodes of current user:
+Redeem or apply code are same. *redeemCode* is alias of *applyCode*
 
-```php
-User::promocodes()
-```
-
-> There is query scopes for promocodes: `fresh()`, `byCode($code)`:
-> - `User::promocodes()->fresh()` - all not used codes of user
-> - `User::promocodes()->byCode($code)` - record which matches given code
-
-Create promocode(s) for current user. Works exactly same like `create` method of `Promocodes`:
+Pass promotion code you want to be applied by current user.
 
 ```php
-User::createCode($amount = 1, $reward = null, array $data = [])
-```
-
-Apply, that given code is used by current user. 
-Second argument is optional, if null, it will return promocode record or boolean, or you can pass callback function, which gives you reward or boolean value as argument:
-
-```php
+User::redeemCode($code, $callback = null)
 User::applyCode($code, $callback = null)
 ```
 
-Example:
+Example (usage of callback):
 
 ```php
-$user = Auth::user();
-
-$user->applyCode('ABCD-DCBA', function ($promocode) use ($user) {
-    return 'Congratulations, ' . $user->name . '! We have added ' . $promocode->reward . ' points on your account'.
+$redeemMessage = $user->redeemCode('ABCD-DCBA', function ($promocode) use ($user) {
+    return 'Congratulations, ' . $user->name . '! We have added ' . $promocode->reward . ' points on your account';
 });
+
+// Congratulations, Zura! We have added 10 points on your account
 ```
 
 ### How to use additional data?
@@ -153,31 +184,26 @@ $user->applyCode('ABCD-DCBA', function ($promocode) use ($user) {
 Promocodes::create(1, 25, ['foo' => 'bar', 'baz' => 'qux']);
 ```
 
-or
-
-```php
-User::createCode(1, 25, ['foo' => 'bar', 'baz' => 'qux']);
-```
-
 2. Getting data back:
 
 ```php
-Promocodes::apply('ABC-DEF', function($promocode) {
+Promocodes::redeem('ABC-DEF', function($promocode) {
     echo $pomocode->data['foo'];
 });
+
+// bar
 ```
 
 or
 
 ```php
-User::applyCode('ABC-DEF', function($promocode) {
+User::redeemCode('ABC-DEF', function($promocode) {
     echo $pomocode->data['foo'];
 });
+
+// bar
 ```
 
 ## License
 
-laravel-promocodes is licensed under a  [MIT License](https://github.com/zgabievi/laravel-promocodes/blob/master/LICENSE).
-
-## TODO
-- [x] Create tests to check funtionality
+laravel-promocodes is licensed under a [MIT License](https://github.com/zgabievi/laravel-promocodes/blob/master/LICENSE).

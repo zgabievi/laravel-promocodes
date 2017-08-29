@@ -2,7 +2,11 @@
 
 namespace Gabievi\Promocodes;
 
+use Carbon\Carbon;
 use Gabievi\Promocodes\Model\Promocode;
+use Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion;
+use Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion;
+use Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion;
 
 class Promocodes
 {
@@ -28,7 +32,152 @@ class Promocodes
     public function __construct()
     {
         $this->codes = Promocode::pluck('code')->toArray();
+
         $this->length = substr_count(config('promocodes.mask'), '*');
+    }
+
+    /**
+     * Generates promocodes as many as you wish.
+     *
+     * @param int $amount
+     *
+     * @return array
+     */
+    public function output($amount = 1)
+    {
+        $collection = [];
+
+        for ($i = 1; $i <= $amount; $i++) {
+            $random = $this->generate();
+
+            while (!$this->validate($collection, $random)) {
+                $random = $this->generate();
+            }
+
+            array_push($collection, $random);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Save promocodes into database
+     * Successful insert returns generated promocodes
+     * Fail will return NULL.
+     *
+     * @param int $amount
+     * @param null $reward
+     * @param array $data
+     * @param int|null $expires_in
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null)
+    {
+        $records = [];
+
+        foreach ($this->output($amount) as $code) {
+            $records[] = [
+                'code' => $code,
+                'reward' => $reward,
+                'data' => json_encode($data),
+                'expires_at' => $expires_in ? Carbon::now()->addDays($expires_in) : null,
+            ];
+        }
+
+        if (Promocode::insert($records)) {
+            return collect($records);
+        }
+
+        return collect([]);
+    }
+
+    /**
+     * Check promocode in database if it is valid.
+     *
+     * @param string $code
+     *
+     * @return bool|\Gabievi\Promocodes\Model\Promocode
+     * @throws \Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion
+     */
+    public function check($code)
+    {
+        $promocode = Promocode::byCode($code)->first();
+
+        if ($promocode === null) {
+            throw new InvalidPromocodeExceprion;
+        }
+
+        if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists())) {
+            return false;
+        }
+
+        return $promocode;
+    }
+
+    /**
+     * Apply promocode to user that it's used from now.
+     *
+     * @param string $code
+     *
+     * @return bool|\Gabievi\Promocodes\Model\Promocode
+     * @throws \Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion|\Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
+     */
+    public function apply($code)
+    {
+        if (!auth()->check()) {
+            throw new UnauthenticatedExceprion;
+        }
+
+        if ($promocode = $this->check($code)) {
+            if ($this->isSecondUsageAttempt($promocode)) {
+                throw new AlreadyUsedExceprion;
+            }
+
+            $promocode->users()->attach(auth()->user()->id, [
+                'used_at' => Carbon::now(),
+            ]);
+
+            return $promocode->load('users');
+        }
+
+        return false;
+    }
+
+    /**
+     * Expire code as it won't usable anymore.
+     *
+     * @param string $code
+     * @return bool
+     * @throws \Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion
+     */
+    public function disable($code)
+    {
+        $promocode = Promocode::byCode($code)->first();
+
+        if ($promocode === null) {
+            throw new InvalidPromocodeExceprion;
+        }
+
+        $promocode->expires_at = Carbon::now();
+
+        return $promocode->save();
+    }
+
+    /**
+     * Clear all expired and used promotion codes
+     * that can not be used anymore.
+     *
+     * @return void
+     */
+    public function clearRedundant()
+    {
+        Promocode::all()->each(function ($promocode) {
+            if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists())) {
+                $promocode->users()->detach();
+                $promocode->delete();
+            }
+        });
     }
 
     /**
@@ -76,7 +225,9 @@ class Promocodes
      */
     private function getPrefix()
     {
-        return (bool) config('promocodes.prefix') ? config('promocodes.prefix').config('promocodes.separator') : '';
+        return (bool)config('promocodes.prefix')
+            ? config('promocodes.prefix') . config('promocodes.separator')
+            : '';
     }
 
     /**
@@ -86,7 +237,9 @@ class Promocodes
      */
     private function getSuffix()
     {
-        return (bool) config('promocodes.suffix') ? config('promocodes.separator').config('promocodes.suffix') : '';
+        return (bool)config('promocodes.suffix')
+            ? config('promocodes.separator') . config('promocodes.suffix')
+            : '';
     }
 
     /**
@@ -103,95 +256,13 @@ class Promocodes
     }
 
     /**
-     * Generates promocodes as many as you wish.
+     * Check if user is trying to apply code again.
      *
-     * @param int $amount
-     *
-     * @return array
-     */
-    public function output($amount = 1)
-    {
-        $collection = [];
-
-        for ($i = 1; $i <= $amount; $i++) {
-            $random = $this->generate();
-
-            while (!$this->validate($collection, $random)) {
-                $random = $this->generate();
-            }
-
-            $collection[] = $random;
-        }
-
-        return $collection;
-    }
-
-    /**
-     * Save promocodes into database
-     * Successful insert returns generated promocodes
-     * Fail will return NULL.
-     *
-     * @param int   $amount
-     * @param null  $reward
-     * @param array $data
-     *
-     * @return static
-     */
-    public function create($amount = 1, $reward = null, array $data = [])
-    {
-        $records = [];
-
-        // loop though each promocodes required
-        foreach ($this->output($amount) as $code) {
-            $records[] = [
-                'code'   => $code,
-                'reward' => $reward,
-                'data'   => json_encode($data),
-            ];
-        }
-
-        // check for insertion of record
-        if (Promocode::insert($records)) {
-            return collect($records);
-        }
-
-        return collect([]);
-    }
-
-    /**
-     * Check promocode in database if it is valid.
-     *
-     * @param $code
+     * @param $promocode
      *
      * @return bool
      */
-    public function check($code)
-    {
-        return Promocode::byCode($code)->fresh()->exists();
-    }
-
-    /**
-     * Apply promocode to user that it's used from now.
-     *
-     * @param $code
-     *
-     * @return mixed
-     */
-    public function apply($code)
-    {
-        $promocode = Promocode::byCode($code)->fresh();
-
-        // check if exists not used code
-        if ($promocode->exists()) {
-            $record = $promocode->first();
-            $record->is_used = true;
-
-            // update promocode as it is used
-            if ($record->save()) {
-                return $record ?: true;
-            }
-        }
-
-        return false;
+    private function isSecondUsageAttempt($promocode) {
+        return $promocode->users()->wherePivot('user_id', auth()->user()->id)->exists();
     }
 }

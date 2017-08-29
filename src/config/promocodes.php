@@ -10,6 +10,12 @@ return [
     'table' => 'promocodes',
 
     /*
+     * Database pivot table name for promocodes and users relation
+     * use default database name: 'promocode_user'
+     */
+    'relation_table' => 'promocode_user',
+
+    /*
      * List of characters, promo code generated from.
      * We have removed 1 (one) and I because with some
      * fonts you can't find deference between them
@@ -50,4 +56,9 @@ return [
      * Can be set any thing you wish
      */
     'separator' => '-',
+
+    /**
+     * User model
+     */
+    'user_model' => \App\User::class,
 ];
