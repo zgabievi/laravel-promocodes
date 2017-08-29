@@ -75,7 +75,7 @@ Generate as many codes as you wish and output them without saving to database.
 You will get array of codes in return:
 
 ```php
-Promocodes::output($amount = 1)
+Promocodes::output($amount = 1);
 ```
 
 ---
@@ -84,10 +84,18 @@ Create as many codes as you wish. Set reward (amount).
 
 Attach additional data as array. Specify for how many days should this codes stay alive.
 
+By default generated code will be multipass (several users will be able to use this code once).
+
 They will be saved in database and you will get collection of them in return:
 
 ```php
-Promocodes::create($amount = 1, $reward = null, array $data = [], $expires_in = null)
+Promocodes::create($amount = 1, $reward = null, array $data = [], $expires_in = null);
+```
+
+If you want to create code that will be used only once, here is method for you.
+
+```php
+Promocodes::createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null);
 ```
 
 ---
@@ -99,7 +107,7 @@ This code may throw `\Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion` i
 Returns `Promocode` object if valid, or `false` if not.
 
 ```php
-Promocodes::check($code)
+Promocodes::check($code);
 ```
 
 ---
@@ -113,8 +121,8 @@ Also if authenticated user will try to apply code twice, it will throw an except
 Returns `Promocode` object if applied, or `false` if not.
 
 ```php
-Promocodes::redeem($code)
-Promocodes::apply($code)
+Promocodes::redeem($code);
+Promocodes::apply($code);
 ```
 
 ---
@@ -122,7 +130,7 @@ Promocodes::apply($code)
 You can imediately expire code by calling *disable* function. Returning boolean status of update.
 
 ```php
-Promocodes::disable($code)
+Promocodes::disable($code);
 ```
 
 ---
@@ -132,7 +140,7 @@ And if you want to delete expired, or non-usable codes you can erase them.
 This method will remove redundant codes from database and their relations to users. 
 
 ```php
-Promocodes::clearRedundant()
+Promocodes::clearRedundant();
 ```
 
 ---
@@ -162,8 +170,8 @@ Redeem or apply code are same. *redeemCode* is alias of *applyCode*
 Pass promotion code you want to be applied by current user.
 
 ```php
-User::redeemCode($code, $callback = null)
-User::applyCode($code, $callback = null)
+User::redeemCode($code, $callback = null);
+User::applyCode($code, $callback = null);
 ```
 
 Example (usage of callback):

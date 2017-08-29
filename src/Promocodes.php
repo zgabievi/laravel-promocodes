@@ -63,16 +63,17 @@ class Promocodes
     /**
      * Save promocodes into database
      * Successful insert returns generated promocodes
-     * Fail will return NULL.
+     * Fail will return empty collection.
      *
      * @param int $amount
      * @param null $reward
      * @param array $data
      * @param int|null $expires_in
+     * @param bool $is_disposable
      *
      * @return \Illuminate\Support\Collection
      */
-    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null)
+    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null, $is_disposable = false)
     {
         $records = [];
 
@@ -82,6 +83,7 @@ class Promocodes
                 'reward' => $reward,
                 'data' => json_encode($data),
                 'expires_at' => $expires_in ? Carbon::now()->addDays($expires_in) : null,
+                'is_disposable' => $is_disposable,
             ];
         }
 
@@ -90,6 +92,23 @@ class Promocodes
         }
 
         return collect([]);
+    }
+
+    /**
+     * Save one-time use promocodes into database
+     * Successful insert returns generated promocodes
+     * Fail will return empty collection.
+     *
+     * @param int $amount
+     * @param null $reward
+     * @param array $data
+     * @param int|null $expires_in
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null)
+    {
+        return $this->create($amount, $reward, $data, $expires_in, true);
     }
 
     /**

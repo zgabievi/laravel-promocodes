@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.1] - 2017-08-29
+### Fixed
+- Migration file, that was not updated.
+
+### Added
+- Ability to create multi-use or one-time promotion codes.
+
 ## [1.0.0] - 2017-08-29
 ### Added
 - Ability to set expiration date of promocode while creating.
@@ -24,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Ability of user, that they could create promocodes assigned to them.
 
 [Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.0...HEAD
+[1.0.1]: https://github.com/zgabievi/laravel-promocodes/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/zgabievi/laravel-promocodes/compare/v0.5.4...v1.0.0
 
 [#12]: https://github.com/zgabievi/laravel-promocodes/issues/12
