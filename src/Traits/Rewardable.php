@@ -3,8 +3,10 @@
 namespace Gabievi\Promocodes\Traits;
 
 use Carbon\Carbon;
-use Gabievi\Promocodes\Model\Promocode;
+use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Facades\Promocodes;
+use Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion;
+use Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion;
 
 trait Rewardable
 {
@@ -15,7 +17,8 @@ trait Rewardable
      */
     public function promocodes()
     {
-        return $this->belongsToMany(Promocode::class, config('promocodes.relation_table'));
+        return $this->belongsToMany(Promocode::class, config('promocodes.relation_table'))
+            ->withPivot('used_at');
     }
 
     /**
@@ -29,22 +32,26 @@ trait Rewardable
      */
     public function applyCode($code, $callback = null)
     {
-        if ($promocode = Promocodes::check($code)) {
-            if ($promocode->users()->wherePivot('user_id', $this->id)->exists()) {
-                throw new AlreadyUsedExceprion;
+        try {
+            if ($promocode = Promocodes::check($code)) {
+                if ($promocode->users()->wherePivot('user_id', $this->id)->exists()) {
+                    throw new AlreadyUsedExceprion;
+                }
+
+                $promocode->users()->attach($this->id, [
+                    'used_at' => Carbon::now(),
+                ]);
+
+                $promocode->load('users');
+
+                if (is_callable($callback)) {
+                    $callback($promocode);
+                }
+
+                return $promocode;
             }
-
-            $promocode->users()->attach($this->id, [
-                'used_at' => Carbon::now(),
-            ]);
-
-            $promocode->load('users');
-
-            if (is_callable($callback)) {
-                $callback($promocode);
-            }
-
-            return $promocode;
+        } catch (InvalidPromocodeExceprion $exception) {
+            //
         }
 
         if (is_callable($callback)) {
@@ -52,5 +59,19 @@ trait Rewardable
         }
 
         return null;
+    }
+
+    /**
+     * Redeem promocode to user and get callback.
+     *
+     * @param string $code
+     * @param null|\Closure $callback
+     *
+     * @return null|\Gabievi\Promocodes\Model\Promocode
+     * @throws \Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
+     */
+    public function redeemCode($code, $callback = null)
+    {
+        return $this->applyCode($code, $callback);
     }
 }

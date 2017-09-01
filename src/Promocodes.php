@@ -3,7 +3,7 @@
 namespace Gabievi\Promocodes;
 
 use Carbon\Carbon;
-use Gabievi\Promocodes\Model\Promocode;
+use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion;
 use Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion;
 use Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion;
@@ -88,7 +88,10 @@ class Promocodes
         }
 
         if (Promocode::insert($records)) {
-            return collect($records);
+            return collect($records)->map(function ($record) {
+                $record['data'] = json_decode($record['data'], true);
+                return $record;
+            });
         }
 
         return collect([]);
@@ -148,19 +151,36 @@ class Promocodes
             throw new UnauthenticatedExceprion;
         }
 
-        if ($promocode = $this->check($code)) {
-            if ($this->isSecondUsageAttempt($promocode)) {
-                throw new AlreadyUsedExceprion;
+        try {
+            if ($promocode = $this->check($code)) {
+                if ($this->isSecondUsageAttempt($promocode)) {
+                    throw new AlreadyUsedExceprion;
+                }
+
+                $promocode->users()->attach(auth()->user()->id, [
+                    'used_at' => Carbon::now(),
+                ]);
+
+                return $promocode->load('users');
             }
-
-            $promocode->users()->attach(auth()->user()->id, [
-                'used_at' => Carbon::now(),
-            ]);
-
-            return $promocode->load('users');
+        } catch(InvalidPromocodeExceprion $exception) {
+            //
         }
 
         return false;
+    }
+
+    /**
+     * Reedem promocode to user that it's used from now.
+     *
+     * @param string $code
+     *
+     * @return bool|\Gabievi\Promocodes\Model\Promocode
+     * @throws \Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion|\Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
+     */
+    public function redeem($code)
+    {
+        return $this->apply($code);
     }
 
     /**

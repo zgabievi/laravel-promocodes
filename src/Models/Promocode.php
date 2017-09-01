@@ -1,6 +1,6 @@
 <?php
 
-namespace Gabievi\Promocodes\Model;
+namespace Gabievi\Promocodes\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

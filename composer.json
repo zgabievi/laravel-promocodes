@@ -18,20 +18,24 @@
 	],
 	"minimum-stability": "dev",
 	"require": {
-		"php": ">=5.4.0",
-		"laravel/framework": "~5.0"
+		"php": "^7.0",
+		"illuminate/config": "~5.5.0",
+        "illuminate/database": "~5.5.0",
+        "illuminate/support": "~5.5.0"
 	},
     "require-dev": {
-        "phpunit/phpunit": "^6.4@dev"
+        "phpunit/phpunit": "~6.3",
+		"orchestra/testbench": "~3.5.0",
+		"orchestra/database": "~3.5.0"
     },
 	"autoload": {
 		"psr-4": {
-			"Gabievi\\Promocodes\\": "src/"
+			"Gabievi\\Promocodes\\": "src"
 		}
 	},
     "autoload-dev": {
         "psr-4": {
-            "Gabievi\\Promocodes\\Test\\": "tests/"
+            "Gabievi\\Promocodes\\Test\\": "tests"
         }
     },
     "scripts": {
