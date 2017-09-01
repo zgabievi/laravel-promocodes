@@ -211,6 +211,12 @@ User::redeemCode('ABC-DEF', function($promocode) {
 // bar
 ```
 
+## Testing
+
+Finally it's here. I've written some test to keep this package healthy and stabe
+
+![laravel-promocodes tests](https://user-images.githubusercontent.com/1515299/29971701-4971da9e-8f3a-11e7-9f68-f7677400ef16.png)
+
 ## License
 
 laravel-promocodes is licensed under a [MIT License](https://github.com/zgabievi/laravel-promocodes/blob/master/LICENSE).
