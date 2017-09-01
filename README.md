@@ -17,6 +17,7 @@
     - [Basic Methods](#usage)
     - [User Trait](#promocodes-can-be-related-to-users)
     - [Additional Data](#how-to-use-additional-data)
+- [Testing](#testing)
 - [License](#license)
 
 ### What's new?
