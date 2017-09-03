@@ -231,27 +231,21 @@ class Promocodes
         $promocode = '';
         $random = [];
 
-        // take needed length of string from characters and randomize it
         for ($i = 1; $i <= $this->length; $i++) {
             $character = $characters[rand(0, strlen($characters) - 1)];
             $random[] = $character;
         }
 
-        // shuffle randomized characters
         shuffle($random);
+        $length = count($random);
 
-        // set prefix for promocode
         $promocode .= $this->getPrefix();
 
-        // loop through asterisks and change with random symbol
-        for ($i = 0; $i < count($random); $i++) {
+        for ($i = 0; $i < $length; $i++) {
             $mask = preg_replace('/\*/', $random[$i], $mask, 1);
         }
 
-        // set updated mask as code
         $promocode .= $mask;
-
-        // set suffix for promocode
         $promocode .= $this->getSuffix();
 
         return $promocode;
