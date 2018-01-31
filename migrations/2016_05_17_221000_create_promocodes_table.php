@@ -44,7 +44,7 @@ class CreatePromocodesTable extends Migration
      */
     public function down()
     {
-        Schema::drop(config('promocodes.table', 'promocodes'));
         Schema::drop(config('promocodes.relation_table', 'promocode_user'));
+        Schema::drop(config('promocodes.table', 'promocodes'));
     }
 }
