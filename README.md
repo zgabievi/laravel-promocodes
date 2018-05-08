@@ -196,7 +196,7 @@ Promocodes::create(1, 25, ['foo' => 'bar', 'baz' => 'qux']);
 
 ```php
 Promocodes::redeem('ABC-DEF', function($promocode) {
-    echo $pomocode->data['foo'];
+    echo $promocode->data['foo'];
 });
 
 // bar
@@ -206,7 +206,7 @@ or
 
 ```php
 User::redeemCode('ABC-DEF', function($promocode) {
-    echo $pomocode->data['foo'];
+    echo $promocode->data['foo'];
 });
 
 // bar
