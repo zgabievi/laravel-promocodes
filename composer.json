@@ -16,17 +16,16 @@
 			"email": "zura.gabievi@gmail.com"
 		}
 	],
-	"minimum-stability": "dev",
 	"require": {
-		"php": "^7.0",
-		"illuminate/config": "~5.5.0",
-        "illuminate/database": "~5.5.0",
-        "illuminate/support": "~5.5.0"
+		"php": "^7.1",
+		"illuminate/config": "~5.5.0|~5.6.0",
+        "illuminate/database": "~5.5.0|~5.6.0",
+        "illuminate/support": "~5.5.0|~5.6.0"
 	},
     "require-dev": {
-        "phpunit/phpunit": "~6.3",
-		"orchestra/testbench": "~3.5.0",
-		"orchestra/database": "~3.5.0"
+        "phpunit/phpunit": "^6.5 || ^7.0",
+		"orchestra/testbench": "~3.5.0|~3.6.0",
+		"orchestra/database": "~3.5.0|~3.6.0"
     },
 	"autoload": {
 		"psr-4": {
@@ -40,6 +39,9 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
     },
 	"extra": {
 		"laravel": {
