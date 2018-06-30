@@ -30,7 +30,7 @@ Install this package via Composer:
 $ composer require zgabievi/promocodes
 ```
 
-> If you are using Laravel 5.5, than installation is done. Otherwise follow next steps.
+> If you are using Laravel 5.5, then installation is done. Otherwise follow the next steps.
 
 #### Open `config/app.php` and follow steps below:
 
