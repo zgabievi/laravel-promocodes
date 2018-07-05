@@ -163,7 +163,7 @@ class Promocodes
 
                 return $promocode->load('users');
             }
-        } catch(InvalidPromocodeException $exception) {
+        } catch (InvalidPromocodeException $exception) {
             //
         }
 
