@@ -4,7 +4,7 @@ namespace Gabievi\Promocodes\Exceptions;
 
 use Exception;
 
-class UnauthenticatedExceprion extends Exception
+class UnauthenticatedException extends Exception
 {
     /**
      * @var string

@@ -5,8 +5,8 @@ namespace Gabievi\Promocodes\Traits;
 use Carbon\Carbon;
 use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Facades\Promocodes;
-use Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion;
-use Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion;
+use Gabievi\Promocodes\Exceptions\AlreadyUsedException;
+use Gabievi\Promocodes\Exceptions\InvalidPromocodeException;
 
 trait Rewardable
 {
@@ -28,14 +28,14 @@ trait Rewardable
      * @param null|\Closure $callback
      *
      * @return null|\Gabievi\Promocodes\Model\Promocode
-     * @throws \Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
+     * @throws \Gabievi\Promocodes\Exceptions\AlreadyUsedException
      */
     public function applyCode($code, $callback = null)
     {
         try {
             if ($promocode = Promocodes::check($code)) {
                 if ($promocode->users()->wherePivot('user_id', $this->id)->exists()) {
-                    throw new AlreadyUsedExceprion;
+                    throw new AlreadyUsedException;
                 }
 
                 $promocode->users()->attach($this->id, [
@@ -50,7 +50,7 @@ trait Rewardable
 
                 return $promocode;
             }
-        } catch (InvalidPromocodeExceprion $exception) {
+        } catch (InvalidPromocodeException $exception) {
             //
         }
 
@@ -68,7 +68,7 @@ trait Rewardable
      * @param null|\Closure $callback
      *
      * @return null|\Gabievi\Promocodes\Model\Promocode
-     * @throws \Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
+     * @throws \Gabievi\Promocodes\Exceptions\AlreadyUsedException
      */
     public function redeemCode($code, $callback = null)
     {

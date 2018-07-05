@@ -4,9 +4,9 @@ namespace Gabievi\Promocodes;
 
 use Carbon\Carbon;
 use Gabievi\Promocodes\Models\Promocode;
-use Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion;
-use Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion;
-use Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion;
+use Gabievi\Promocodes\Exceptions\AlreadyUsedException;
+use Gabievi\Promocodes\Exceptions\UnauthenticatedException;
+use Gabievi\Promocodes\Exceptions\InvalidPromocodeException;
 
 class Promocodes
 {
@@ -120,14 +120,14 @@ class Promocodes
      * @param string $code
      *
      * @return bool|\Gabievi\Promocodes\Model\Promocode
-     * @throws \Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion
+     * @throws \Gabievi\Promocodes\Exceptions\InvalidPromocodeException
      */
     public function check($code)
     {
         $promocode = Promocode::byCode($code)->first();
 
         if ($promocode === null) {
-            throw new InvalidPromocodeExceprion;
+            throw new InvalidPromocodeException;
         }
 
         if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists())) {
@@ -143,18 +143,18 @@ class Promocodes
      * @param string $code
      *
      * @return bool|\Gabievi\Promocodes\Model\Promocode
-     * @throws \Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion|\Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
+     * @throws \Gabievi\Promocodes\Exceptions\UnauthenticatedException|\Gabievi\Promocodes\Exceptions\AlreadyUsedException
      */
     public function apply($code)
     {
         if (!auth()->check()) {
-            throw new UnauthenticatedExceprion;
+            throw new UnauthenticatedException;
         }
 
         try {
             if ($promocode = $this->check($code)) {
                 if ($this->isSecondUsageAttempt($promocode)) {
-                    throw new AlreadyUsedExceprion;
+                    throw new AlreadyUsedException;
                 }
 
                 $promocode->users()->attach(auth()->user()->id, [
@@ -163,7 +163,7 @@ class Promocodes
 
                 return $promocode->load('users');
             }
-        } catch(InvalidPromocodeExceprion $exception) {
+        } catch(InvalidPromocodeException $exception) {
             //
         }
 
@@ -176,7 +176,7 @@ class Promocodes
      * @param string $code
      *
      * @return bool|\Gabievi\Promocodes\Model\Promocode
-     * @throws \Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion|\Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion
+     * @throws \Gabievi\Promocodes\Exceptions\UnauthenticatedException|\Gabievi\Promocodes\Exceptions\AlreadyUsedException
      */
     public function redeem($code)
     {
@@ -188,14 +188,14 @@ class Promocodes
      *
      * @param string $code
      * @return bool
-     * @throws \Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion
+     * @throws \Gabievi\Promocodes\Exceptions\InvalidPromocodeException
      */
     public function disable($code)
     {
         $promocode = Promocode::byCode($code)->first();
 
         if ($promocode === null) {
-            throw new InvalidPromocodeExceprion;
+            throw new InvalidPromocodeException;
         }
 
         $promocode->expires_at = Carbon::now();

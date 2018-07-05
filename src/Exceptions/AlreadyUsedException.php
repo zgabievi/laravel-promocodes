@@ -4,7 +4,7 @@ namespace Gabievi\Promocodes\Exceptions;
 
 use Exception;
 
-class AlreadyUsedExceprion extends Exception
+class AlreadyUsedException extends Exception
 {
     /**
      * @var string

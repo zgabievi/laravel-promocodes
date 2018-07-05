@@ -5,14 +5,14 @@ namespace Gabievi\Promocodes\Test;
 use Promocodes;
 use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Test\Models\User;
-use Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion;
+use Gabievi\Promocodes\Exceptions\InvalidPromocodeException;
 
 class CheckPromocodeValidationTest extends TestCase
 {
     /** @test */
     public function it_throws_exception_if_there_is_not_such_promocode()
     {
-        $this->expectException(InvalidPromocodeExceprion::class);
+        $this->expectException(InvalidPromocodeException::class);
 
         Promocodes::check('INVALID-CODE');
     }
