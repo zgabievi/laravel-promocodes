@@ -4,14 +4,14 @@ namespace Gabievi\Promocodes\Test;
 
 use Promocodes;
 use Gabievi\Promocodes\Models\Promocode;
-use Gabievi\Promocodes\Exceptions\InvalidPromocodeExceprion;
+use Gabievi\Promocodes\Exceptions\InvalidPromocodeException;
 
 class DisablePromocodeTest extends TestCase
 {
     /** @test */
     public function it_thows_exception_if_promocode_is_invalid()
     {
-        $this->expectException(InvalidPromocodeExceprion::class);
+        $this->expectException(InvalidPromocodeException::class);
 
         Promocodes::disable('INVALID-CODE');
     }

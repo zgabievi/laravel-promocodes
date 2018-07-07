@@ -5,15 +5,15 @@ namespace Gabievi\Promocodes\Test;
 use Promocodes;
 use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Test\Models\User;
-use Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion;
-use Gabievi\Promocodes\Exceptions\UnauthenticatedExceprion;
+use Gabievi\Promocodes\Exceptions\AlreadyUsedException;
+use Gabievi\Promocodes\Exceptions\UnauthenticatedException;
 
 class ApplyPromocodeToUserTest extends TestCase
 {
     /** @test */
     public function it_throws_exception_if_user_is_not_authenticated()
     {
-        $this->expectException(UnauthenticatedExceprion::class);
+        $this->expectException(UnauthenticatedException::class);
 
         $promocodes = Promocodes::create();
         $promocode = $promocodes->first();
@@ -37,7 +37,7 @@ class ApplyPromocodeToUserTest extends TestCase
     /** @test */
     public function it_throws_exception_if_user_tries_to_apply_code_twice()
     {
-        $this->expectException(AlreadyUsedExceprion::class);
+        $this->expectException(AlreadyUsedException::class);
 
         $user = User::find(1);
         $this->actingAs($user);

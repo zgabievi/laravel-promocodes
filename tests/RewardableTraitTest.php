@@ -5,7 +5,7 @@ namespace Gabievi\Promocodes\Test;
 use Promocodes;
 use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Test\Models\User;
-use Gabievi\Promocodes\Exceptions\AlreadyUsedExceprion;
+use Gabievi\Promocodes\Exceptions\AlreadyUsedException;
 
 class RewardableTraitTest extends TestCase
 {
@@ -40,7 +40,7 @@ class RewardableTraitTest extends TestCase
     /** @test */
     public function it_throws_exception_if_user_already_applied_to_code()
     {
-        $this->expectException(AlreadyUsedExceprion::class);
+        $this->expectException(AlreadyUsedException::class);
 
         $promocodes = Promocodes::create();
         $promocode = $promocodes->first();

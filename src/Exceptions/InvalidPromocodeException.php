@@ -4,7 +4,7 @@ namespace Gabievi\Promocodes\Exceptions;
 
 use Exception;
 
-class InvalidPromocodeExceprion extends Exception
+class InvalidPromocodeException extends Exception
 {
     /**
      * @var string
