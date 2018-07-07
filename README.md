@@ -1,7 +1,5 @@
 # laravel-promocodes
 
-> Use version 0.5.1 for Laravel 5.1
-
 [![Packagist](https://img.shields.io/packagist/v/zgabievi/promocodes.svg)](https://packagist.org/packages/zgabievi/promocodes)
 [![Packagist](https://img.shields.io/packagist/dt/zgabievi/promocodes.svg)](https://packagist.org/packages/zgabievi/promocodes)
 [![license](https://img.shields.io/github/license/zgabievi/promocodes.svg)](https://packagist.org/packages/zgabievi/promocodes)
@@ -214,7 +212,7 @@ User::redeemCode('ABC-DEF', function($promocode) {
 
 ## Testing
 
-Finally it's here. I've written some test to keep this package healthy and stabe
+Finally it's here. I've written some test to keep this package healthy and stable
 
 ![laravel-promocodes tests](https://user-images.githubusercontent.com/1515299/29971701-4971da9e-8f3a-11e7-9f68-f7677400ef16.png)
 
