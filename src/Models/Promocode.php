@@ -57,7 +57,7 @@ class Promocode extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(config('promocodes.user_model'), config('promocodes.relation_table'))
+        return $this->belongsToMany(config('promocodes.user_model'), config('promocodes.relation_table'), 'user_id', 'user_id')
             ->withPivot('used_at');
     }
 
