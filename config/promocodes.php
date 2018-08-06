@@ -61,4 +61,16 @@ return [
      * User model
      */
     'user_model' => \App\User::class,
+    
+    /**
+     * Foreign pivot key for many to many relationship 
+     * of promocode and user model
+     */
+    'foreign_pivot_key' => 'user_id',
+    
+    /**
+     * Related pivot key for many to many relationship 
+     * of promocode and user model
+     */
+    'related_pivot_key' => 'user_id',
 ];
