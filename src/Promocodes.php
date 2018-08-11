@@ -157,7 +157,7 @@ class Promocodes
                     throw new AlreadyUsedException;
                 }
 
-                $promocode->users()->attach(auth()->user()->id, [
+                $promocode->users()->attach(auth()->id(), [
                     'used_at' => Carbon::now(),
                 ]);
 
