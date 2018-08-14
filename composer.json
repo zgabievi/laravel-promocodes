@@ -1,0 +1,61 @@
+{
+  "name": "zgabievi/promocodes",
+  "description": "Promotional Codes Generator for Laravel 5",
+  "keywords": [
+    "promo code",
+    "coupon code",
+    "discount code",
+    "laravel",
+    "php"
+  ],
+  "homepage": "https://github.com/zgabievi/promocodes",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Zura Gabievi",
+      "email": "zura.gabievi@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1",
+    "illuminate/config": "~5.5.0|~5.6.0",
+    "illuminate/database": "~5.5.0|~5.6.0",
+    "illuminate/support": "~5.5.0|~5.6.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "~3.6.0",
+    "phpunit/phpunit": "~7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Gabievi\\Promocodes\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Gabievi\\Promocodes\\Tests\\": "tests"
+    },
+    "files": [
+      "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+    ]
+  },
+  "scripts": {
+    "phpunit": "phpunit"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Gabievi\\Promocodes\\ServiceProvider"
+      ],
+      "aliases": {
+        "Promocodes": "Gabievi\\Promocodes\\Facades\\Promocodes"
+      }
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
