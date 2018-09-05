@@ -66,7 +66,7 @@ return [
      * Foreign pivot key for many to many relationship 
      * of promocode and user model
      */
-    'foreign_pivot_key' => 'user_id',
+    'foreign_pivot_key' => 'promocode_id',
     
     /**
      * Related pivot key for many to many relationship 
