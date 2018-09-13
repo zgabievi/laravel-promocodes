@@ -110,6 +110,10 @@ Promocodes::check($code);
 
 ---
 
+If you want to check if user tries to use promocode for second time you can call `Promocodes::isSecondUsageAttempt` and pass `Promocode` object as an argument. As an answer you will get boolean value
+
+---
+
 Redeem or apply code. Redeem is alias for apply method. 
 
 User should be authenticated to redeem code or this method will throw an exception (`\Gabievi\Promocodes\Exceptions\UnauthenticatedException`). 
