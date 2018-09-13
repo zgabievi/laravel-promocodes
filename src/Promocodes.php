@@ -298,7 +298,7 @@ class Promocodes
      *
      * @return bool
      */
-    private function isSecondUsageAttempt(Promocode $promocode)
+    public function isSecondUsageAttempt(Promocode $promocode)
     {
         return $promocode->users()->wherePivot('user_id', auth()->id())->exists();
     }
