@@ -46,7 +46,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Gabievi\\Promocodes\\ServiceProvider"
+        "Gabievi\\Promocodes\\PromocodesServiceProvider"
       ],
       "aliases": {
         "Promocodes": "Gabievi\\Promocodes\\Facades\\Promocodes"
