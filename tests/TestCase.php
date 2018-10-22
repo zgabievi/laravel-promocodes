@@ -25,7 +25,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            \Gabievi\Promocodes\ServiceProvider::class
+            \Gabievi\Promocodes\PromocodesServiceProvider::class
         ];
     }
 
