@@ -24,7 +24,7 @@ class Promocode extends Model
      *
      * @var array
      */
-    protected $fillable = ['code', 'reward', 'is_disposable', 'expires_at', 'amount_codes'];
+    protected $fillable = ['code', 'reward', 'is_disposable', 'expires_at', 'quantity'];
 
     /**
      * The attributes that should be cast to native types.
@@ -34,6 +34,7 @@ class Promocode extends Model
     protected $casts = [
         'is_disposable' => 'boolean',
         'data' => 'array',
+        'quantity' => 'integer'
     ];
 
     /**
@@ -140,10 +141,10 @@ class Promocode extends Model
      */
     public function isOverAmount()
     {
-        if (is_null($this->amount_codes)) {
+        if (is_null($this->quantity)) {
             return false;
         }
 
-        return $this->amount_codes <= 0 ? true : false;
+        return $this->quantity <= 0;
     }
 }
