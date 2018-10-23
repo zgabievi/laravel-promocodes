@@ -69,11 +69,11 @@ class Promocodes
      * @param array $data
      * @param int|null $expires_in
      * @param bool $is_disposable
-     * @param int|null $amount_codes
+     * @param int|null $quantity
      *
      * @return \Illuminate\Support\Collection
      */
-    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null, $is_disposable = false, $amount_codes = null)
+    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null, $is_disposable = false, $quantity = null)
     {
         $records = [];
 
@@ -84,7 +84,7 @@ class Promocodes
                 'data' => json_encode($data),
                 'expires_at' => $expires_in ? Carbon::now()->addDays($expires_in) : null,
                 'is_disposable' => $is_disposable,
-                'amount_codes' => $amount_codes
+                'quantity' => $quantity
             ];
         }
 
@@ -108,13 +108,13 @@ class Promocodes
      * @param null $reward
      * @param array $data
      * @param int|null $expires_in
-     * @param int|null $amount_codes
+     * @param int|null $quantity
      *
      * @return \Illuminate\Support\Collection
      */
-    public function createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null, $amount_codes = null)
+    public function createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null, $quantity = null)
     {
-        return $this->create($amount, $reward, $data, $expires_in, true, $amount_codes);
+        return $this->create($amount, $reward, $data, $expires_in, true, $quantity);
     }
 
     /**
@@ -166,8 +166,8 @@ class Promocodes
                     'used_at' => Carbon::now(),
                 ]);
 
-                if (!is_null($promocode->amount_codes)) {
-                    $promocode->amount_codes -= 1;
+                if (!is_null($promocode->quantity)) {
+                    $promocode->quantity -= 1;
                     $promocode->save();
                 }
 
@@ -210,7 +210,7 @@ class Promocodes
         }
 
         $promocode->expires_at = Carbon::now();
-        $promocode->amount_codes = 0;
+        $promocode->quantity = 0;
 
         return $promocode->save();
     }
