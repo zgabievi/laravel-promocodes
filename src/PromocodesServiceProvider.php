@@ -2,9 +2,9 @@
 
 namespace Gabievi\Promocodes;
 
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class ServiceProvider extends BaseServiceProvider
+class PromocodesServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
