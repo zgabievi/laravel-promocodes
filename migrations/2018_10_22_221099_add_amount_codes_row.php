@@ -13,7 +13,7 @@ class AddAmountCodesRow extends Migration
     public function up()
     {
         Schema::table(config('promocodes.table', 'promocodes'), function (Blueprint $table) {
-            $table->integer('amount_codes')->nullable();
+            $table->integer('quantity')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AddAmountCodesRow extends Migration
     public function down()
     {
         Schema::table(config('promocodes.table', 'promocodes'), function (Blueprint $table) {
-            $table->dropColumn('amount_codes');
+            $table->dropColumn('quantity');
         });
     }
 }
