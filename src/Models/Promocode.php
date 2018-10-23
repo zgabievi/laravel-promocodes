@@ -140,7 +140,7 @@ class Promocode extends Model
      */
     public function isOverAmount()
     {
-        if(is_null($this->amount_codes)){
+        if (is_null($this->amount_codes)) {
             return false;
         }
 
