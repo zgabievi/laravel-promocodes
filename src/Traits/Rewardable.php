@@ -43,8 +43,8 @@ trait Rewardable
                     'used_at' => Carbon::now(),
                 ]);
 
-                if (!is_null($promocode->amount_codes)) {
-                    $promocode->amount_codes -= 1;
+                if (!is_null($promocode->quantity)) {
+                    $promocode->quantity -= 1;
                     $promocode->save();
                 }
 
