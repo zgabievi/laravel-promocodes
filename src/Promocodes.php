@@ -69,10 +69,11 @@ class Promocodes
      * @param array $data
      * @param int|null $expires_in
      * @param bool $is_disposable
+     * @param int|null $amount_codes
      *
      * @return \Illuminate\Support\Collection
      */
-    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null, $is_disposable = false)
+    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null, $is_disposable = false, $amount_codes = null)
     {
         $records = [];
 
@@ -83,6 +84,7 @@ class Promocodes
                 'data' => json_encode($data),
                 'expires_at' => $expires_in ? Carbon::now()->addDays($expires_in) : null,
                 'is_disposable' => $is_disposable,
+                'amount_codes' => $amount_codes
             ];
         }
 
@@ -106,12 +108,13 @@ class Promocodes
      * @param null $reward
      * @param array $data
      * @param int|null $expires_in
+     * @param int|null $amount_codes
      *
      * @return \Illuminate\Support\Collection
      */
-    public function createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null)
+    public function createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null, $amount_codes = null)
     {
-        return $this->create($amount, $reward, $data, $expires_in, true);
+        return $this->create($amount, $reward, $data, $expires_in, true, $amount_codes);
     }
 
     /**
@@ -130,7 +133,7 @@ class Promocodes
             throw new InvalidPromocodeException;
         }
 
-        if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists())) {
+        if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists()) || $promocode->isOverAmount()) {
             return false;
         }
 
@@ -162,6 +165,11 @@ class Promocodes
                     'promocode_id' => $promocode->id,
                     'used_at' => Carbon::now(),
                 ]);
+
+                if(!is_null($promocode->amount_codes)){
+                    $promocode->amount_codes -= 1;
+                    $promocode->save();
+                }
 
                 return $promocode->load('users');
             }
@@ -202,6 +210,7 @@ class Promocodes
         }
 
         $promocode->expires_at = Carbon::now();
+        $promocode->amount_codes = 0;
 
         return $promocode->save();
     }
@@ -215,7 +224,7 @@ class Promocodes
     public function clearRedundant()
     {
         Promocode::all()->each(function (Promocode $promocode) {
-            if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists())) {
+            if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists()) || $promocode->isOverAmount()) {
                 $promocode->users()->detach();
                 $promocode->delete();
             }
