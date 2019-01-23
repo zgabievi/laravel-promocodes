@@ -34,12 +34,12 @@ trait Rewardable
     {
         try {
             if ($promocode = Promocodes::check($code)) {
-                if ($promocode->users()->wherePivot('user_id', $this->id)->exists()) {
+                if ($promocode->users()->wherePivot(config('promocodes.related_pivot_key'), $this->id)->exists()) {
                     throw new AlreadyUsedException;
                 }
 
                 $promocode->users()->attach($this->id, [
-                    'promocode_id' => $promocode->id,
+                    config('promocodes.foreign_pivot_key') => $promocode->id,
                     'used_at' => Carbon::now(),
                 ]);
 
