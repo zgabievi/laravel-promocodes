@@ -300,6 +300,6 @@ class Promocodes
      */
     public function isSecondUsageAttempt(Promocode $promocode)
     {
-        return $promocode->users()->wherePivot( config('promocodes.related_pivot_key' , 'user_id'), auth()->id())->exists();
+        return $promocode->users()->wherePivot(config('promocodes.related_pivot_key', 'user_id'), auth()->id())->exists();
     }
 }
