@@ -13,7 +13,7 @@ class RewardableTraitTest extends TestCase
     public $user;
 
     //
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
