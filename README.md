@@ -79,7 +79,7 @@ Promocodes::output($amount = 1);
 #### Parameters
 
 | name  | type | description | required? |
-| ----- | ---- | ----------- | ------- | --------- |
+| ----- | ---- | ----------- | --------- |
 | $amount | number | Number of items to be generated | NO |
 
 ---
@@ -128,7 +128,7 @@ Promocodes::check($code);
 #### Parameters
 
 | name  | type | description | required? |
-| ----- | ---- | ----------- | ------- | --------- |
+| ----- | ---- | ----------- | --------- |
 | $code | string | Code to be checked for validity | YES |
 
 ---
@@ -153,7 +153,7 @@ Promocodes::apply($code);
 #### Parameters
 
 | name  | type | description | required? |
-| ----- | ---- | ----------- | ------- | --------- |
+| ----- | ---- | ----------- | --------- |
 | $code | string | Code to be applied by authenticated user | YES |
 
 ---
@@ -175,7 +175,7 @@ Promocodes::disable($code);
 #### Parameters
 
 | name  | type | description | required? |
-| ----- | ---- | ----------- | ------- | --------- |
+| ----- | ---- | ----------- | --------- |
 | $code | string | Code to be set as invalid | YES |
 
 ---
