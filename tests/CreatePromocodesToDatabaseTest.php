@@ -107,4 +107,17 @@ class CreatePromocodesToDatabaseTest extends TestCase
             'is_disposable' => true,
         ]);
     }
+
+    /** @test */
+    public function it_can_output_all_valid_promocodes()
+    {
+        $promocodes = Promocodes::create(5);
+        $promocode = $promocodes->first();
+
+        $this->assertCount(5, Promocodes::all());
+
+        Promocodes::disable($promocode['code']);
+
+        $this->assertCount(4, Promocodes::all());
+    }
 }

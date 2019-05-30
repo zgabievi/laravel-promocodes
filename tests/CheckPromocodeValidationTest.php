@@ -69,4 +69,25 @@ class CheckPromocodeValidationTest extends TestCase
         $this->assertTrue($checkPromocode instanceof Promocode);
         $this->assertEquals($promocode['code'], $checkPromocode->code);
     }
+
+    /** @test */
+    public function it_returns_false_if_promocode_exceeds_quantity()
+    {
+        $promocodes = Promocodes::create(1, null, [], null, 2);
+        $promocode = $promocodes->first();
+
+        $this->assertCount(1, $promocodes);
+
+        $this->actingAs(User::find(1));
+        $appliedPromocode = Promocodes::apply($promocode['code']);
+        $this->assertNotFalse($appliedPromocode);
+
+        $this->actingAs(User::find(2));
+        $appliedPromocode = Promocodes::apply($promocode['code']);
+        $this->assertNotFalse($appliedPromocode);
+
+        $this->actingAs(User::find(3));
+        $appliedPromocode = Promocodes::apply($promocode['code']);
+        $this->assertFalse($appliedPromocode);
+    }
 }

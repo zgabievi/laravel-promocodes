@@ -73,8 +73,14 @@ class Promocodes
      *
      * @return \Illuminate\Support\Collection
      */
-    public function create($amount = 1, $reward = null, array $data = [], $expires_in = null, $is_disposable = false, $quantity = null)
-    {
+    public function create(
+        $amount = 1,
+        $reward = null,
+        array $data = [],
+        $expires_in = null,
+        $quantity = null,
+        $is_disposable = false
+    ) {
         $records = [];
 
         foreach ($this->output($amount) as $code) {
@@ -84,7 +90,7 @@ class Promocodes
                 'data' => json_encode($data),
                 'expires_at' => $expires_in ? Carbon::now()->addDays($expires_in) : null,
                 'is_disposable' => $is_disposable,
-                'quantity' => $quantity
+                'quantity' => $quantity,
             ];
         }
 
@@ -112,9 +118,14 @@ class Promocodes
      *
      * @return \Illuminate\Support\Collection
      */
-    public function createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null, $quantity = null)
-    {
-        return $this->create($amount, $reward, $data, $expires_in, true, $quantity);
+    public function createDisposable(
+        $amount = 1,
+        $reward = null,
+        array $data = [],
+        $expires_in = null,
+        $quantity = null
+    ) {
+        return $this->create($amount, $reward, $data, $expires_in, $quantity, true);
     }
 
     /**
@@ -232,6 +243,18 @@ class Promocodes
     }
 
     /**
+     * Get the list of valid promocodes
+     *
+     * @return Promocode[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function all()
+    {
+        return Promocode::all()->filter(function (Promocode $promocode) {
+            return !$promocode->isExpired() && !($promocode->isDisposable() && $promocode->users()->exists()) && !$promocode->isOverAmount();
+        });
+    }
+
+    /**
      * Here will be generated single code using your parameters from config.
      *
      * @return string
@@ -309,6 +332,7 @@ class Promocodes
      */
     public function isSecondUsageAttempt(Promocode $promocode)
     {
-        return $promocode->users()->wherePivot(config('promocodes.related_pivot_key', 'user_id'), auth()->id())->exists();
+        return $promocode->users()->wherePivot(config('promocodes.related_pivot_key', 'user_id'),
+            auth()->id())->exists();
     }
 }

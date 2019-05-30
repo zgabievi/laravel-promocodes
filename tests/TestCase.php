@@ -63,8 +63,20 @@ abstract class TestCase extends Orchestra
     protected function seedUsers()
     {
         User::create([
-            'name' => 'user',
-            'email' => 'user@example.com',
+            'name' => 'user #1',
+            'email' => 'user-1@example.com',
+            'password' => 'secret'
+        ]);
+
+        User::create([
+            'name' => 'user #2',
+            'email' => 'user-2@example.com',
+            'password' => 'secret'
+        ]);
+
+        User::create([
+            'name' => 'user #3',
+            'email' => 'user-3@example.com',
             'password' => 'secret'
         ]);
     }
