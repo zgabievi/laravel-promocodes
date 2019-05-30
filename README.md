@@ -28,7 +28,7 @@ Install this package via Composer:
 $ composer require zgabievi/promocodes
 ```
 
-> If you are using Laravel 5.5, then installation is done. Otherwise follow the next steps.
+> If you are using Laravel 5.5 or later, then installation is done. Otherwise follow the next steps.
 
 #### Open `config/app.php` and follow steps below:
 
@@ -76,6 +76,12 @@ You will get array of codes in return:
 Promocodes::output($amount = 1);
 ```
 
+#### Parameters
+
+| name  | type | description | required? |
+| ----- | ---- | ----------- | ------- | --------- |
+| $amount | number | Number of items to be generated | NO |
+
 ---
 
 Create as many codes as you wish. Set reward (amount). 
@@ -87,14 +93,25 @@ By default generated code will be multipass (several users will be able to use t
 They will be saved in database and you will get collection of them in return:
 
 ```php
-Promocodes::create($amount = 1, $reward = null, array $data = [], $expires_in = null);
+Promocodes::create($amount = 1, $reward = null, array $data = [], $expires_in = null, $quantity = null, $is_disposable = false);
 ```
 
 If you want to create code that will be used only once, here is method for you.
 
 ```php
-Promocodes::createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null);
+Promocodes::createDisposable($amount = 1, $reward = null, array $data = [], $expires_in = null, $quantity = null);
 ```
+
+#### Parameters
+
+| name  | type | description | default | required? |
+| ----- | ---- | ----------- | ------- | --------- |
+| $amount | integer | Number of promocodes to generate | 1 | NO |
+| $reward | float | Number of reward that user gets (ex: 30 - can be used as 30% sale on something) | null | NO |
+| $data | array | Any additional information to get from promocode | [] | NO |
+| $expires_in | integer | Number of days to keed promocode valid | null | NO |
+| $quantity | integer | How many times can promocode be used? | null | NO |
+| $is_disposable | boolean | If promocode is one-time use only | false | NO |
 
 ---
 
@@ -107,6 +124,12 @@ Returns `Promocode` object if valid, or `false` if not.
 ```php
 Promocodes::check($code);
 ```
+
+#### Parameters
+
+| name  | type | description | required? |
+| ----- | ---- | ----------- | ------- | --------- |
+| $code | string | Code to be checked for validity | YES |
 
 ---
 
@@ -127,6 +150,13 @@ Promocodes::redeem($code);
 Promocodes::apply($code);
 ```
 
+
+#### Parameters
+
+| name  | type | description | required? |
+| ----- | ---- | ----------- | ------- | --------- |
+| $code | string | Code to be applied by authenticated user | YES |
+
 ---
 
 You can immediately expire code by calling *disable* function. Returning boolean status of update.
@@ -134,6 +164,12 @@ You can immediately expire code by calling *disable* function. Returning boolean
 ```php
 Promocodes::disable($code);
 ```
+
+#### Parameters
+
+| name  | type | description | required? |
+| ----- | ---- | ----------- | ------- | --------- |
+| $code | string | Code to be set as invalid | YES |
 
 ---
 
