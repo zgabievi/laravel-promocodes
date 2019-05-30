@@ -24,7 +24,7 @@ class Promocode extends Model
      *
      * @var array
      */
-    protected $fillable = ['code', 'reward', 'is_disposable', 'expires_at'];
+    protected $fillable = ['code', 'reward', 'is_disposable', 'expires_at', 'quantity'];
 
     /**
      * The attributes that should be cast to native types.
@@ -34,6 +34,7 @@ class Promocode extends Model
     protected $casts = [
         'is_disposable' => 'boolean',
         'data' => 'array',
+        'quantity' => 'integer'
     ];
 
     /**
@@ -131,5 +132,19 @@ class Promocode extends Model
     public function isExpired()
     {
         return $this->expires_at ? Carbon::now()->gte($this->expires_at) : false;
+    }
+
+    /**
+     * Check if code amount is over.
+     *
+     * @return bool
+     */
+    public function isOverAmount()
+    {
+        if (is_null($this->quantity)) {
+            return false;
+        }
+
+        return $this->quantity <= 0;
     }
 }

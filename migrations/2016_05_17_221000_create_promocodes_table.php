@@ -17,6 +17,7 @@ class CreatePromocodesTable extends Migration
 
             $table->string('code', 32)->unique();
             $table->double('reward', 10, 2)->nullable();
+            $table->integer('quantity')->nullable();
 
             $table->text('data')->nullable();
 
