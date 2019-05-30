@@ -150,12 +150,19 @@ Promocodes::redeem($code);
 Promocodes::apply($code);
 ```
 
-
 #### Parameters
 
 | name  | type | description | required? |
 | ----- | ---- | ----------- | ------- | --------- |
 | $code | string | Code to be applied by authenticated user | YES |
+
+---
+
+Get the collection of valid promotion codes. 
+
+```php
+Promocodes::all();
+```
 
 ---
 
