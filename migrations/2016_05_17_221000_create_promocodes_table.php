@@ -25,10 +25,15 @@ class CreatePromocodesTable extends Migration
             $table->timestamp('expires_at')->nullable();
         });
 
-        Schema::create(config('promocodes.relation_table', 'promocode_user'), function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
+        //to match all laravel versions
+        $type = (Schema::getColumnType('users','id') == 'bigint') ? 'unsignedBigInteger' : 'unsignedInteger';
+
+        Schema::create(config('promocodes.relation_table', 'promocode_user'), function (Blueprint $table) use ($type) {
+
+            $table->$type('user_id');
+
             $table->unsignedInteger('promocode_id');
-            
+
             $table->timestamp('used_at');
 
             $table->primary(['user_id', 'promocode_id']);
