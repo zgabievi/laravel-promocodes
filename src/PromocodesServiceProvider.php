@@ -17,9 +17,13 @@ class PromocodesServiceProvider extends ServiceProvider
             __DIR__ . '/../config/promocodes.php' => config_path('promocodes.php'),
         ]);
 
-        $this->publishes([
-            __DIR__ . '/../migrations' => database_path('migrations'),
-        ], 'migrations');
+        if (!class_exists('CreatePromocodesTable')) {
+            $timestamp = date('Y_m_d_His', time());
+
+            $this->publishes([
+                __DIR__ . '/../migrations/create_promocodes_table.php.stub' => database_path("/migrations/{$timestamp}_create_promocodes_table.php"),
+            ], 'migrations');
+        }
     }
 
     /**
