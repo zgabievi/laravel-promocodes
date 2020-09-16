@@ -26,12 +26,12 @@ class CreatePromocodesTable extends Migration
         });
 
         Schema::create('promocode_user', function (Blueprint $table) {
+            $table->increments('id');
+
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('promocode_id');
 
             $table->timestamp('used_at');
-
-            $table->primary(['user_id', 'promocode_id']);
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('promocode_id')->references('id')->on('promocodes')->onDelete('cascade');

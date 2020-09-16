@@ -5,7 +5,6 @@ namespace Gabievi\Promocodes\Tests;
 use Promocodes;
 use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Tests\Models\User;
-use Gabievi\Promocodes\Exceptions\AlreadyUsedException;
 
 class RewardableTraitTest extends TestCase
 {
@@ -22,11 +21,11 @@ class RewardableTraitTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_null_if_could_not_apply_promocode()
+    public function it_returns_false_if_could_not_apply_promocode()
     {
         $applyCode = $this->user->applyCode('INVALID-CODE');
 
-        $this->assertNull($applyCode);
+        $this->assertFalse($applyCode);
     }
 
     /** @test */
@@ -38,10 +37,8 @@ class RewardableTraitTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_exception_if_user_already_applied_to_code()
+    public function it_can_be_user_multiple_times_if_it_is_not_disposable()
     {
-        $this->expectException(AlreadyUsedException::class);
-
         $promocodes = Promocodes::create();
         $promocode = $promocodes->first();
 
@@ -49,6 +46,18 @@ class RewardableTraitTest extends TestCase
 
         $this->user->applyCode($promocode['code']);
         $this->user->applyCode($promocode['code']);
+    }
+
+    /** @test */
+    public function it_returns_false_for_second_use_of_disposable_code()
+    {
+        $promocodes = Promocodes::setDisposable()->create();
+        $promocode = $promocodes->first();
+
+        $this->assertCount(1, $promocodes);
+
+        $this->assertInstanceOf(Promocode::class, $this->user->applyCode($promocode['code']));
+        $this->assertFalse($this->user->applyCode($promocode['code']));
     }
 
     /** @test */
@@ -84,7 +93,7 @@ class RewardableTraitTest extends TestCase
     }
 
     /** @test */
-    public function is_returns_promocode_with_user_in_callback_if_applied_successfuly()
+    public function it_returns_promocode_with_user_in_callback_if_applied_successfuly()
     {
         $promocodes = Promocodes::create();
         $promocode = $promocodes->first();

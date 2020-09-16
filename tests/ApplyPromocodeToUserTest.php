@@ -35,20 +35,18 @@ class ApplyPromocodeToUserTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_exception_if_user_tries_to_apply_code_twice()
+    public function it_returns_false_if_user_tries_to_apply_code_twice()
     {
-        $this->expectException(AlreadyUsedException::class);
-
         $user = User::find(1);
         $this->actingAs($user);
 
-        $promocodes = Promocodes::create();
+        $promocodes = Promocodes::setDisposable()->create();
         $promocode = $promocodes->first();
 
         $this->assertCount(1, $promocodes);
 
-        Promocodes::apply($promocode['code']);
-        Promocodes::apply($promocode['code']);
+        $this->assertInstanceOf(Promocode::class, Promocodes::apply($promocode['code']));
+        $this->assertFalse(Promocodes::apply($promocode['code']));
     }
 
     /** @test */

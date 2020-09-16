@@ -46,7 +46,7 @@ trait Rewardable
     public function applyCode($code, $callback = null)
     {
         if ($promocode = Promocodes::check($code)) {
-            if ($promocode->users()->wherePivot(config('promocodes.related_pivot_key'), $this->id)->exists()) {
+            if ($promocode->isDisposable() && $promocode->users()->wherePivot(config('promocodes.related_pivot_key'), $this->id)->exists()) {
                 throw new AlreadyUsedException;
             }
 
@@ -73,6 +73,6 @@ trait Rewardable
             $callback(null);
         }
 
-        return null;
+        return false;
     }
 }
