@@ -5,7 +5,6 @@ namespace Gabievi\Promocodes\Tests;
 use Promocodes;
 use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Tests\Models\User;
-use Gabievi\Promocodes\Exceptions\InvalidPromocodeException;
 
 class CheckPromocodeValidationTest extends TestCase
 {

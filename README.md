@@ -68,7 +68,7 @@ $ php artisan migrate
 
 ## Usage
 
-Generate as many codes as you wish and output them without saving to database. 
+Generate as many codes as you wish and output them without saving to database.
 
 You will get array of codes in return:
 
@@ -84,7 +84,7 @@ Promocodes::output($amount = 1);
 
 ---
 
-Create as many codes as you wish. Set reward (amount). 
+Create as many codes as you wish. Set reward (amount).
 
 Attach additional data as array. Specify for how many days should this codes stay alive.
 
@@ -115,9 +115,7 @@ Promocodes::createDisposable($amount = 1, $reward = null, array $data = [], $exp
 
 ---
 
-Check if given code exists, is usable and not yet expired. 
-
-This code may throw `\Gabievi\Promocodes\Exceptions\InvalidPromocodeException` if there is not such promocode in database, with give code.
+Check if given code exists, is usable and not yet expired.
 
 Returns `Promocode` object if valid, or `false` if not.
 
@@ -137,9 +135,9 @@ If you want to check if user tries to use promocode for second time you can call
 
 ---
 
-Redeem or apply code. Redeem is alias for apply method. 
+Redeem or apply code. Redeem is alias for apply method.
 
-User should be authenticated to redeem code or this method will throw an exception (`\Gabievi\Promocodes\Exceptions\UnauthenticatedException`). 
+User should be authenticated to redeem code or this method will throw an exception (`\Gabievi\Promocodes\Exceptions\UnauthenticatedException`).
 
 Also if authenticated user will try to apply code twice, it will throw an exception (`\Gabievi\Promocodes\Exceptions\AlreadyUsedException`)
 
@@ -158,7 +156,7 @@ Promocodes::apply($code);
 
 ---
 
-Get the collection of valid promotion codes. 
+Get the collection of valid promotion codes.
 
 ```php
 Promocodes::all();
@@ -182,7 +180,7 @@ Promocodes::disable($code);
 
 And if you want to delete expired, or non-usable codes you can erase them.
 
-This method will remove redundant codes from database and their relations to users. 
+This method will remove redundant codes from database and their relations to users.
 
 ```php
 Promocodes::clearRedundant();
@@ -204,7 +202,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable, Rewardable;
-    
+
     // ...
 }
 ```

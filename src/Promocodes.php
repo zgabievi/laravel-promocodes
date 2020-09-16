@@ -143,7 +143,7 @@ class Promocodes
         $data = null,
         $expires_in = null,
         $quantity = null,
-        $is_disposable = false
+        $is_disposable = null
     )
     {
         $records = [];
@@ -348,7 +348,7 @@ class Promocodes
      * @param bool $disposable
      * @return $this
      */
-    public function setDisposable($disposable)
+    public function setDisposable($disposable = true)
     {
         $this->disposable = $disposable;
         return $this;
@@ -457,7 +457,6 @@ class Promocodes
      * @param string $code
      *
      * @return bool|Promocode
-     * @throws InvalidPromocodeException
      */
     public function check($code)
     {
@@ -484,7 +483,7 @@ class Promocodes
     }
 
     /**
-     * Expire code as it won't usable anymore.
+     * Expire code as it won't be usable anymore.
      *
      * @param string $code
      * @return bool
