@@ -153,30 +153,6 @@ class Promocodes
     }
 
     /**
-     * Set custom prefix for next generation
-     *
-     * @param $prefix
-     * @return $this
-     */
-    public function setPrefix($prefix)
-    {
-        $this->prefix = $prefix;
-        return $this;
-    }
-
-    /**
-     * Set custom suffix for next generation
-     *
-     * @param $suffix
-     * @return $this
-     */
-    public function setSuffix($suffix)
-    {
-        $this->suffix = $suffix;
-        return $this;
-    }
-
-    /**
      * Here will be generated single code using your parameters from config.
      *
      * @return string
@@ -222,6 +198,30 @@ class Promocodes
     }
 
     /**
+     * Set custom prefix for next generation
+     *
+     * @param $prefix
+     * @return $this
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+        return $this;
+    }
+
+    /**
+     * Set custom suffix for next generation
+     *
+     * @param $suffix
+     * @return $this
+     */
+    public function setSuffix($suffix)
+    {
+        $this->suffix = $suffix;
+        return $this;
+    }
+
+    /**
      * Reedem promocode to user that it's used from now.
      *
      * @param string $code
@@ -250,26 +250,22 @@ class Promocodes
             throw new UnauthenticatedException;
         }
 
-        try {
-            if ($promocode = $this->check($code)) {
-                if ($this->isSecondUsageAttempt($promocode)) {
-                    throw new AlreadyUsedException;
-                }
-
-                $promocode->users()->attach(auth()->id(), [
-                    'promocode_id' => $promocode->id,
-                    'used_at' => Carbon::now(),
-                ]);
-
-                if (!is_null($promocode->quantity)) {
-                    $promocode->quantity -= 1;
-                    $promocode->save();
-                }
-
-                return $promocode->load('users');
+        if ($promocode = $this->check($code)) {
+            if ($this->isSecondUsageAttempt($promocode)) {
+                throw new AlreadyUsedException;
             }
-        } catch (InvalidPromocodeException $exception) {
-            //
+
+            $promocode->users()->attach(auth()->id(), [
+                'promocode_id' => $promocode->id,
+                'used_at' => Carbon::now(),
+            ]);
+
+            if (!is_null($promocode->quantity)) {
+                $promocode->quantity -= 1;
+                $promocode->save();
+            }
+
+            return $promocode->load('users');
         }
 
         return false;
@@ -287,11 +283,7 @@ class Promocodes
     {
         $promocode = Promocode::byCode($code)->first();
 
-        if ($promocode === null) {
-            throw new InvalidPromocodeException;
-        }
-
-        if ($promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists()) || $promocode->isOverAmount()) {
+        if ($promocode === null || $promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists()) || $promocode->isOverAmount()) {
             return false;
         }
 
