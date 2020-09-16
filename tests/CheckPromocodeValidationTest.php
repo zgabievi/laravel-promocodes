@@ -10,11 +10,11 @@ use Gabievi\Promocodes\Exceptions\InvalidPromocodeException;
 class CheckPromocodeValidationTest extends TestCase
 {
     /** @test */
-    public function it_throws_exception_if_there_is_not_such_promocode()
+    public function it_returns_false_if_promocode_is_invalid()
     {
-        $this->expectException(InvalidPromocodeException::class);
+        $checkPromocode = Promocodes::check('INVALID-CODE');
 
-        Promocodes::check('INVALID-CODE');
+        $this->assertFalse($checkPromocode);
     }
 
     /** @test */

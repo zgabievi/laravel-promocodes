@@ -25,6 +25,48 @@ class Promocodes
     protected $suffix;
 
     /**
+     * Number of codes to be generated
+     *
+     * @var int
+     */
+    protected $amount = 1;
+
+    /**
+     * Reward value which will be sticked to code
+     *
+     * @var null
+     */
+    protected $reward = null;
+
+    /**
+     * Additional data to be returned with code
+     *
+     * @var array
+     */
+    protected $data = [];
+
+    /**
+     * Number of days of code expiration
+     *
+     * @var null|int
+     */
+    protected $expires_in = null;
+
+    /**
+     * Maximum number of available usage of code
+     *
+     * @var null|int
+     */
+    protected $quantity = null;
+
+    /**
+     * If code should automatically invalidate after first use
+     *
+     * @var bool
+     */
+    protected $disposable = false;
+
+    /**
      * Generated codes will be saved here
      * to be validated later.
      *
@@ -71,9 +113,9 @@ class Promocodes
      * @return \Illuminate\Support\Collection
      */
     public function createDisposable(
-        $amount = 1,
+        $amount = null,
         $reward = null,
-        array $data = [],
+        $data = null,
         $expires_in = null,
         $quantity = null
     )
@@ -96,9 +138,9 @@ class Promocodes
      * @return \Illuminate\Support\Collection
      */
     public function create(
-        $amount = 1,
+        $amount = null,
         $reward = null,
-        array $data = [],
+        $data = null,
         $expires_in = null,
         $quantity = null,
         $is_disposable = false
@@ -109,11 +151,11 @@ class Promocodes
         foreach ($this->output($amount) as $code) {
             $records[] = [
                 'code' => $code,
-                'reward' => $reward,
-                'data' => json_encode($data),
-                'expires_at' => $expires_in ? Carbon::now()->addDays($expires_in) : null,
-                'is_disposable' => $is_disposable,
-                'quantity' => $quantity,
+                'reward' => $this->getReward($reward),
+                'data' => json_encode($this->getData($data)),
+                'expires_at' => $this->getExpiresIn($expires_in) ? Carbon::now()->addDays($this->getExpiresIn($expires_in)) : null,
+                'is_disposable' => $this->getDisposable($is_disposable),
+                'quantity' => $this->getQuantity($quantity),
             ];
         }
 
@@ -135,11 +177,11 @@ class Promocodes
      *
      * @return array
      */
-    public function output($amount = 1)
+    public function output($amount = null)
     {
         $collection = [];
 
-        for ($i = 1; $i <= $amount; $i++) {
+        for ($i = 1; $i <= $this->getAmount($amount); $i++) {
             $random = $this->generate();
 
             while (!$this->validate($collection, $random)) {
@@ -150,6 +192,29 @@ class Promocodes
         }
 
         return $collection;
+    }
+
+    /**
+     * Get number of codes to be generated
+     *
+     * @param null|int $request
+     * @return null|int
+     */
+    public function getAmount($request)
+    {
+        return $request !== null ? $request : $this->amount;
+    }
+
+    /**
+     * Set how much code you want to be generated
+     *
+     * @param int $amount
+     * @return $this
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+        return $this;
     }
 
     /**
@@ -198,9 +263,124 @@ class Promocodes
     }
 
     /**
+     * Get custom set reward value
+     *
+     * @param null|int $request
+     * @return null|int
+     */
+    public function getReward($request)
+    {
+        return $request !== null ? $request : $this->reward;
+    }
+
+    /**
+     * Set custom reward value
+     *
+     * @param int $reward
+     * @return $this
+     */
+    public function setReward($reward)
+    {
+        $this->reward = $reward;
+        return $this;
+    }
+
+    /**
+     * Get custom set data value
+     *
+     * @param null|array $data
+     * @return null|array
+     */
+    public function getData($request)
+    {
+        return $request !== null ? $request : $this->data;
+    }
+
+    /**
+     * Set custom data value
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    /**
+     * Get custom set expiration days value
+     *
+     * @param null|int $request
+     * @return null|int
+     */
+    public function getExpiresIn($request)
+    {
+        return $request !== null ? $request : $this->expires_in;
+    }
+
+    /**
+     * Set custom expiration days value
+     *
+     * @param int $expires_in
+     * @return $this
+     */
+    public function setExpiresIn($expires_in)
+    {
+        $this->expires_in = $expires_in;
+        return $this;
+    }
+
+    /**
+     * Get custom disposable value
+     *
+     * @param null|bool $request
+     * @return null|bool
+     */
+    public function getDisposable($request)
+    {
+        return $request !== null ? $request : $this->disposable;
+    }
+
+    /**
+     * Set custom disposable value
+     *
+     * @param bool $disposable
+     * @return $this
+     */
+    public function setDisposable($disposable)
+    {
+        $this->disposable = $disposable;
+        return $this;
+    }
+
+    /**
+     * Get custom set quantity value
+     *
+     * @param null|int $request
+     * @return null|int
+     */
+    public function getQuantity($request)
+    {
+        return $request !== null ? $request : $this->quantity;
+    }
+
+    /**
+     * Set custom quantity value
+     *
+     * @param int $quantity
+     * @return $this
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+    /**
      * Set custom prefix for next generation
      *
-     * @param $prefix
+     * @param string $prefix
      * @return $this
      */
     public function setPrefix($prefix)
@@ -212,7 +392,7 @@ class Promocodes
     /**
      * Set custom suffix for next generation
      *
-     * @param $suffix
+     * @param string $suffix
      * @return $this
      */
     public function setSuffix($suffix)
