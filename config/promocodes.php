@@ -60,7 +60,7 @@ return [
     /**
      * User model
      */
-    'user_model' => \App\User::class,
+    'user_model' => \App\Models\User::class,
 
     /**
      * Foreign pivot key for many to many relationship
