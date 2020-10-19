@@ -13,7 +13,7 @@ class CreatePromocodesTable extends Migration
     public function up()
     {
         Schema::create('promocodes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
 
             $table->string('code', 32)->unique();
             $table->double('reward', 10, 2)->nullable();
@@ -26,7 +26,7 @@ class CreatePromocodesTable extends Migration
         });
 
         Schema::create('promocode_user', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('promocode_id');
