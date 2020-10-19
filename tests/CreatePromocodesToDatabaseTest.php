@@ -41,7 +41,7 @@ class CreatePromocodesToDatabaseTest extends TestCase
         $promocode = $promocodes->first();
 
         $this->assertCount(1, $promocodes);
-        $this->assertEquals(10, $promocode['reward']);
+        $this->assertSame(10, $promocode['reward']);
         $this->assertDatabaseHas('promocodes', [
             'code' => $promocode['code'],
             'reward' => $promocode['reward']
@@ -64,7 +64,7 @@ class CreatePromocodesToDatabaseTest extends TestCase
             'code' => $promocode['code'],
             'data' => json_encode($data),
         ]);
-        $this->assertEquals('bar', $promocode['data']['foo']);
+        $this->assertSame('bar', $promocode['data']['foo']);
     }
 
     /** @test */
