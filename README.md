@@ -1,5 +1,3 @@
-[![laravel-promocodes](https://banners.beyondco.de/Promocodes.jpeg?theme=light&packageName=zgabievi%2Flaravel-promocodes&pattern=topography&style=style_1&description=Promotional+codes+generator+for+Laravel&md=1&showWatermark=0&fontSize=100px&images=tag)](https://github.com/zgabievi/laravel-promocodes)
-
 # laravel-promocodes
 
 [![Packagist](https://img.shields.io/packagist/v/zgabievi/promocodes.svg)](https://packagist.org/packages/zgabievi/promocodes)
@@ -9,6 +7,8 @@
 [![Build Status](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zgabievi/laravel-promocodes/build-status/master)
 
 > Promocodes generator for [Laravel 5.*](http://laravel.com/). Trying to make the best package in this category. You are welcome to join the party, give me some advices :tada: and make pull requests.
+
+[![laravel-promocodes](https://banners.beyondco.de/Promocodes.jpeg?theme=light&packageName=zgabievi%2Flaravel-promocodes&pattern=topography&style=style_1&description=Promotional+codes+generator+for+Laravel&md=1&showWatermark=0&fontSize=100px&images=tag)](https://github.com/zgabievi/laravel-promocodes)
 
 ## Table of Contents
 - [Installation](#installation)
