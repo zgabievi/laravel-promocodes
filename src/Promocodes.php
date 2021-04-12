@@ -462,7 +462,7 @@ class Promocodes
     {
         $promocode = Promocode::byCode($code)->first();
 
-        if ($promocode === null || $promocode->isExpired() || ($promocode->isDisposable() && $promocode->users()->exists()) || $promocode->isOverAmount()) {
+        if ($promocode === null || $promocode->isExpired()) {
             return false;
         }
 

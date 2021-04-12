@@ -3,6 +3,7 @@
 namespace Gabievi\Promocodes\Traits;
 
 use Carbon\Carbon;
+use Gabievi\Promocodes\Exceptions\OverAmountException;
 use Gabievi\Promocodes\Models\Promocode;
 use Gabievi\Promocodes\Facades\Promocodes;
 use Gabievi\Promocodes\Exceptions\AlreadyUsedException;
@@ -42,12 +43,17 @@ trait Rewardable
      *
      * @return bool|null|\Gabievi\Promocodes\Models\Promocode
      * @throws AlreadyUsedException
+     * @throws OverAmountException
      */
     public function applyCode($code, $callback = null)
     {
         if ($promocode = Promocodes::check($code)) {
             if ($promocode->isDisposable() && $promocode->users()->wherePivot(config('promocodes.related_pivot_key'), $this->id)->exists()) {
                 throw new AlreadyUsedException;
+            }
+
+            if ($promocode->isOverAmount()) {
+                throw new OverAmountException;
             }
 
             $promocode->users()->attach($this->id, [
