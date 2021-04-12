@@ -132,8 +132,9 @@ class Promocodes
      * @param null $reward
      * @param array $data
      * @param int|null $expires_in
-     * @param bool $is_disposable
      * @param int|null $quantity
+     * @param bool $is_disposable
+     * @param array $custom_codes
      *
      * @return \Illuminate\Support\Collection
      */
@@ -143,12 +144,15 @@ class Promocodes
         $data = null,
         $expires_in = null,
         $quantity = null,
-        $is_disposable = null
+        $is_disposable = null,
+        $custom_codes = []
     )
     {
         $records = [];
 
-        foreach ($this->output($amount) as $code) {
+        $codes = count($custom_codes) > 0 ? $custom_codes : $this->output($amount);
+
+        foreach ($codes as $code) {
             $records[] = [
                 'code' => $code,
                 'reward' => $this->getReward($reward),
