@@ -2,6 +2,7 @@
 
 namespace Gabievi\Promocodes\Facades;
 
+use Carbon\Carbon;
 use Gabievi\Promocodes\Models\Promocode;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
@@ -10,8 +11,8 @@ use Illuminate\Support\Facades\Facade;
  * Class Promocodes
  * @package Gabievi\Promocodes\Facades
  * @method static array output(int $amount = 1)
- * @method static Collection create(int $amount = 1, float $reward = null, array $data = [], int $expires_in = null, int $quantity = null, bool $is_disposable = false, array $custom_codes = [])
- * @method static Collection createDisposable(int $amount = 1, float $reward = null, array $data = [], int $expires_in = null, int $quantity = null)
+ * @method static Collection create(int $amount = 1, float $reward = null, array $data = [], Carbon $expires_in = null, int $quantity = null, bool $is_disposable = false, array $custom_codes = [])
+ * @method static Collection createDisposable(int $amount = 1, float $reward = null, array $data = [], Carbon $expires_in = null, int $quantity = null)
  * @method static bool|Promocode check(string $code)
  * @method static bool|Promocode apply(string $code)
  * @method static bool|Promocode redeem(string $code)

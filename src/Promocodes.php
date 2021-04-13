@@ -107,7 +107,7 @@ class Promocodes
      * @param int $amount
      * @param null $reward
      * @param array $data
-     * @param int|null $expires_in
+     * @param Carbon|null $expires_in
      * @param int|null $quantity
      *
      * @return \Illuminate\Support\Collection
@@ -131,7 +131,7 @@ class Promocodes
      * @param int $amount
      * @param null $reward
      * @param array $data
-     * @param int|null $expires_in
+     * @param Carbon|null $expires_in
      * @param int|null $quantity
      * @param bool $is_disposable
      * @param array $custom_codes
@@ -157,7 +157,7 @@ class Promocodes
                 'code' => $code,
                 'reward' => $this->getReward($reward),
                 'data' => json_encode($this->getData($data)),
-                'expires_at' => $this->getExpiresIn($expires_in) ? Carbon::now()->addDays($this->getExpiresIn($expires_in)) : null,
+                'expires_at' => $expires_in === null ? Carbon::tomorrow()->endOfDay() : null,
                 'is_disposable' => $this->getDisposable($is_disposable),
                 'quantity' => $this->getQuantity($quantity),
             ];
@@ -309,29 +309,6 @@ class Promocodes
     public function setData($data)
     {
         $this->data = $data;
-        return $this;
-    }
-
-    /**
-     * Get custom set expiration days value
-     *
-     * @param null|int $request
-     * @return null|int
-     */
-    public function getExpiresIn($request)
-    {
-        return $request !== null ? $request : $this->expires_in;
-    }
-
-    /**
-     * Set custom expiration days value
-     *
-     * @param int $expires_in
-     * @return $this
-     */
-    public function setExpiresIn($expires_in)
-    {
-        $this->expires_in = $expires_in;
         return $this;
     }
 
