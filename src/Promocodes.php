@@ -157,7 +157,7 @@ class Promocodes
                 'code' => $code,
                 'reward' => $this->getReward($reward),
                 'data' => json_encode($this->getData($data)),
-                'expires_at' => $expires_in === null ? Carbon::tomorrow()->endOfDay() : null,
+                'expires_at' => $expires_in === null ? Carbon::tomorrow()->endOfDay() : $expires_in,
                 'is_disposable' => $this->getDisposable($is_disposable),
                 'quantity' => $this->getQuantity($quantity),
             ];
