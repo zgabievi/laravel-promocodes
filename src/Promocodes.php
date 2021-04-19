@@ -105,7 +105,7 @@ class Promocodes
      * Fail will return empty collection.
      *
      * @param int $amount
-     * @param null $reward
+     * @param float|null $reward
      * @param array $data
      * @param int|null $expires_in
      * @param int|null $quantity
