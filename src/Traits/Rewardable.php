@@ -16,8 +16,12 @@ trait Rewardable
      */
     public function promocodes()
     {
-        return $this->belongsToMany(Promocode::class, config('promocodes.relation_table'))
-            ->withPivot('used_at');
+        return $this->belongsToMany(
+            Promocode::class,
+            config('promocodes.relation_table'),
+            config('promocodes.foreign_pivot_key'),
+            config('promocodes.related_pivot_key')
+        )->withPivot('used_at');
     }
 
     /**

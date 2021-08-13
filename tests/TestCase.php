@@ -16,9 +16,9 @@ abstract class TestCase extends Orchestra
 
         $this->seedUsers();
 
-        $this->setUpDatabase();
-
         $this->updateConfig();
+
+        $this->setUpDatabase();
     }
 
     //
