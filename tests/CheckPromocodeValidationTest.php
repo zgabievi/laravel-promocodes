@@ -43,7 +43,7 @@ class CheckPromocodeValidationTest extends TestCase
         $user = User::find(1);
 
         $promocode->users()->attach($user->id, [
-            'promocode_id' => $promocode->id,
+            config('promocodes.foreign_pivot_key', 'promocode_id') => $promocode->id,
             'used_at' => date('Y-m-d H:i:s'),
         ]);
 

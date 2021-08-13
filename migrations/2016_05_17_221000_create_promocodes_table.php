@@ -12,7 +12,12 @@ class CreatePromocodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('promocodes', function (Blueprint $table) {
+        $table_name = config('promocodes.table', 'promocodes');
+        $relation_table = config('promocodes.relation_table', 'promocode_user');
+        $related_pivot_key = config('promocodes.related_pivot_key', 'user_id');
+        $foreign_pivot_key = config('promocodes.foreign_pivot_key', 'promocode_id');
+
+        Schema::create($table_name, function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('code', 32)->unique();
@@ -25,16 +30,16 @@ class CreatePromocodesTable extends Migration
             $table->timestamp('expires_at')->nullable();
         });
 
-        Schema::create('promocode_user', function (Blueprint $table) {
+        Schema::create($relation_table, function (Blueprint $table) use ($table_name, $related_pivot_key, $foreign_pivot_key) {
             $table->increments('id');
 
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('promocode_id');
+            $table->unsignedBigInteger($related_pivot_key);
+            $table->unsignedBigInteger($foreign_pivot_key);
 
             $table->timestamp('used_at');
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('promocode_id')->references('id')->on('promocodes')->onDelete('cascade');
+            $table->foreign($related_pivot_key)->references('id')->on('users')->onDelete('cascade');
+            $table->foreign($foreign_pivot_key)->references('id')->on($table_name)->onDelete('cascade');
         });
     }
 
@@ -45,7 +50,7 @@ class CreatePromocodesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('promocode_user');
-        Schema::drop('promocodes');
+        Schema::drop(config('promocodes.relation_table', 'promocode_user'));
+        Schema::drop(config('promocodes.table', 'promocodes'));
     }
 }

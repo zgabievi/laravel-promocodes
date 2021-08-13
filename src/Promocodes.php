@@ -436,7 +436,7 @@ class Promocodes
             }
 
             $promocode->users()->attach(auth()->id(), [
-                'promocode_id' => $promocode->id,
+                config('promocodes.foreign_pivot_key', 'promocode_id') => $promocode->id,
                 'used_at' => Carbon::now(),
             ]);
 
