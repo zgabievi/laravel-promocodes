@@ -20,7 +20,7 @@
   "require": {
     "php": "^7.2||^8.0",
     "doctrine/dbal": "^2.10||^3.0",
-    "laravel/framework": "~5.7||~5.8||~6.0||~7.0||~8.0"
+    "laravel/framework": "~5.7||~5.8||~6.0||~7.0||~8.0||~9.0"
   },
   "require-dev": {
     "orchestra/testbench": "~4.0",
