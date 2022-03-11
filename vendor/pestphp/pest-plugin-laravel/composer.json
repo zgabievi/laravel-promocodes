@@ -1,0 +1,58 @@
+{
+    "name": "pestphp/pest-plugin-laravel",
+    "description": "The Pest Laravel Plugin",
+    "keywords": [
+        "php",
+        "framework",
+        "pest",
+        "unit",
+        "test",
+        "testing",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3 || ^8.0",
+        "laravel/framework": "^7.0 || ^8.0 || ^9.0",
+        "pestphp/pest": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pest\\Laravel\\": "src/"
+        },
+        "files": [
+            "src/Autoload.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.12.1 || ^6.7.2",
+        "pestphp/pest-dev-tools": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist"
+    },
+    "scripts": {
+        "lint": "php-cs-fixer fix -v",
+        "test:lint": "php-cs-fixer fix -v --dry-run",
+        "test:types": "phpstan analyse --ansi",
+        "test:unit": "pest --colors=always",
+        "test": [
+            "@test:lint",
+            "@test:types",
+            "@test:unit"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}

@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+define('TESTBENCH_WORKING_PATH', $workingPath = getcwd());
+
+if (file_exists(__DIR__.'/vendor/autoload.php')) {
+    // Development environment.
+    require __DIR__.'/vendor/autoload.php';
+} else {
+    // Installation environment.
+    require __DIR__.'/../../autoload.php';
+}
+
+$config = [
+    'env' => ['APP_KEY="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"', 'DB_CONNECTION="testing"'],
+    'providers' => [],
+    'dont-discover' => [],
+];
+
+if (file_exists("{$workingPath}/testbench.yaml")) {
+    $config = Symfony\Component\Yaml\Yaml::parseFile("{$workingPath}/testbench.yaml");
+}
+
+$commander = new Orchestra\Testbench\Console\Commander($config, $workingPath);
+
+$commander->handle();

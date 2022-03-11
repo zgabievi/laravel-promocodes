@@ -1,0 +1,52 @@
+{
+    "name": "orchestra/testbench",
+    "description": "Laravel Testing Helper for Packages Development",
+    "homepage": "https://packages.tools/testbench/",
+    "keywords": ["laravel", "orchestral", "orchestra-platform", "testing", "tdd", "bdd"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mior Muhammad Zaki",
+            "email": "crynobone@gmail.com",
+            "homepage": "https://github.com/crynobone"
+        }
+    ],
+    "autoload-dev": {
+        "psr-4": {
+            "Orchestra\\Testbench\\Tests\\": "core/tests/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "fakerphp/faker": "^1.9.2",
+        "laravel/framework": "^9.2",
+        "mockery/mockery": "^1.4.4",
+        "orchestra/testbench-core": "^7.1",
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/laravel-ray": "^1.28",
+        "symfony/process": "^6.0",
+        "symfony/yaml": "^6.0",
+        "vlucas/phpdotenv": "^5.4.1"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "7.0-dev"
+        }
+    },
+    "scripts": {
+        "prepare": [
+            "@composer run post-autoload-dump"
+        ],
+        "test": [
+            "@composer run prepare",
+            "@php vendor/bin/phpunit -c ./ --color"
+        ],
+        "post-autoload-dump": [
+            "@php vendor/bin/testbench package:discover --ansi"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,95 @@
+{
+    "name": "pestphp/pest",
+    "description": "An elegant PHP Testing Framework.",
+    "keywords": [
+        "php",
+        "framework",
+        "pest",
+        "unit",
+        "test",
+        "testing"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nuno Maduro",
+            "email": "enunomaduro@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0",
+        "nunomaduro/collision": "^5.10.0|^6.0",
+        "pestphp/pest-plugin": "^1.0.0",
+        "phpunit/phpunit": "^9.5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pest\\": "src/"
+        },
+        "files": [
+            "src/Functions.php",
+            "src/Pest.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/PHPUnit/"
+        },
+        "files": [
+            "tests/Autoload.php"
+        ]
+    },
+    "require-dev": {
+        "illuminate/console": "^8.47.0",
+        "illuminate/support": "^8.47.0",
+        "laravel/dusk": "^6.15.0",
+        "pestphp/pest-dev-tools": "dev-master",
+        "pestphp/pest-plugin-parallel": "^1.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "bin": [
+        "bin/pest"
+    ],
+    "scripts": {
+        "lint": "php-cs-fixer fix -v",
+        "test:lint": "php-cs-fixer fix -v --dry-run",
+        "test:types": "phpstan analyse --ansi --memory-limit=-1",
+        "test:unit": "php bin/pest --colors=always --exclude-group=integration",
+        "test:parallel": "php bin/pest -p --colors=always --exclude-group=integration",
+        "test:integration": "php bin/pest --colors=always --group=integration",
+        "update:snapshots": "REBUILD_SNAPSHOTS=true php bin/pest --colors=always",
+        "test": [
+            "@test:lint",
+            "@test:types",
+            "@test:unit",
+            "@test:parallel",
+            "@test:integration"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
+        "pest": {
+            "plugins": [
+                "Pest\\Plugins\\Coverage",
+                "Pest\\Plugins\\Init",
+                "Pest\\Plugins\\Version",
+                "Pest\\Plugins\\Environment"
+            ]
+        },
+        "laravel": {
+            "providers": [
+                "Pest\\Laravel\\PestServiceProvider"
+            ]
+        }
+    }
+}
