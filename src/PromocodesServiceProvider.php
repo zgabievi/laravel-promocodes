@@ -58,12 +58,12 @@ class PromocodesServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/promocodes.php' => config_path('promocodes.php'),
-        ], 'promocodes-config');
+        ], 'config');
 
         $this->publishes([
             __DIR__ . '/../database/migrations/create_promocodes_table.php.stub' => database_path('migrations/' . date('Y_m_d_Hi') . '00_create_promocodes_table.php'),
             __DIR__ . '/../database/migrations/create_promocode_user_table.php.stub' => database_path('migrations/' . date('Y_m_d_Hi') . '01_create_promocode_user_table.php'),
-        ], 'promocodes-migrations');
+        ], 'migrations');
 
         $this->commands([Apply::class, Expire::class, Create::class]);
     }

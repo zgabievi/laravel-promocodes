@@ -8,7 +8,7 @@ use Zorb\Promocodes\Events\UserAppliedPromocode;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Zorb\Promocodes\Facades\Promocodes;
 
-trait AppliesPromocodes
+trait AppliesPromocode
 {
     /**
      * @return BelongsToMany

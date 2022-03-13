@@ -8,7 +8,7 @@ use Zorb\Promocodes\Exceptions\{
     PromocodeDoesNotExistException,
     PromocodeExpiredException,
     PromocodeNoUsagesLeftException,
-    UserHasNoAppliesPromocodesTrait,
+    UserHasNoAppliesPromocodeTrait,
     UserRequiredToAcceptPromocode
 };
 use Zorb\Promocodes\Tests\Models\{User, UserWithoutTrait};
@@ -108,7 +108,7 @@ it('should throw exception if user model us not using trait', function () {
 
     Promocode::factory()->code($code)->notExpired()->usagesLeft(2)->create();
     Promocodes::code($code)->user($user)->apply();
-})->throws(UserHasNoAppliesPromocodesTrait::class);
+})->throws(UserHasNoAppliesPromocodeTrait::class);
 
 it('should create promocode-user association', function () {
     $code = 'ABC-DEF';

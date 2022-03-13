@@ -4,7 +4,7 @@ namespace Zorb\Promocodes;
 
 use Zorb\Promocodes\Exceptions\PromocodeAlreadyUsedByUserException;
 use Zorb\Promocodes\Exceptions\PromocodeBoundToOtherUserException;
-use Zorb\Promocodes\Exceptions\UserHasNoAppliesPromocodesTrait;
+use Zorb\Promocodes\Exceptions\UserHasNoAppliesPromocodeTrait;
 use Zorb\Promocodes\Exceptions\PromocodeDoesNotExistException;
 use Zorb\Promocodes\Exceptions\PromocodeNoUsagesLeftException;
 use Zorb\Promocodes\Exceptions\UserRequiredToAcceptPromocode;
@@ -13,7 +13,7 @@ use Zorb\Promocodes\Contracts\PromocodeUserContract;
 use Zorb\Promocodes\Events\GuestAppliedPromocode;
 use Zorb\Promocodes\Events\UserAppliedPromocode;
 use Zorb\Promocodes\Contracts\PromocodeContract;
-use Zorb\Promocodes\Traits\AppliesPromocodes;
+use Zorb\Promocodes\Traits\AppliesPromocode;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
@@ -217,8 +217,8 @@ class Promocodes
         }
 
         if ($this->user) {
-            if (!in_array(AppliesPromocodes::class, class_uses($this->user), true)) {
-                throw new UserHasNoAppliesPromocodesTrait();
+            if (!in_array(AppliesPromocode::class, class_uses($this->user), true)) {
+                throw new UserHasNoAppliesPromocodeTrait();
             }
 
             if (!$this->promocode->allowedForUser($this->user)) {

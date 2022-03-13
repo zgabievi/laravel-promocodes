@@ -19,10 +19,6 @@ return [
             'table_name' => 'promocode_user',
         ],
     ],
-
-    //
     'code_mask' => '****-****',
-
-    //
     'allowed_symbols' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789',
 ];

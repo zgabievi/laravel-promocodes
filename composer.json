@@ -61,6 +61,7 @@
         }
     },
     "scripts": {
+        "test": "./vendor/bin/pest",
         "phpstan": "./vendor/bin/phpstan analyse"
     }
 }

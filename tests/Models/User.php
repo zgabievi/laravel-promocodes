@@ -4,11 +4,11 @@ namespace Zorb\Promocodes\Tests\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Zorb\Promocodes\Traits\AppliesPromocodes;
+use Zorb\Promocodes\Traits\AppliesPromocode;
 
 class User extends Authenticatable
 {
-    use AppliesPromocodes, HasFactory;
+    use AppliesPromocode, HasFactory;
 
     //
     protected $table = 'users';
