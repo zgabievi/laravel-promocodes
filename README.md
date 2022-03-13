@@ -84,6 +84,7 @@ It's very easy to use. Methods are combined, so that you can configure promocode
 
 - [Reference](#reference)
 - [Creating Promocodes](#creating-promocodes)
+- [Generating Promocodes](#creating-promocodes)
 - [Applying Promocode](#applying-promocode)
 - [Expiring Promocode](#expiring-promocode)
 
@@ -159,6 +160,26 @@ php artisan promocodes:create\
   --count=5\
   --usages=5\
   --expiration="2022-01-01 00:00:00"
+```
+
+### Generating Promocodes
+
+If you want to output promocodes and not save them to database, you can call generate method instead of create.
+
+```php
+use Zorb\Promocodes\Facades\Promocodes;
+
+Promocodes::mask('AA-***-BB') // default: config('promocodes.code_mask')
+          ->characters('ABCDE12345') // default: config('promocodes.allowed_symbols')
+          ->multiUse() // default: false
+          ->unlimited() // default: false
+          ->boundToUser() // default: false
+          ->user(User::find(1)) // default: null
+          ->count(5) // default: 1
+          ->usages(5) // default: 1
+          ->expiration(now()->addYear()) // default: null
+          ->details([ 'discount' => 50 ]) // default: []
+          ->generate();
 ```
 
 ### Applying Promocode
