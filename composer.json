@@ -1,0 +1,67 @@
+{
+    "name": "zgabievi/laravel-promocodes",
+    "description": ":package_description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zura Gabievi",
+            "email": "zura.gabievi@email.com",
+            "homepage": "https://github.com/zgabievi"
+        }
+    ],
+    "homepage": "https://github.com/zgabievi/laravel-promocodes",
+    "keywords": [
+        "Laravel",
+        "Promocodes"
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^9.0",
+        "illuminate/console": "^9.0",
+        "illuminate/database": "^9.0",
+        "illuminate/broadcasting": "^9.0",
+        "illuminate/queue": "^9.0",
+        "illuminate/container": "^9.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "orchestra/testbench": "^7.1",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.2",
+        "pestphp/pest-plugin-mock": "^1.0",
+        "nunomaduro/larastan": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zorb\\Promocodes\\": "src/",
+            "Zorb\\Promocodes\\Database\\Factories\\": "database/factories"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zorb\\Promocodes\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zorb\\Promocodes\\PromocodesServiceProvider"
+            ],
+            "aliases": {
+                "Promocodes": "Zorb\\Promocodes\\Facades\\Promocodes"
+            }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest",
+        "phpstan": "./vendor/bin/phpstan analyse"
+    }
+}
