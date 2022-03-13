@@ -2,7 +2,12 @@
 
 namespace Zorb\Promocodes;
 
+use Zorb\Promocodes\Contracts\PromocodeUserContract;
+use Zorb\Promocodes\Contracts\PromocodeContract;
 use Illuminate\Support\ServiceProvider;
+use Zorb\Promocodes\Commands\Expire;
+use Zorb\Promocodes\Commands\Create;
+use Zorb\Promocodes\Commands\Apply;
 
 class PromocodesServiceProvider extends ServiceProvider
 {
@@ -13,12 +18,8 @@ class PromocodesServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'zorb');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'zorb');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->registerModelBindings();
 
-        // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
@@ -31,9 +32,8 @@ class PromocodesServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/promocodes.php', 'promocodes');
+        $this->mergeConfigFrom(__DIR__ . '/../config/promocodes.php', 'promocodes');
 
-        // Register the service the package provides.
         $this->app->singleton('promocodes', function ($app) {
             return new Promocodes;
         });
@@ -42,9 +42,9 @@ class PromocodesServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      *
-     * @return array
+     * @return array<string>
      */
-    public function provides()
+    public function provides(): array
     {
         return ['promocodes'];
     }
@@ -56,27 +56,26 @@ class PromocodesServiceProvider extends ServiceProvider
      */
     protected function bootForConsole(): void
     {
-        // Publishing the configuration file.
         $this->publishes([
-            __DIR__.'/../config/promocodes.php' => config_path('promocodes.php'),
-        ], 'promocodes.config');
+            __DIR__ . '/../config/promocodes.php' => config_path('promocodes.php'),
+        ], 'promocodes-config');
 
-        // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/zorb'),
-        ], 'promocodes.views');*/
+        $this->publishes([
+            __DIR__ . '/../database/migrations/create_promocodes_table.php.stub' => database_path('migrations/' . date('Y_m_d_Hi') . '00_create_promocodes_table.php'),
+            __DIR__ . '/../database/migrations/create_promocode_user_table.php.stub' => database_path('migrations/' . date('Y_m_d_Hi') . '01_create_promocode_user_table.php'),
+        ], 'promocodes-migrations');
 
-        // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/zorb'),
-        ], 'promocodes.views');*/
+        $this->commands([Apply::class, Expire::class, Create::class]);
+    }
 
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/zorb'),
-        ], 'promocodes.views');*/
+    /**
+     * @return void
+     */
+    protected function registerModelBindings(): void
+    {
+        $config = $this->app->config['promocodes']['models'];
 
-        // Registering package commands.
-        // $this->commands([]);
+        $this->app->bind(PromocodeContract::class, $config['promocodes']['model']);
+        $this->app->bind(PromocodeUserContract::class, $config['pivot']['model']);
     }
 }

@@ -4,7 +4,7 @@ namespace Zorb\Promocodes\Exceptions;
 
 use InvalidArgumentException;
 
-class PromocodeExpiredException extends InvalidArgumentException
+class PromocodeNoUsagesLeftException extends InvalidArgumentException
 {
     /**
      * @param string $code
@@ -12,6 +12,6 @@ class PromocodeExpiredException extends InvalidArgumentException
      */
     public function __construct(string $code)
     {
-        parent::__construct("The given code `{$code}` already expired.");
+        parent::__construct("The given code `{$code}` has no usages left.");
     }
 }

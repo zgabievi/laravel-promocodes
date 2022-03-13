@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zorb\Promocodes\Tests\TestCase;
 use Pest\PendingObjects\TestCall;
-use PHPUnit\Framework\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 |
 */
 
-//uses(TestCase::class)->in('Feature');
+uses(TestCase::class)->in(__DIR__);
 
 /*
 |--------------------------------------------------------------------------

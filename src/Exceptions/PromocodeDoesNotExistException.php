@@ -7,11 +7,13 @@ use InvalidArgumentException;
 class PromocodeDoesNotExistException extends InvalidArgumentException
 {
     /**
-     * @param string $code
-     * @return static
+     * @param string|null $code
+     * @return void
      */
-    public static function create(string $code): static
+    public function __construct(?string $code)
     {
-        return new static("The given code `{$code}` doesn't exist.");
+        $message = $code ? "The given code `{$code}` doesn't exist." : "The code was not event provided.";
+
+        parent::__construct($message);
     }
 }

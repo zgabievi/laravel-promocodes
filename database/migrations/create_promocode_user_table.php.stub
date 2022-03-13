@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-class CreatePromocodesTable extends Migration
+class CreatePromocodeUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,8 +17,10 @@ class CreatePromocodesTable extends Migration
         $models = config('promocodes.models');
 
         Schema::create($models['pivot']['table_name'], function (Blueprint $table) use ($models) {
+            $table->id();
             $table->foreignId($models['promocodes']['foreign_id'])->constrained()->cascadeOnDelete();
-            $table->foreignId($models['users']['foreign_id'])->constrained()->cascadeOnDelete();
+            $table->foreignId($models['users']['foreign_id'])->nullable()->constrained()->nullOnDelete();
+            $table->string('session_id', 40)->nullable();
             $table->timestamps();
         });
     }

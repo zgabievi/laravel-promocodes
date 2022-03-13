@@ -15,11 +15,16 @@ class CreatePromocodesTable extends Migration
     public function up()
     {
         $models = config('promocodes.models');
-        $mask = config('promocodes.code_mask');
 
-        Schema::create($models['promocodes']['table_name'], function (Blueprint $table) use ($mask) {
+        Schema::create($models['promocodes']['table_name'], function (Blueprint $table) use ($models) {
             $table->id();
-            $table->string('code', Str::length($mask))->unique();
+            $table->foreignId($models['users']['foreign_id'])->nullable()->constrained()->nullOnDelete();
+            $table->string('code', 20)->unique();
+            $table->integer('usages_left')->default(1);
+            $table->boolean('bound_to_user')->default(false);
+            $table->boolean('multi_use')->default(false);
+            $table->json('details')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
         });
     }

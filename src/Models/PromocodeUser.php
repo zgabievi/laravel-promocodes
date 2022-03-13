@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class PromocodeUser extends Pivot
 {
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
      * Create a new Eloquent model instance.
      *
      * @param array $attributes
