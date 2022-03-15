@@ -2,8 +2,8 @@
 
 namespace Zorb\Promocodes\Commands;
 
-use Illuminate\Console\Command;
 use Zorb\Promocodes\Contracts\PromocodeContract;
+use Illuminate\Console\Command;
 
 class Expire extends Command
 {

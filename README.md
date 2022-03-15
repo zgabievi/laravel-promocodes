@@ -16,6 +16,9 @@ should take you several minutes to completely rewrite usage.
 > Current version is completely rewritten. If you are missing some functionality, that was possible to achieve in previous versions, fill free to open issue.
 > Hope this new version will be easier to use, and it will provide better functionality for your needs.
 
+**If you want to use this package with [Laravel Nova](https://github.com/zgabievi/nova-promocodes), please
+install [zgabievi/nova-promocodes](https://github.com/zgabievi/nova-promocodes).**
+
 ## Installation
 
 You can install the package via composer:
@@ -84,7 +87,7 @@ It's very easy to use. Methods are combined, so that you can configure promocode
 
 - [Reference](#reference)
 - [Creating Promocodes](#creating-promocodes)
-- [Generating Promocodes](#creating-promocodes)
+- [Generating Promocodes](#generating-promocodes)
 - [Applying Promocode](#applying-promocode)
 - [Expiring Promocode](#expiring-promocode)
 
@@ -217,7 +220,8 @@ php artisan promocodes:apply ABC-DEF --user=1
 
 #### Exceptions
 
-While trying to apply promocode, you should be aware of exceptions. Most part of the code throws exceptions, when there is a problem:
+While trying to apply promocode, you should be aware of exceptions. Most part of the code throws exceptions, when there
+is a problem:
 
 ```php
 // Zorb\Promocodes\Exceptions\*
@@ -271,9 +275,9 @@ If you added AppliesPromocode trait to your user model, you will have some addit
 ```php
 $user = User::find(1);
 
-$user->appliedPromocodes // Returns promocodes applied by user
-$user->boundPromocodes // Returns promocodes bound to user
-$user->applyPromocode('ABC-DEF') // Applies promocode to user
+$user->appliedPromocodes; // Returns promocodes applied by user
+$user->boundPromocodes; // Returns promocodes bound to user
+$user->applyPromocode('ABC-DEF'); // Applies promocode to user
 ```
 
 ## Testing

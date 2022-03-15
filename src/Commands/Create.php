@@ -2,9 +2,9 @@
 
 namespace Zorb\Promocodes\Commands;
 
-use Carbon\Carbon;
-use Illuminate\Console\Command;
 use Zorb\Promocodes\Facades\Promocodes;
+use Illuminate\Console\Command;
+use Carbon\Carbon;
 
 class Create extends Command
 {

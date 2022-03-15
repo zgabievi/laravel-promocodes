@@ -3,9 +3,8 @@
 namespace Zorb\Promocodes\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Zorb\Promocodes\Contracts\PromocodeContract;
-use Zorb\Promocodes\Events\UserAppliedPromocode;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Zorb\Promocodes\Contracts\PromocodeContract;
 use Zorb\Promocodes\Facades\Promocodes;
 
 trait AppliesPromocode

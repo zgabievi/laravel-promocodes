@@ -3,8 +3,10 @@
 namespace Zorb\Promocodes\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Zorb\Promocodes\Database\Factories\PromocodeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Zorb\Promocodes\Contracts\PromocodeContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -145,5 +147,15 @@ class Promocode extends Model implements PromocodeContract
     public function getDetail(string $key, mixed $fallback = null): mixed
     {
         return $this->details[$key] ?? $fallback;
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return PromocodeFactory|Factory<static>
+     */
+    protected static function newFactory(): PromocodeFactory | Factory
+    {
+        return new PromocodeFactory;
     }
 }
