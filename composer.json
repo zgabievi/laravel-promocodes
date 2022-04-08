@@ -1,6 +1,6 @@
 {
     "name": "zgabievi/laravel-promocodes",
-    "description": ":package_description",
+    "description": "Coupons and promotional codes generator for Laravel.",
     "license": "MIT",
     "authors": [
         {
