@@ -3,17 +3,17 @@
 use Zorb\Promocodes\Exceptions\PromocodeDoesNotExistException;
 use Zorb\Promocodes\Contracts\PromocodeContract;
 use Zorb\Promocodes\Facades\Promocodes;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Carbon\CarbonInterface;
 
 if (!function_exists('applyPromocode')) {
     /**
      * @param string $code
-     * @param User|null $user
+     * @param Model|null $user
      * @return PromocodeContract|null
      */
-    function applyPomocode(string $code, ?User $user = null): ?PromocodeContract
+    function applyPomocode(string $code, ?Model $user = null): ?PromocodeContract
     {
         $promocodes = Promocodes::code($code);
 
@@ -50,12 +50,12 @@ if (!function_exists('createPromocodes')) {
      * @param bool $unlimited
      * @param int $usages
      * @param bool $multiUse
-     * @param User|null $user
+     * @param Model|null $user
      * @param bool $boundToUser
      * @param CarbonInterface|null $expiration
      * @return Collection
      */
-    function createPromocodes(?string $mask = null, ?string $characters = null, int $count = 1, bool $unlimited = false, int $usages = 1, bool $multiUse = false, ?User $user = null, bool $boundToUser = false, ?CarbonInterface $expiration = null, array $details = []): Collection
+    function createPromocodes(?string $mask = null, ?string $characters = null, int $count = 1, bool $unlimited = false, int $usages = 1, bool $multiUse = false, ?Model $user = null, bool $boundToUser = false, ?CarbonInterface $expiration = null, array $details = []): Collection
     {
         $promocodes = Promocodes::count($count)->details($details);
 

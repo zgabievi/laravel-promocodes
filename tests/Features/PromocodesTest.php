@@ -11,7 +11,7 @@ use Zorb\Promocodes\Exceptions\{
     UserHasNoAppliesPromocodeTrait,
     UserRequiredToAcceptPromocode
 };
-use Zorb\Promocodes\Tests\Models\{User, UserWithoutTrait};
+use Zorb\Promocodes\Tests\Models\{User, UserWithoutTrait, UserWithoutAuthenticatable};
 use Zorb\Promocodes\Contracts\PromocodeContract;
 use Zorb\Promocodes\Facades\Promocodes;
 use Zorb\Promocodes\Models\Promocode;
@@ -113,6 +113,16 @@ it('should throw exception if user model us not using trait', function () {
 it('should create promocode-user association', function () {
     $code = 'ABC-DEF';
     $user = User::factory()->create();
+    $promocode = Promocode::factory()->code($code)->notExpired()->usagesLeft(2)->create();
+
+    Promocodes::code($code)->user($user)->apply();
+
+    expect($promocode->users()->first()->id)->toEqual($user->id);
+});
+
+it('should create promocode-user association without authenticatable trait', function () {
+    $code = 'ABC-DEF';
+    $user = UserWithoutAuthenticatable::factory()->create();
     $promocode = Promocode::factory()->code($code)->notExpired()->usagesLeft(2)->create();
 
     Promocodes::code($code)->user($user)->apply();

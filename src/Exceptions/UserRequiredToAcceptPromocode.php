@@ -2,7 +2,6 @@
 
 namespace Zorb\Promocodes\Exceptions;
 
-use Illuminate\Foundation\Auth\User;
 use InvalidArgumentException;
 
 class UserRequiredToAcceptPromocode extends InvalidArgumentException
