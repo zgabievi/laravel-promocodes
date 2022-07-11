@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Zorb\Promocodes\Exceptions\{
     PromocodeAlreadyUsedByUserException,
@@ -16,6 +17,7 @@ use Zorb\Promocodes\Contracts\PromocodeContract;
 use Zorb\Promocodes\Facades\Promocodes;
 use Zorb\Promocodes\Models\Promocode;
 use Zorb\Promocodes\Models\PromocodeUser;
+use Zorb\Promocodes\Rules\ValidPromocode;
 
 it('should set code to variable, but not promocode', function () {
     $code = 'FOO-BAR';
@@ -296,4 +298,32 @@ it('should return not available promocodes', function () {
     Promocode::factory()->code('BA')->notExpired()->usagesLeft(0)->create();
 
     expect(count(Promocodes::notAvailable()))->toEqual(2);
+});
+
+it('should fail validation when code doesn\'t exist', function () {
+    $validator = Validator::make(['code' => 'AA-BB'], [
+        'code' => ['required', 'string', new ValidPromocode()],
+    ]);
+
+    expect($validator->fails())->toBeTrue();
+});
+
+it('should fail validation when code is expired', function () {
+    Promocode::factory()->code('AA-BB')->expired()->usagesLeft(5)->create();
+
+    $validator = Validator::make(['code' => 'AA-BB'], [
+        'code' => ['required', 'string', new ValidPromocode()],
+    ]);
+
+    expect($validator->fails())->toBeTrue();
+});
+
+it('should pass validation when code is valid', function () {
+    Promocode::factory()->code('AA-BB')->notExpired()->usagesLeft(5)->create();
+
+    $validator = Validator::make(['code' => 'AA-BB'], [
+        'code' => ['required', 'string', new ValidPromocode()],
+    ]);
+
+    expect($validator->fails())->toBeFalse();
 });
