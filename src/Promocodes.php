@@ -15,7 +15,7 @@ use Zorb\Promocodes\Events\UserAppliedPromocode;
 use Zorb\Promocodes\Contracts\PromocodeContract;
 use Zorb\Promocodes\Traits\AppliesPromocode;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Carbon\CarbonInterface;
 
@@ -72,9 +72,9 @@ class Promocodes
     protected ?CarbonInterface $expiredAt = null;
 
     /**
-     * @var User|null
+     * @var Model|null
      */
-    protected ?User $user = null;
+    protected ?Model $user = null;
 
     /**
      * @var PromocodeContract|null
@@ -96,10 +96,10 @@ class Promocodes
     }
 
     /**
-     * @param User $user
+     * @param Model $user
      * @return $this
      */
-    public function user(User $user): static
+    public function user(Model $user): static
     {
         $this->user = $user;
         return $this;

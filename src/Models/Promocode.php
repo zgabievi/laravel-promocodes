@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Zorb\Promocodes\Contracts\PromocodeContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 
 class Promocode extends Model implements PromocodeContract
@@ -120,19 +119,19 @@ class Promocode extends Model implements PromocodeContract
     }
 
     /**
-     * @param User $user
+     * @param Model $user
      * @return bool
      */
-    public function allowedForUser(User $user): bool
+    public function allowedForUser(Model $user): bool
     {
         return !$this->bound_to_user || $this->user === null || $this->user->is($user);
     }
 
     /**
-     * @param User $user
+     * @param Model $user
      * @return bool
      */
-    public function appliedByUser(User $user): bool
+    public function appliedByUser(Model $user): bool
     {
         return $this->users()->where(DB::raw('users.id'), $user->id)->exists();
     }
