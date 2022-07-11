@@ -87,6 +87,7 @@ It's very easy to use. Methods are combined, so that you can configure promocode
 - [Generating Promocodes](#creating-promocodes)
 - [Applying Promocode](#applying-promocode)
 - [Expiring Promocode](#expiring-promocode)
+- [Additional Methods](#additional-methods)
 
 ## Reference
 
@@ -274,6 +275,14 @@ $user = User::find(1);
 $user->appliedPromocodes // Returns promocodes applied by user
 $user->boundPromocodes // Returns promocodes bound to user
 $user->applyPromocode('ABC-DEF') // Applies promocode to user
+```
+
+## Additional Methods
+
+```php
+Promocodes::all(); // To retrieve all (available/not available) promocodes
+Promocodes::available(); // To retrieve valid (available) promocodes
+Promocodes::notAvailable(); // To retrieve invalid (not available) promocodes
 ```
 
 ## Testing

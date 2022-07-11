@@ -260,3 +260,30 @@ it('should try to create unique code', function () {
 
     expect(Promocode::where('code', 'BA')->exists())->toBeTrue();
 });
+
+it('should return all promocodes', function () {
+    Promocode::factory()->code('AA')->notExpired()->usagesLeft(5)->create();
+    Promocode::factory()->code('BB')->notExpired()->usagesLeft(2)->create();
+    Promocode::factory()->code('AB')->expired()->usagesLeft(-1)->create();
+    Promocode::factory()->code('BA')->notExpired()->usagesLeft(0)->create();
+
+    expect(count(Promocodes::all()))->toEqual(4);
+});
+
+it('should return available promocodes', function () {
+    Promocode::factory()->code('AA')->notExpired()->usagesLeft(5)->create();
+    Promocode::factory()->code('BB')->notExpired()->usagesLeft(2)->create();
+    Promocode::factory()->code('AB')->expired()->usagesLeft(-1)->create();
+    Promocode::factory()->code('BA')->notExpired()->usagesLeft(0)->create();
+
+    expect(count(Promocodes::available()))->toEqual(2);
+});
+
+it('should return not available promocodes', function () {
+    Promocode::factory()->code('AA')->notExpired()->usagesLeft(5)->create();
+    Promocode::factory()->code('BB')->notExpired()->usagesLeft(2)->create();
+    Promocode::factory()->code('AB')->expired()->usagesLeft(-1)->create();
+    Promocode::factory()->code('BA')->notExpired()->usagesLeft(0)->create();
+
+    expect(count(Promocodes::notAvailable()))->toEqual(2);
+});
