@@ -328,4 +328,30 @@ class Promocodes
     {
         return in_array($code, $existingCodes, true);
     }
+
+    /**
+     * @return Collection
+     */
+    public function all(): Collection
+    {
+        return app(PromocodeContract::class)->all();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function available(): Collection
+    {
+        return app(PromocodeContract::class)->whereNot('usages_left', 0)->where(function ($query) {
+            $query->whereNull('expired_at')->orWhere('expired_at', '>', now());
+        })->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function notAvailable(): Collection
+    {
+        return app(PromocodeContract::class)->where('usages_left', 0)->orWhere('expired_at', '<=', now())->get();
+    }
 }
