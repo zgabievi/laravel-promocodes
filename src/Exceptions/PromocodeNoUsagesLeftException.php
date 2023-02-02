@@ -12,6 +12,6 @@ class PromocodeNoUsagesLeftException extends InvalidArgumentException
      */
     public function __construct(string $code)
     {
-        parent::__construct("The given code `{$code}` has no usages left.");
+        parent::__construct("Ce code Promo `{$code}` n'a plus d'usages.");
     }
 }

@@ -14,6 +14,6 @@ class PromocodeAlreadyUsedByUserException extends InvalidArgumentException
      */
     public function __construct(Model $user, string $code)
     {
-        parent::__construct("The given code `{$code}` is already used by user with id {$user->id}.");
+        parent::__construct("Ce code Promo `{$code}` est déjà utilisé par un autre client.");
     }
 }

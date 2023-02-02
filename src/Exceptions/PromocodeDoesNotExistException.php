@@ -12,7 +12,7 @@ class PromocodeDoesNotExistException extends InvalidArgumentException
      */
     public function __construct(?string $code)
     {
-        $message = $code ? "The given code `{$code}` doesn't exist." : "The code was not event provided.";
+        $message = $code ? "Ce code Promo `{$code}` n'existe pas." : "Le code promo n'a pas été fourni.";
 
         parent::__construct($message);
     }

@@ -14,6 +14,6 @@ class PromocodeBoundToOtherUserException extends InvalidArgumentException
      */
     public function __construct(Model $user, string $code)
     {
-        parent::__construct("The given code `{$code}` is bound to other user, not user with id {$user->id}.");
+        parent::__construct("Ce code Promo `{$code}` est lié à un autre client, pas pour client avec le nom {$user->full_name}.");
     }
 }

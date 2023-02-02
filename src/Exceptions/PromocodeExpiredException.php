@@ -12,6 +12,6 @@ class PromocodeExpiredException extends InvalidArgumentException
      */
     public function __construct(string $code)
     {
-        parent::__construct("The given code `{$code}` already expired.");
+        parent::__construct("Ce code Promo `{$code}` déjà expiré.");
     }
 }

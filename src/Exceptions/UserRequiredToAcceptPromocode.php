@@ -12,6 +12,6 @@ class UserRequiredToAcceptPromocode extends InvalidArgumentException
      */
     public function __construct(string $code)
     {
-        parent::__construct("The given code `{$code}` requires to be used by user, not by guest.");
+        parent::__construct("Ce code Promo `{$code}` doit être utilisé par un client authentifié, et non par un invité.");
     }
 }
