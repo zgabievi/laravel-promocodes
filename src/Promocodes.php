@@ -264,7 +264,7 @@ class Promocodes
     public function create(): Collection
     {
         return $this->generate()->map(fn(string $code) => app(PromocodeContract::class)->create([
-            'user_id' => optional($this->user)->id,
+            config('promocodes.models.users.foreign_id') => optional($this->user)->id,
             'code' => $code,
             'usages_left' => $this->unlimited ? -1 : $this->usagesLeft,
             'bound_to_user' => $this->user || $this->boundToUser,

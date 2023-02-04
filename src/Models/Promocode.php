@@ -29,7 +29,9 @@ class Promocode extends Model implements PromocodeContract
      * @var array
      */
     protected $casts = [
-        'expired_at' => 'datetime',
+        'expired_at' => 'datetime:Y-m-d H:i',
+        'created_at' => 'datetime:Y-m-d H:i',
+        'updated_at' => 'datetime:Y-m-d H:i',
         'usages_left' => 'integer',
         'bound_to_user' => 'boolean',
         'multi_use' => 'boolean',
