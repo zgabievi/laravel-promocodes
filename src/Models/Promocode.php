@@ -20,7 +20,7 @@ class Promocode extends Model implements PromocodeContract
      * @var string[]
      */
     protected $fillable = [
-        'user_id', 'code', 'usages_left', 'bound_to_user', 'multi_use', 'details', 'expired_at',
+        'user_id', 'code', 'usages_left', 'bound_to_user', 'multi_use', 'details', 'expired_at', 'type', 'reward', 'currency_id'
     ];
 
     /**
@@ -59,6 +59,17 @@ class Promocode extends Model implements PromocodeContract
         return $this->belongsTo(
             config('promocodes.models.users.model'),
             config('promocodes.models.users.foreign_id'),
+        );
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(
+            config('promocodes.models.currency.model'),
+            config('promocodes.models.currency.foreign_id'),
         );
     }
 

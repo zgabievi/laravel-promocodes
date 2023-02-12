@@ -31,6 +31,7 @@ class PromocodeFactory extends Factory
             'usages_left' => $this->faker->numberBetween(0, 100),
             'bound_to_user' => $this->faker->boolean,
             'multi_use' => $this->faker->boolean,
+            'reward' => $this->faker->randomFloat(2, 0, 100),
             'details' => [
                 'discount' => $this->faker->randomFloat(2, 0, 100),
             ],

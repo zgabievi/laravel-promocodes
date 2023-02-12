@@ -59,7 +59,12 @@ class TestCase extends Orchestra
             include __DIR__ . '/../database/migrations/create_promocode_user_table.php.stub';
         }
 
+        if (!class_exists(\AddFieldToPromocodesTable::class)) {
+            include __DIR__ . '/../database/migrations/add_field_to_promocodes_table.php.stub';
+        }
+
         (new \CreatePromocodesTable)->up();
         (new \CreatePromocodeUserTable)->up();
+        (new \AddFieldToPromocodesTable)->up();
     }
 }

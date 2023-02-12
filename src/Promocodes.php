@@ -47,6 +47,16 @@ class Promocodes
     protected int $count = 1;
 
     /**
+     * @var int
+     */
+    protected int $type = 1;
+
+    /**
+     * @var float
+     */
+    protected float $reward = 0;
+
+    /**
      * @var bool
      */
     protected bool $unlimited = false;
@@ -77,6 +87,11 @@ class Promocodes
     protected ?Model $user = null;
 
     /**
+     * @var Model|null
+     */
+    protected ?Model $currency = null;
+
+    /**
      * @var PromocodeContract|null
      */
     protected ?PromocodeContract $promocode = null;
@@ -102,6 +117,16 @@ class Promocodes
     public function user(Model $user): static
     {
         $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @param Model $currency
+     * @return $this
+     */
+    public function currency(Model $currency): static
+    {
+        $this->currency = $currency;
         return $this;
     }
 
@@ -162,6 +187,26 @@ class Promocodes
     public function count(int $count): static
     {
         $this->count = $count;
+        return $this;
+    }
+
+    /**
+     * @param int $type
+     * @return $this
+     */
+    public function type(int $type): static
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @param float $reward
+     * @return $this
+     */
+    public function reward(float $reward): static
+    {
+        $this->reward = $reward;
         return $this;
     }
 
@@ -270,6 +315,9 @@ class Promocodes
             'bound_to_user' => $this->user || $this->boundToUser,
             'multi_use' => $this->multiUse,
             'details' => $this->details,
+            'currency' => $this->currency,
+            'type' => $this->type,
+            'reward' => $this->reward,
             'expired_at' => $this->expiredAt,
         ]));
     }
