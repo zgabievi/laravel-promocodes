@@ -9,6 +9,8 @@ use Zorb\Promocodes\Exceptions\PromocodeDoesNotExistException;
 use Zorb\Promocodes\Exceptions\PromocodeNoUsagesLeftException;
 use Zorb\Promocodes\Exceptions\UserRequiredToAcceptPromocode;
 use Zorb\Promocodes\Exceptions\PromocodeExpiredException;
+use Zorb\Promocodes\Exceptions\CurrencyRequiredToAcceptPromocode;
+use Zorb\Promocodes\Exceptions\PromocodeBoundToOtherCurrencyException;
 use Zorb\Promocodes\Contracts\PromocodeUserContract;
 use Zorb\Promocodes\Events\GuestAppliedPromocode;
 use Zorb\Promocodes\Events\UserAppliedPromocode;
@@ -261,6 +263,14 @@ class Promocodes
             throw new UserRequiredToAcceptPromocode($this->code);
         }
 
+        if (!$this->currency) {
+            throw new CurrencyRequiredToAcceptPromocode($this->code);
+        }
+
+        if (!$this->promocode->allowedForCurrency($this->currency)) {
+            throw new PromocodeBoundToOtherCurrencyException($this->currency, $this->code);
+        }
+
         if ($this->user) {
             if (!in_array(AppliesPromocode::class, class_uses($this->user), true)) {
                 throw new UserHasNoAppliesPromocodeTrait();
@@ -315,7 +325,7 @@ class Promocodes
             'bound_to_user' => $this->user || $this->boundToUser,
             'multi_use' => $this->multiUse,
             'details' => $this->details,
-            'currency' => $this->currency,
+            config('promocodes.models.currency.foreign_id') => $this->currency->id,
             'type' => $this->type,
             'reward' => $this->reward,
             'expired_at' => $this->expiredAt,

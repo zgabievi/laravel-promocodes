@@ -13,6 +13,9 @@ interface PromocodeContract
     public function user(): BelongsTo;
 
     //
+    public function currency(): BelongsTo;
+
+    //
     public function users(): BelongsToMany;
 
     //
@@ -32,4 +35,7 @@ interface PromocodeContract
 
     //
     public function allowedForUser(Model $user): bool;
+
+    //
+    public function allowedForCurrency(Model $currency): bool;
 }

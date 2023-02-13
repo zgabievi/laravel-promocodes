@@ -104,7 +104,10 @@ class PromocodesServiceProvider extends ServiceProvider
         $pos = false;
         foreach ($files as &$value) {
             $pos = strpos($value, $mgr);
-            if($pos !== false) return true;
+
+            if ($pos !== false) {
+                return true;
+            }
         }
         return false;
     }
@@ -119,7 +122,10 @@ class PromocodesServiceProvider extends ServiceProvider
         $pos = false;
         foreach ($files as &$value) {
             $pos = strpos($value, $config);
-            if($pos !== false) return true;
+            
+            if ($pos !== false) {
+                return true;
+            }
         }
         return false;
     }

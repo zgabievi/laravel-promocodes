@@ -141,6 +141,15 @@ class Promocode extends Model implements PromocodeContract
     }
 
     /**
+     * @param Model $currency
+     * @return bool
+     */
+    public function allowedForCurrency(Model $currency): bool
+    {
+        return $this->currency === null || $this->currency->is($currency);
+    }
+
+    /**
      * @param Model $user
      * @return bool
      */
