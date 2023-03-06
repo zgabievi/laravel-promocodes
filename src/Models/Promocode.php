@@ -20,7 +20,7 @@ class Promocode extends Model implements PromocodeContract
      * @var string[]
      */
     protected $fillable = [
-        'user_id', 'code', 'usages_left', 'bound_to_user', 'multi_use', 'details', 'expired_at', 'type', 'reward', 'currency_id'
+        'user_id', 'code', 'usages_left', 'bound_to_user', 'multi_use', 'details', 'expired_at', 'type', 'reward', 'currency_id', 'min_price'
     ];
 
     /**
@@ -113,6 +113,14 @@ class Promocode extends Model implements PromocodeContract
     public function isExpired(): bool
     {
         return $this->expired_at && $this->expired_at->isBefore(now());
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMinPrice(): bool
+    {
+        return $this->min_price > 0;
     }
 
     /**

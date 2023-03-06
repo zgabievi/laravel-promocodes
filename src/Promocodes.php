@@ -8,6 +8,7 @@ use Zorb\Promocodes\Exceptions\UserHasNoAppliesPromocodeTrait;
 use Zorb\Promocodes\Exceptions\PromocodeDoesNotExistException;
 use Zorb\Promocodes\Exceptions\PromocodeNoUsagesLeftException;
 use Zorb\Promocodes\Exceptions\UserRequiredToAcceptPromocode;
+use Zorb\Promocodes\Exceptions\MinPricePromocodeException;
 use Zorb\Promocodes\Exceptions\PromocodeExpiredException;
 use Zorb\Promocodes\Exceptions\CurrencyRequiredToAcceptPromocode;
 use Zorb\Promocodes\Exceptions\PromocodeBoundToOtherCurrencyException;
@@ -57,6 +58,11 @@ class Promocodes
      * @var float
      */
     protected float $reward = 0;
+
+    /**
+     * @var float
+     */
+    protected float $min_price = 0;
 
     /**
      * @var bool
@@ -213,6 +219,16 @@ class Promocodes
     }
 
     /**
+     * @param float $min_price
+     * @return $this
+     */
+    public function minPrice(float $min_price): static
+    {
+        $this->min_price = $min_price;
+        return $this;
+    }
+
+    /**
      * @param int $usagesLeft
      * @return $this
      */
@@ -257,6 +273,12 @@ class Promocodes
 
         if ($this->promocode->isExpired()) {
             throw new PromocodeExpiredException($this->code);
+        }
+
+        if ($this->promocode->hasMinPrice()) {
+            if ($this->promocode->min_price > $this->min_price) {
+                throw new MinPricePromocodeException($this->code, $this->promocode->min_price);
+            }
         }
 
         if ($this->promocode->bound_to_user && !$this->user) {
@@ -325,9 +347,10 @@ class Promocodes
             'bound_to_user' => $this->user || $this->boundToUser,
             'multi_use' => $this->multiUse,
             'details' => $this->details,
-            config('promocodes.models.currency.foreign_id') => $this->currency->id,
+            config('promocodes.models.currency.foreign_id') => optional($this->currency)->id,
             'type' => $this->type,
             'reward' => $this->reward,
+            'min_price' => $this->min_price,
             'expired_at' => $this->expiredAt,
         ]));
     }

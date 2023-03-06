@@ -21,6 +21,7 @@ class Create extends Command
                             {--usages=1 : How many times code can be used}
                             {--multi-use : Whether code can be used multiple times from same user}
                             {--user= : The ID of the user who should be bound to promocodes}
+                            {--currency= : The ID of the currency who should be bound to promocodes}
                             {--bound-to-user : Whether codes should be bound to users}
                             {--expiration= : Datetime string for promocodes expiration}';
 
@@ -43,10 +44,19 @@ class Create extends Command
         $usages = $this->option('usages');
         $multiUse = $this->option('multi-use');
         $userId = $this->option('user');
+        $currencyId = $this->option('currency');
         $boundToUser = $this->option('bound-to-user');
         $expiration = $this->option('expiration');
 
         $promocodes = Promocodes::count($count);
+
+        $currency = app(config('promocodes.models.currency.model'))->find($currencyId);
+
+        if (!$currency) {
+            $this->error("🥺️ Currency with ID `{$currencyId}` doesn't exist!");
+            return 1;
+        }
+        $promocodes = $promocodes->currency($currency);
 
         if ($mask) {
             $promocodes = $promocodes->mask($mask);

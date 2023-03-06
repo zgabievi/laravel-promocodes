@@ -8,6 +8,8 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use Zorb\Promocodes\PromocodesServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Zorb\Promocodes\Tests\Models\User;
+use Zorb\Promocodes\Tests\Models\Currency;
+use Illuminate\Database\Schema\Blueprint;
 
 class TestCase extends Orchestra
 {
@@ -41,6 +43,7 @@ class TestCase extends Orchestra
 
         $application['config']->set('app.key', 'dwFcFNf8J3fJ3RYADQbWMHyNx8YK');
         $application['config']->set('promocodes.models.users.model', User::class);
+        $application['config']->set('promocodes.models.currency.model', Currency::class);
     }
 
     //
@@ -50,6 +53,8 @@ class TestCase extends Orchestra
 
         Schema::dropIfExists($config['models']['promocodes']['table_name']);
         Schema::dropIfExists($config['models']['pivot']['table_name']);
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('currencies');
 
         if (!class_exists(\CreatePromocodesTable::class)) {
             include __DIR__ . '/../database/migrations/create_promocodes_table.php.stub';
@@ -58,13 +63,36 @@ class TestCase extends Orchestra
         if (!class_exists(\CreatePromocodeUserTable::class)) {
             include __DIR__ . '/../database/migrations/create_promocode_user_table.php.stub';
         }
+        
 
         if (!class_exists(\AddFieldToPromocodesTable::class)) {
             include __DIR__ . '/../database/migrations/add_field_to_promocodes_table.php.stub';
         }
 
+        if (!class_exists(\AddMinPriceToPromocodesTable::class)) {
+            include __DIR__ . '/../database/migrations/add_min_price_to_promocodes_table.php.stub';
+        }
+
+        Schema::create('users', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('name')->nullable();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('currencies', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('value');
+            $table->timestamps();
+        });
+
         (new \CreatePromocodesTable)->up();
         (new \CreatePromocodeUserTable)->up();
         (new \AddFieldToPromocodesTable)->up();
+        (new \AddMinPriceToPromocodesTable)->up();
     }
 }

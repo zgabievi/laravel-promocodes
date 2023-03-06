@@ -28,6 +28,9 @@ interface PromocodeContract
     public function isExpired(): bool;
 
     //
+    public function hasMinPrice(): bool;
+
+    //
     public function isUnlimited(): bool;
 
     //

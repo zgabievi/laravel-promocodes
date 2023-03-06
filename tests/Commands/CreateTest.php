@@ -1,17 +1,20 @@
 <?php
 
-use Zorb\Promocodes\Tests\Models\User;
+use Zorb\Promocodes\Tests\Models\{User, Currency};
 use Zorb\Promocodes\Models\Promocode;
 use Illuminate\Support\Str;
 
 it('should create codes in database', function () {
-    $this->artisan('promocodes:create', ['--count' => 3]);
+    $currency = Currency::factory()->create();
+
+    $this->artisan('promocodes:create', ['--count' => 3, '--currency' => $currency->id]);
 
     expect(Promocode::count())->toEqual(3);
 });
 
 it('should create code in database with custom mask', function () {
-    $this->artisan('promocodes:create', ['--mask' => 'FOO-***-BAR']);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--mask' => 'FOO-***-BAR', '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
@@ -21,7 +24,8 @@ it('should create code in database with custom mask', function () {
 });
 
 it('should create code in database with custom characters', function () {
-    $this->artisan('promocodes:create', ['--mask' => '***', '--characters' => '0']);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--mask' => '***', '--characters' => '0', '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
@@ -29,7 +33,8 @@ it('should create code in database with custom characters', function () {
 });
 
 it('should create code in database with user bounding', function () {
-    $this->artisan('promocodes:create', ['--bound-to-user' => true]);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--bound-to-user' => true, '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
@@ -37,7 +42,8 @@ it('should create code in database with user bounding', function () {
 });
 
 it('should create code in database with unlimited usages', function () {
-    $this->artisan('promocodes:create', ['--unlimited' => true]);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--unlimited' => true, '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
@@ -45,7 +51,8 @@ it('should create code in database with unlimited usages', function () {
 });
 
 it('should create code in database with multi use', function () {
-    $this->artisan('promocodes:create', ['--multi-use' => true]);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--multi-use' => true, '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
@@ -53,7 +60,8 @@ it('should create code in database with multi use', function () {
 });
 
 it('should create code in database with custom usages left', function () {
-    $this->artisan('promocodes:create', ['--usages' => 5]);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--usages' => 5, '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
@@ -61,7 +69,8 @@ it('should create code in database with custom usages left', function () {
 });
 
 it('should create code in database with expiration', function () {
-    $this->artisan('promocodes:create', ['--expiration' => '2022-01-01 00:00:00']);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--expiration' => '2022-01-01 00:00:00', '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
@@ -70,16 +79,22 @@ it('should create code in database with expiration', function () {
     expect($promocode->expired_at->day)->toEqual(1);
 });
 
-it('should create code in database with user association', function () {
+it('should create code in database with user association and currency', function () {
     $user = User::factory()->create();
-
-    $this->artisan('promocodes:create', ['--user' => $user->id]);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--user' => $user->id, '--currency' => $currency->id]);
 
     $promocode = Promocode::first();
 
     expect($promocode->user->id)->toEqual($user->id);
+    expect($promocode->currency->id)->toEqual($currency->id);
 });
 
 it('should return error if user is not found', function () {
-    $this->artisan('promocodes:create', ['--user' => 1])->assertExitCode(1);
+    $currency = Currency::factory()->create();
+    $this->artisan('promocodes:create', ['--user' => 1, '--currency' => $currency->id])->assertExitCode(1);
+});
+
+it('should return error if currency is not found', function () {
+    $this->artisan('promocodes:create', ['--currency' => 1])->assertExitCode(1);
 });

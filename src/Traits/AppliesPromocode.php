@@ -7,6 +7,7 @@ use Zorb\Promocodes\Contracts\PromocodeContract;
 use Zorb\Promocodes\Events\UserAppliedPromocode;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Zorb\Promocodes\Facades\Promocodes;
+use Illuminate\Database\Eloquent\Model;
 
 trait AppliesPromocode
 {
@@ -38,10 +39,11 @@ trait AppliesPromocode
 
     /**
      * @param string $code
+     * @param Model $currency
      * @return PromocodeContract|null
      */
-    public function applyPromocode(string $code): ?PromocodeContract
+    public function applyPromocode(string $code, Model $currency): ?PromocodeContract
     {
-        return Promocodes::code($code)->user($this)->apply();
+        return Promocodes::code($code)->user($this)->currency($currency)->apply();
     }
 }

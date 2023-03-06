@@ -14,6 +14,7 @@ class Apply extends Command
      */
     protected $signature = 'promocodes:apply
                             {code : The code which should be applied to}
+                            {--currency= : The ID of the currency}
                             {--user= : The ID of the user, who should apply to promocode}';
 
     /**
@@ -29,9 +30,17 @@ class Apply extends Command
     public function handle(): int
     {
         $code = $this->argument('code');
+        $currencyId = $this->option('currency');
         $userId = $this->option('user');
 
-        $promocodes = Promocodes::code($code);
+        $currency = app(config('promocodes.models.currency.model'))->find($currencyId);
+
+        if (!$currency) {
+            $this->error("🥺️ Currency with ID `{$currencyId}` doesn't exist!");
+            return 1;
+        }
+
+        $promocodes = Promocodes::code($code)->currency($currency);
 
         if ($userId) {
             $user = app(config('promocodes.models.users.model'))->find($userId);

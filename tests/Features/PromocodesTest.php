@@ -7,12 +7,15 @@ use Zorb\Promocodes\Exceptions\{
     PromocodeAlreadyUsedByUserException,
     PromocodeBoundToOtherUserException,
     PromocodeDoesNotExistException,
+    CurrencyRequiredToAcceptPromocode,
     PromocodeExpiredException,
+    PromocodeBoundToOtherCurrencyException,
     PromocodeNoUsagesLeftException,
     UserHasNoAppliesPromocodeTrait,
-    UserRequiredToAcceptPromocode
+    UserRequiredToAcceptPromocode,
+    MinPricePromocodeException
 };
-use Zorb\Promocodes\Tests\Models\{User, UserWithoutTrait, UserWithoutAuthenticatable};
+use Zorb\Promocodes\Tests\Models\{User, UserWithoutTrait, UserWithoutAuthenticatable, Currency};
 use Zorb\Promocodes\Contracts\PromocodeContract;
 use Zorb\Promocodes\Facades\Promocodes;
 use Zorb\Promocodes\Models\Promocode;
@@ -56,9 +59,25 @@ it('should set user to variable', function () {
     expect($classUser)->toBe($user);
 });
 
+it('should set currency to variable', function () {
+    $currency = Currency::factory()->create();
+    $promocode = Promocodes::currency($currency);
+
+    $class = new ReflectionClass($promocode);
+    $classCurrency = $class->getProperty('currency')->getValue($promocode);
+
+    expect($classCurrency)->toBe($currency);
+});
+
 it('should throw exception when promocode not set', function () {
     Promocodes::apply();
 })->throws(PromocodeDoesNotExistException::class);
+
+it('should throw exception when currency not set', function () {
+    $code = 'ABC-DEF';
+    Promocode::factory()->code($code)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
+    Promocodes::code($code)->apply();
+})->throws(CurrencyRequiredToAcceptPromocode::class);
 
 it('should throw exception when promocode not found', function () {
     Promocodes::code('FOO-BAR')->apply();
@@ -92,50 +111,85 @@ it('should throw exception when promocode is bound to user and used by other use
     $promocode->user()->associate($user1);
     $promocode->save();
 
-    Promocodes::code($code)->user($user2)->apply();
+    Promocodes::code($code)->currency(Currency::factory()->create())->user($user2)->apply();
 })->throws(PromocodeBoundToOtherUserException::class);
+
+it('should throw exception when promocode is bound to currency and used by other currency', function () {
+    $code = 'ABC-DEF';
+
+    $currency1 = Currency::factory()->create();
+    $currency2 = Currency::factory()->create();
+
+    $promocode = Promocode::factory()->code($code)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
+    $promocode->currency()->associate($currency1);
+    $promocode->save();
+
+    Promocodes::code($code)->currency($currency2)->apply();
+})->throws(PromocodeBoundToOtherCurrencyException::class);
+
+it('should throw exception when price is lower than min price allowed', function () {
+    $code = 'ABC-DEF';
+    $currency = Currency::factory()->create();
+    Promocode::factory()->code($code)->currency($currency->id)->notExpired()->boundToUser(false)->minPrice(100)->create();
+    Promocodes::code($code)->currency($currency)->minPrice(40)->apply();
+})->throws(MinPricePromocodeException::class);
 
 it('should throw exception when promocode is single used and trying to use second time', function () {
     $code = 'ABC-DEF';
     $user = User::factory()->create();
-
-    Promocode::factory()->code($code)->notExpired()->multiUse(false)->usagesLeft(2)->create();
-    Promocodes::code($code)->user($user)->apply();
+    $currency = Currency::factory()->create();
+    Promocode::factory()->code($code)->notExpired()->currency($currency->id)->multiUse(false)->usagesLeft(2)->create();
+    Promocodes::code($code)->user($user)->currency($currency)->apply();
     Promocodes::code($code)->user($user)->apply();
 })->throws(PromocodeAlreadyUsedByUserException::class);
 
 it('should throw exception if user model us not using trait', function () {
     $code = 'ABC-DEF';
     $user = UserWithoutTrait::factory()->create();
+    $currency = Currency::factory()->create();
 
-    Promocode::factory()->code($code)->notExpired()->usagesLeft(2)->create();
-    Promocodes::code($code)->user($user)->apply();
+    Promocode::factory()->code($code)->currency($currency->id)->notExpired()->usagesLeft(2)->create();
+    Promocodes::code($code)->user($user)->currency($currency)->apply();
 })->throws(UserHasNoAppliesPromocodeTrait::class);
 
 it('should create promocode-user association', function () {
     $code = 'ABC-DEF';
     $user = User::factory()->create();
-    $promocode = Promocode::factory()->code($code)->notExpired()->usagesLeft(2)->create();
+    $currency = Currency::factory()->create();
+    $promocode = Promocode::factory()->currency($currency->id)->code($code)->notExpired()->usagesLeft(2)->create();
 
-    Promocodes::code($code)->user($user)->apply();
+    Promocodes::code($code)->user($user)->currency($currency)->apply();
 
     expect($promocode->users()->first()->id)->toEqual($user->id);
+});
+
+it('should create promocode-currency association', function () {
+    $code = 'ABC-DEF';
+    $currency = Currency::factory()->create();
+
+    $promocode = Promocode::factory()->currency($currency->id)->code($code)->boundToUser(false)->notExpired()->usagesLeft(2)->create();
+
+    Promocodes::code($code)->currency($currency)->apply();
+
+    expect($promocode->currency->id)->toEqual($currency->id);
 });
 
 it('should create promocode-user association without authenticatable trait', function () {
     $code = 'ABC-DEF';
     $user = UserWithoutAuthenticatable::factory()->create();
-    $promocode = Promocode::factory()->code($code)->notExpired()->usagesLeft(2)->create();
+    $currency = Currency::factory()->create();
+    $promocode = Promocode::factory()->code($code)->currency($currency->id)->notExpired()->usagesLeft(2)->create();
 
-    Promocodes::code($code)->user($user)->apply();
+    Promocodes::code($code)->user($user)->currency($currency)->apply();
 
     expect($promocode->users()->first()->id)->toEqual($user->id);
 });
 
 it('should create promocode-guest association', function () {
     $code = 'ABC-DEF';
-    Promocode::factory()->code($code)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
-    Promocodes::code($code)->apply();
+    $currency = Currency::factory()->create();
+    Promocode::factory()->code($code)->currency($currency->id)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
+    Promocodes::code($code)->currency($currency)->apply();
 
     expect(PromocodeUser::count())->toEqual(1);
     expect(PromocodeUser::first()->user_id)->toBeNull();
@@ -143,18 +197,31 @@ it('should create promocode-guest association', function () {
 
 it('should decrement usages left on promocode', function () {
     $code = 'ABC-DEF';
-    $promocode = Promocode::factory()->code($code)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
+    $currency = Currency::factory()->create();
+    $promocode = Promocode::factory()->code($code)->currency($currency->id)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
 
-    Promocodes::code($code)->apply();
+    Promocodes::code($code)->currency($currency)->apply();
 
     expect($promocode->fresh()->usages_left)->toEqual(1);
 });
 
+it('should not decrement usages left on promocode', function () {
+    $code = 'ABC-DEF';
+    $currency = Currency::factory()->create();
+    $promocode = Promocode::factory()->code($code)->currency($currency->id)->notExpired()->boundToUser(false)->usagesLeft(-1)->create();
+
+    Promocodes::code($code)->currency($currency)->apply();
+
+    expect($promocode->fresh()->usages_left)->toEqual(-1);
+});
+
 it('should return instance of promocode model', function () {
     $code = 'ABC-DEF';
-    $promocode = Promocode::factory()->code($code)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
 
-    Promocodes::code($code)->apply();
+    $currency = Currency::factory()->create();
+    $promocode = Promocode::factory()->code($code)->notExpired()->boundToUser(false)->currency($currency->id)->usagesLeft(2)->create();
+
+    Promocodes::code($code)->currency($currency)->apply();
 
     expect($promocode)->toBeInstanceOf(PromocodeContract::class);
 });

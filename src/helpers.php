@@ -11,11 +11,12 @@ if (!function_exists('applyPromocode')) {
     /**
      * @param string $code
      * @param Model|null $user
+     * @param Model $currency
      * @return PromocodeContract|null
      */
-    function applyPomocode(string $code, ?Model $user = null): ?PromocodeContract
+    function applyPomocode(string $code, ?Model $user = null, Model $currency): ?PromocodeContract
     {
-        $promocodes = Promocodes::code($code);
+        $promocodes = Promocodes::code($code)->currency($currency);
 
         if ($user) {
             $promocodes = $promocodes->user($user);
@@ -53,6 +54,7 @@ if (!function_exists('createPromocodes')) {
      * @param Model|null $user
      * @param bool $boundToUser
      * @param CarbonInterface|null $expiration
+     * @param Model $currency
      * @return Collection
      */
     function createPromocodes(?string $mask = null, ?string $characters = null, int $count = 1, bool $unlimited = false, int $usages = 1, bool $multiUse = false, ?Model $user = null, bool $boundToUser = false, ?CarbonInterface $expiration = null, array $details = []): Collection

@@ -92,7 +92,7 @@ It's very easy to use. Methods are combined, so that you can configure promocode
 ## Reference
 
 | Name          | Explanation                                                                                                             |
-|---------------|-------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Mask          | Astrisks will be replaced with random symbol                                                                            |
 | Characters    | Allowed symbols to use in mask replacement                                                                              |
 | Multi use     | Define if single code can be used multiple times, by the same user                                                      |
@@ -139,6 +139,7 @@ createPromocodes(
     unlimited: true, // default: false
     boundToUser: true, // default: false
     user: User::find(1), // default: null
+    currency: Currency::find(1),
     count: 5, // default: 1
     usages: 5, // default: 1
     expiration: now()->addYear(), // default: null
@@ -204,7 +205,9 @@ There is a global helper function which will do the same as promocodes class.
 ```php
 applyPomocode(
     'ABC-DEF',
+    Currency::find(1),
     User::find(1) // default: null
+
 );
 ```
 
@@ -274,7 +277,7 @@ $user = User::find(1);
 
 $user->appliedPromocodes // Returns promocodes applied by user
 $user->boundPromocodes // Returns promocodes bound to user
-$user->applyPromocode('ABC-DEF') // Applies promocode to user
+$user->applyPromocode('ABC-DEF', Currency::find(1)) // Applies promocode
 ```
 
 ## Additional Methods

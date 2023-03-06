@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Zorb\Promocodes\Models\Promocode;
 use Carbon\CarbonInterface;
-
 /**
  * @extends Factory<Promocode>
  */
@@ -32,9 +31,6 @@ class PromocodeFactory extends Factory
             'bound_to_user' => $this->faker->boolean,
             'multi_use' => $this->faker->boolean,
             'reward' => $this->faker->randomFloat(2, 0, 100),
-            'details' => [
-                'discount' => $this->faker->randomFloat(2, 0, 100),
-            ],
             'expired_at' => $this->faker->optional()->dateTime('+2 months'),
         ];
     }
@@ -98,6 +94,32 @@ class PromocodeFactory extends Factory
         return $this->state(function (array $attributes) use ($state) {
             return [
                 'code' => $state,
+            ];
+        });
+    }
+
+    /**
+     * @param float $state
+     * @return static
+     */
+    public function minPrice(float $state): static
+    {
+        return $this->state(function (array $attributes) use ($state) {
+            return [
+                'min_price' => $state,
+            ];
+        });
+    }
+
+    /**
+     * @param string $state
+     * @return static
+     */
+    public function currency(string $state): static
+    {
+        return $this->state(function (array $attributes) use ($state) {
+            return [
+                'currency_id' => $state,
             ];
         });
     }

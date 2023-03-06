@@ -79,6 +79,11 @@ class PromocodesServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/add_field_to_promocodes_table.php.stub' => database_path('migrations/' . date('Y_m_d_Hi') . '02_add_field_to_promocodes_table.php'),
             ], 'migrations');
         }
+        if (!$this->migrationExists('add_min_price_to_promocodes_table')) {
+            $this->publishes([
+                __DIR__ . '/../database/migrations/add_min_price_to_promocodes_table.php.stub' => database_path('migrations/' . date('Y_m_d_Hi') . '03_add_min_price_to_promocodes_table.php'),
+            ], 'migrations');
+        }
 
         $this->commands([Apply::class, Expire::class, Create::class]);
     }
