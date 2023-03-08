@@ -9,7 +9,7 @@ it('should apply promocode with given code', function () {
     $currency = Currency::factory()->create();
     Promocode::factory()->code($code)->currency($currency->id)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
 
-    applyPomocode($code, null, $currency);
+    applyPomocode($code, $currency);
 
     expect(PromocodeUser::count())->toEqual(1);
     expect(PromocodeUser::first()->user_id)->toBeNull();
@@ -21,7 +21,7 @@ it('should apply promocode with given code for given user', function () {
     $currency = Currency::factory()->create();
     Promocode::factory()->code($code)->currency($currency->id)->notExpired()->boundToUser(false)->usagesLeft(2)->create();
 
-    applyPomocode($code, $user, $currency);
+    applyPomocode($code, $currency, $user);
 
     expect(PromocodeUser::count())->toEqual(1);
     expect(PromocodeUser::first()->user_id)->toEqual($user->id);

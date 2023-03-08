@@ -14,7 +14,7 @@ if (!function_exists('applyPromocode')) {
      * @param Model $currency
      * @return PromocodeContract|null
      */
-    function applyPomocode(string $code, ?Model $user = null, Model $currency): ?PromocodeContract
+    function applyPomocode(string $code, Model $currency, ?Model $user = null): ?PromocodeContract
     {
         $promocodes = Promocodes::code($code)->currency($currency);
 

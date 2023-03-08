@@ -207,7 +207,6 @@ applyPomocode(
     'ABC-DEF',
     Currency::find(1),
     User::find(1) // default: null
-
 );
 ```
 
