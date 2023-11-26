@@ -251,9 +251,11 @@ class Promocodes
             event(new GuestAppliedPromocode($this->promocode));
         }
 
-        $this->promocode->decrement('usages_left');
+        if (!$this->promocode->isUnlimited()) {
+            $this->promocode->decrement('usages_left');
+        }
 
-        return $this->promocode;
+            return $this->promocode;
     }
 
     /**
